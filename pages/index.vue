@@ -10,9 +10,7 @@
 			<product-collection></product-collection>
 
 			<service-section></service-section>
-
-			<blog-section :posts="posts"></blog-section>
-		</div>
+    </div>
 	</main>
 </template>
 
@@ -22,7 +20,6 @@ import CategorySection from '~/components/partials/home/CategorySection';
 import BannerSection from '~/components/partials/home/BannerSection';
 import ProductCollection from '~/components/partials/home/ProductCollection';
 import ServiceSection from '~/components/partials/home/ServiceSection';
-import BlogSection from '~/components/partials/home/BlogSection';
 
 import Api, { baseUrl, currentDemo } from '~/api';
 import { getCookie } from '~/utils';
@@ -34,7 +31,6 @@ export default {
 		BannerSection,
 		ProductCollection,
 		ServiceSection,
-		BlogSection
 	},
 	data: function () {
 		return {
