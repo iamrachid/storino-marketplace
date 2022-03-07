@@ -5,7 +5,7 @@
 
 			<category-section></category-section>
 
-			<banner-section></banner-section>
+<!--			<banner-section></banner-section>-->
 
 			<product-collection></product-collection>
 
@@ -17,7 +17,7 @@
 <script>
 import IntroSection from '~/components/partials/home/IntroSection';
 import CategorySection from '~/components/partials/home/CategorySection';
-import BannerSection from '~/components/partials/home/BannerSection';
+// import BannerSection from '~/components/partials/home/BannerSection';
 import ProductCollection from '~/components/partials/home/ProductCollection';
 import ServiceSection from '~/components/partials/home/ServiceSection';
 
@@ -28,7 +28,7 @@ export default {
 	components: {
 		IntroSection,
 		CategorySection,
-		BannerSection,
+		// BannerSection,
 		ProductCollection,
 		ServiceSection,
 	},
@@ -54,7 +54,6 @@ export default {
 				this.posts = response.data.posts;
 			} )
 			.catch( error => ( { error: JSON.stringify( error ) } ) );
-
 
 		this.timer = setTimeout( () => {
 			if ( this.$route.path === '/' && getCookie( 'newsletter' ) !== 'false' ) {
