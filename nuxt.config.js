@@ -91,7 +91,7 @@ export default {
     plugins: [
         { src: '~/plugins', ssr: false },
         { src: '~/plugins/directives/parallax.js', ssr: false },
-        { src: '~/plugins/localstorage.js', ssr: false },
+        { src: '~/plugins/localstorage.client.js', ssr: false },
         { src: '~/plugins/filters.js', ssr: false },
         { src: '~/plugins/directives/animate.js', ssr: false }
     ],

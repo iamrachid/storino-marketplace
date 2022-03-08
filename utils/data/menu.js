@@ -1,6 +1,5 @@
 export const mainMenu = {
-    "shop": {
-        "variation1": [
+    "shop": {        "variation1": [
             {
                 "title": "Banner With Sidebar",
                 "url": "/shop/banner-sidebar"

@@ -1,7 +1,8 @@
 <template>
-  <section class="grey-section pt-10 pb-8">
-    <div class="container pt-4 pb-4">
-      <div class="product-wrapper row gutter-no appear-animate" v-animate>
+  <section class="grey-section pt-2 pb-8">
+    <div class="container pb-4">
+
+      <div class="product-wrapper row gutter-no mt-10 pt-2 appear-animate" v-animate>
         <div class="row gutter-no products-banner">
           <div class="col-12 col-xs-6 mb-0">
             <div class="category-filters d-flex flex-column">
@@ -102,10 +103,7 @@
         </div>
       </div>
 
-      <div
-        class="product-wrapper row gutter-no mt-10 pt-4 appear-animate"
-        v-animate
-      >
+      <div class="product-wrapper row gutter-no mt-10 pt-2 appear-animate" v-animate>
         <div class="row gutter-no products-banner">
           <div class="col-12 col-xs-6 mb-0">
             <div class="category-filters d-flex flex-column">
@@ -208,10 +206,7 @@
         </div>
       </div>
 
-      <div
-        class="product-wrapper row gutter-no mt-10 pt-2 appear-animate"
-        v-animate
-      >
+      <div class="product-wrapper row gutter-no mt-10 pt-2 appear-animate" v-animate>
         <div class="row gutter-no products-banner">
           <div class="col-12 col-xs-6 mb-0">
             <div class="category-filters d-flex flex-column">
@@ -312,7 +307,7 @@
         </div>
       </div>
 
-      <div class="product-wrapper row gutter-no mt-10 appear-animate" v-animate>
+      <div class="product-wrapper row gutter-no mt-10 pt-2 appear-animate" v-animate>
         <div class="row gutter-no products-banner">
           <div class="col-12 col-xs-6 mb-0">
             <div class="category-filters d-flex flex-column">
