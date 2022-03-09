@@ -1,35 +1,5 @@
 <template>
 	<header class="header">
-		<!--
-		<div class="header-top">
-			<div class="container">
-				<div class="header-left">
-					<p class="welcome-msg pb-2">Welcome to Riode store message or remove it!</p>
-				</div>
-				<div class="header-right">
-					<div class="dropdown dropdown-expanded">
-						<a href="javascript:;">Links</a>
-						<ul class="dropdown-box">
-							<li>
-								<nuxt-link to="/pages/about-us">About</nuxt-link>
-							</li>
-							<li>
-								<nuxt-link to="/blog/classic">Blog</nuxt-link>
-							</li>
-							<li>
-								<nuxt-link to="/pages/faqs">FAQ</nuxt-link>
-							</li>
-							<li><a to="javascript:;">Newsletter</a></li>
-							<li>
-								<nuxt-link to="/pages/contact-us">Contact</nuxt-link>
-							</li>
-							<header-login></header-login>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		-->
 
 		<sticky-wrapper>
 			<div class="header-middle sticky-header fix-top sticky-content">
@@ -97,159 +67,7 @@
 
 					<div class="dropdown-box">
 						<ul class="menu vertical-menu category-menu">
-							<li><a href="javascript:;" class="menu-title">Browse Our Categories</a></li>
-              <!--
-							<li class="submenu">
-								<nuxt-link :to="{ path: '/shop', query: { category: 'electronics-5' }}"><i class="d-icon-camera1"></i>Electronics</nuxt-link>
-								<ul>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'air-conditioners' }}">Air Conditioners</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'machines-1' }}">Machines</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'musical-instrument-1' }}">Musical Instrument</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'office-electronics' }}">Office Electronics</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'televisions' }}">Televisions</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'video-recoders' }}">Video Recorders</nuxt-link>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<nuxt-link :to="{ path: '/shop', query: { category: 'fashion-and-clothings' }}">
-									<i
-										class="d-icon-t-shirt1"
-										style="font-size: 22px; margin-right: .7rem"
-									></i>Travel &amp; Clothings
-								</nuxt-link>
-								<ul>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'bikinies' }}">Bikinies</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'casual-dresses' }}">Casual Dresses</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'hair-accessories-and-hats' }}">Hair Accessories &amp; Hats</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'jackets-1' }}">Jackets</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'jumpsuits-and-t-shirts' }}">Jumpsuits &amp; T-Shirts</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'fashion-new-arrivals' }}">New Arrivals</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'summer-dresses' }}">Summer Dresses</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'sunglasses' }}">Sunglasses</nuxt-link>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<nuxt-link :to="{ path: '/shop', query: { category: 'computers-1' }}"><i class="d-icon-desktop"></i>Computers</nuxt-link>
-								<ul>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'desktop-pcs' }}">Desktop PCs</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'laptops-2' }}">Laptops</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'computer-new-arrivals' }}">New Arrivals</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'pc-components' }}">PC Components</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'pc-gaming' }}">PC Gaming</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'storage-and-memory' }}">Storage & Memory</nuxt-link>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<nuxt-link :to="{ path: '/shop', query: { category: 'beauty-and-fragrance' }}"><i class="d-icon-heart"></i>Beauty &amp; Fragrance</nuxt-link>
-
-								<ul>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'hair-care' }}">Hair Care</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'makeup' }}">Makeup</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'beauty-new-arrivals' }}">New Arrivals</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'perfumes' }}">Perfumes</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'skin-care' }}">Skin Care</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'tools-and-equipments' }}">Tools &amp; Equipments</nuxt-link>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<nuxt-link :to="{ path: '/shop', query: { category: 'home-and-kitchen-4' }}"><i class="d-icon-cook"></i>Home &amp; Kitchen</nuxt-link>
-								<ul>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'cookwaves' }}">Cookwaves</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'decor' }}">Decor</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'furnitures' }}">Furniture</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'garden-tools' }}">Garden Tools</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'home-new-arrivals' }}">New Arrivals</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'utensil-and-gadgets' }}">Utensil &amp; Gadgets</nuxt-link>
-									</li>
-								</ul>
-							</li>
-							<li class="submenu">
-								<nuxt-link :to="{ path: '/shop', query: { category: 'jewelry-and-watches' }}">
-									<i class="d-icon-watch"></i>Jewelry &amp; Watches
-								</nuxt-link>
-								<ul>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'accessories-7' }}">Accessories</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'bracelets' }}">Bracelets</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'necklace' }}">Necklace</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'pendant' }}">Pendant</nuxt-link>
-									</li>
-									<li>
-										<nuxt-link :to="{ path: '/shop', query: { category: 'watch-1' }}">Watch</nuxt-link>
-									</li>
-								</ul>
-							</li>
-              -->
-
+							<li><a href="#" @click.prevent="" class="menu-title">Browse Our Categories</a></li>
               <sub-menu v-for="category in categories" :key="category.name" :category="category"/>
 						</ul>
 					</div>
@@ -259,21 +77,21 @@
 
 				<div class="d-flex align-items-center ml-auto">
 					<div class="dropdown currency-dropdown mr-4 ls-normal">
-						<a href="javascript:;">USD</a>
+						<a href="#" @click.prevent="">USD</a>
 						<ul class="dropdown-box">
-							<li><a href="javascript:;">USD</a></li>
-							<li><a href="javascript:;">EUR</a></li>
+							<li><a href="#">USD</a></li>
+							<li><a href="#">EUR</a></li>
 						</ul>
 					</div>
 
 					<div class="dropdown language-dropdown ls-normal">
-						<a href="javascript:;">ENG</a>
+						<a href="#">ENG</a>
 						<ul class="dropdown-box">
 							<li>
-								<a href="javascript:;">ENG</a>
+								<a href="#">ENG</a>
 							</li>
 							<li>
-								<a href="javascript:;">FRH</a>
+								<a href="#">FRH</a>
 							</li>
 						</ul>
 					</div>
@@ -290,6 +108,7 @@ import MainMenu from '~/components/common/partials/MainMenu';
 import HeaderLogin from '~/components/common/partials/HeaderLogin';
 import StickyWrapper from '~/components/elements/StickyWrapper';
 import SubMenu from "~/components/header/SubMenu";
+import {mapGetters} from "vuex";
 
 export default {
 	components: {
@@ -300,113 +119,8 @@ export default {
 		StickyWrapper,
     SubMenu
 	},
-  data() {
-    return {
-      categories: [
-        {
-          name: "electronics-5",
-          subcategories: [
-            {
-              slug:'air-conditioners',
-              name:'Air Conditioners'
-            },
-            {
-              slug: 'video-recorders',
-              name: 'Video Recorders',
-            },
-            {
-              slug: 'televisions',
-              name: 'television',
-            },
-          ]
-        },
-        {
-          name: "electronics-5",
-          subcategories: [
-            {
-              slug:'air-conditioners',
-              name:'Air Conditioners'
-            },
-            {
-              slug: 'video-recorders',
-              name: 'Video Recorders',
-            },
-            {
-              slug: 'televisions',
-              name: 'television',
-            },
-          ]
-        },
-        {
-          name: "electronics-5",
-          subcategories: [
-            {
-              slug:'air-conditioners',
-              name:'Air Conditioners'
-            },
-            {
-              slug: 'video-recorders',
-              name: 'Video Recorders',
-            },
-            {
-              slug: 'televisions',
-              name: 'television',
-            },
-          ]
-        },
-        {
-          name: "electronics-5",
-          subcategories: [
-            {
-              slug:'air-conditioners',
-              name:'Air Conditioners'
-            },
-            {
-              slug: 'video-recorders',
-              name: 'Video Recorders',
-            },
-            {
-              slug: 'televisions',
-              name: 'television',
-            },
-          ]
-        },
-        {
-          name: "electronics-5",
-          subcategories: [
-            {
-              slug:'air-conditioners',
-              name:'Air Conditioners'
-            },
-            {
-              slug: 'video-recorders',
-              name: 'Video Recorders',
-            },
-            {
-              slug: 'televisions',
-              name: 'television',
-            },
-          ]
-        },
-        {
-          name: "electronics-5",
-          subcategories: [
-            {
-              slug:'air-conditioners',
-              name:'Air Conditioners'
-            },
-            {
-              slug: 'video-recorders',
-              name: 'Video Recorders',
-            },
-            {
-              slug: 'televisions',
-              name: 'television',
-            },
-          ]
-        }
-      ]
-    }
+  computed: {
+    ...mapGetters( 'categories', [ 'categories' ] ),
   },
 	methods: {
 		showMobileMenu: function () {
