@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="sticky-wrapper"
-		ref="stickyRef"
-	>
+	<div class="sticky-wrapper" ref="stickyRef">
 		<slot></slot>
 	</div>
 </template>

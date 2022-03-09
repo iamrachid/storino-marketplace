@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="product"
-		:class="{'product-variable': product.variants.length > 0}"
-	>
+	<div class="product" :class="{'product-variable': product.variants.length > 0}">
 		<figure class="product-media">
 			<nuxt-link :to="`/product/default/${product.slug}`">
 				<img
@@ -62,36 +59,19 @@
 					v-if="!isWishlisted"
 				><i class="d-icon-heart"></i></a>
 
-				<a
-					href="javascript:;"
-					class="btn-wishlist btn-product-icon"
-					title='Remove from wishlist'
-					v-if="isWishlisted"
-					@click="wishlistHandler($event)"
-				>
+				<a href="javascript:;" class="btn-wishlist btn-product-icon" title='Remove from wishlist' v-if="isWishlisted" @click="wishlistHandler($event)">
 					<i class="d-icon-heart-full"></i>
 				</a>
 			</div>
 
 			<div class="product-action">
-				<a
-					href="#"
-					class="btn-product btn-quickview"
-					title="Quick View"
-					@click.prevent="openQuickview"
-				>Quick View</a>
+				<a href="#" class="btn-product btn-quickview" title="Quick View" @click.prevent="openQuickview">Quick View</a>
 			</div>
 		</figure>
 
 		<div class="product-details">
-			<div
-				class="product-cat"
-				v-if="isCat"
-			>
-				<span
-					v-for="(cat,index) in product.product_categories"
-					:key="`product-category-${index}`"
-				>
+			<div class="product-cat" v-if="isCat">
+				<span v-for="(cat,index) in product.product_categories" :key="`product-category-${index}`">
 					<nuxt-link :to="{ path: '/shop', query: { category: cat.slug }}">{{ cat.name }}</nuxt-link>
 					<template v-if="index < product.product_categories.length - 1">,</template>
 				</span>
@@ -120,16 +100,10 @@
 
 			<div class="ratings-container">
 				<div class="ratings-full">
-					<span
-						class="ratings"
-						:style="{width: product.ratings * 20 + '%'}"
-					></span>
+					<span class="ratings" :style="{width: product.ratings * 20 + '%'}"></span>
 					<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
 				</div>
-				<a
-					href="javascript:;"
-					class="rating-reviews"
-				>( {{ product.reviews }} reviews )</a>
+				<a href="javascript:;" class="rating-reviews">( {{ product.reviews }} reviews )</a>
 			</div>
 		</div>
 	</div>

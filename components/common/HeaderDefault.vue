@@ -1,5 +1,6 @@
 <template>
 	<header class="header">
+		<!--
 		<div class="header-top">
 			<div class="container">
 				<div class="header-left">
@@ -28,6 +29,7 @@
 				</div>
 			</div>
 		</div>
+		-->
 
 		<sticky-wrapper>
 			<div class="header-middle sticky-header fix-top sticky-content">
@@ -87,22 +89,16 @@
 
 		<div class="header-bottom has-dropdown pb-0">
 			<div class="container d-flex align-items-center">
-				<div
-					class="dropdown category-dropdown has-border"
-					:class="$route.path === '/' ? 'fixed' : ''"
-				>
-					<a
-						href="javascript:;"
-						class="text-white font-weight-semi-bold category-toggle"
-					><i class="d-icon-bars2"></i><span>Shop By Categories</span></a>
+				<div class="dropdown category-dropdown has-border" :class="$route.path === '/' ? 'fixed' : ''">
+          <a href="#" @click.prevent="" class="text-white font-weight-semi-bold category-toggle">
+            <i class="d-icon-bars2"></i>
+            <span>Shop By Categories</span>
+          </a>
 
 					<div class="dropdown-box">
 						<ul class="menu vertical-menu category-menu">
-							<li><a
-									href="javascript:;"
-									class="menu-title"
-								>Browse Our Categories</a></li>
-
+							<li><a href="javascript:;" class="menu-title">Browse Our Categories</a></li>
+              <!--
 							<li class="submenu">
 								<nuxt-link :to="{ path: '/shop', query: { category: 'electronics-5' }}"><i class="d-icon-camera1"></i>Electronics</nuxt-link>
 								<ul>
@@ -125,9 +121,6 @@
 										<nuxt-link :to="{ path: '/shop', query: { category: 'video-recoders' }}">Video Recorders</nuxt-link>
 									</li>
 								</ul>
-							</li>
-							<li>
-								<nuxt-link :to="{ path: '/shop', query: { category: 'backpacks-and-fashion-bags-2' }}"><i class="d-icon-officebag"></i>Backpacks &amp; Fashion Bags</nuxt-link>
 							</li>
 							<li class="submenu">
 								<nuxt-link :to="{ path: '/shop', query: { category: 'fashion-and-clothings' }}">
@@ -210,14 +203,6 @@
 									</li>
 								</ul>
 							</li>
-							<li>
-								<nuxt-link :to="{ path: '/shop', query: { category: 'headgears' }}">
-									<i
-										class="d-icon-hat"
-										style="font-size: 22px; margin-right: .8rem"
-									></i>Headgears
-								</nuxt-link>
-							</li>
 							<li class="submenu">
 								<nuxt-link :to="{ path: '/shop', query: { category: 'home-and-kitchen-4' }}"><i class="d-icon-cook"></i>Home &amp; Kitchen</nuxt-link>
 								<ul>
@@ -263,14 +248,9 @@
 									</li>
 								</ul>
 							</li>
-							<li>
-								<nuxt-link :to="{ path: '/shop', query: { category: 'shoes-4' }}">
-									<i
-										class="d-icon-shoes"
-										style="font-size: 2.2rem; margin-right: .8rem"
-									></i>Shoes
-								</nuxt-link>
-							</li>
+              -->
+
+              <sub-menu v-for="category in categories" :key="category.name" :category="category"/>
 						</ul>
 					</div>
 				</div>
@@ -309,6 +289,7 @@ import CartMenu from '~/components/common/partials/CartMenu';
 import MainMenu from '~/components/common/partials/MainMenu';
 import HeaderLogin from '~/components/common/partials/HeaderLogin';
 import StickyWrapper from '~/components/elements/StickyWrapper';
+import SubMenu from "~/components/header/SubMenu";
 
 export default {
 	components: {
@@ -316,8 +297,117 @@ export default {
 		CartMenu,
 		MainMenu,
 		HeaderLogin,
-		StickyWrapper
+		StickyWrapper,
+    SubMenu
 	},
+  data() {
+    return {
+      categories: [
+        {
+          name: "electronics-5",
+          subcategories: [
+            {
+              slug:'air-conditioners',
+              name:'Air Conditioners'
+            },
+            {
+              slug: 'video-recorders',
+              name: 'Video Recorders',
+            },
+            {
+              slug: 'televisions',
+              name: 'television',
+            },
+          ]
+        },
+        {
+          name: "electronics-5",
+          subcategories: [
+            {
+              slug:'air-conditioners',
+              name:'Air Conditioners'
+            },
+            {
+              slug: 'video-recorders',
+              name: 'Video Recorders',
+            },
+            {
+              slug: 'televisions',
+              name: 'television',
+            },
+          ]
+        },
+        {
+          name: "electronics-5",
+          subcategories: [
+            {
+              slug:'air-conditioners',
+              name:'Air Conditioners'
+            },
+            {
+              slug: 'video-recorders',
+              name: 'Video Recorders',
+            },
+            {
+              slug: 'televisions',
+              name: 'television',
+            },
+          ]
+        },
+        {
+          name: "electronics-5",
+          subcategories: [
+            {
+              slug:'air-conditioners',
+              name:'Air Conditioners'
+            },
+            {
+              slug: 'video-recorders',
+              name: 'Video Recorders',
+            },
+            {
+              slug: 'televisions',
+              name: 'television',
+            },
+          ]
+        },
+        {
+          name: "electronics-5",
+          subcategories: [
+            {
+              slug:'air-conditioners',
+              name:'Air Conditioners'
+            },
+            {
+              slug: 'video-recorders',
+              name: 'Video Recorders',
+            },
+            {
+              slug: 'televisions',
+              name: 'television',
+            },
+          ]
+        },
+        {
+          name: "electronics-5",
+          subcategories: [
+            {
+              slug:'air-conditioners',
+              name:'Air Conditioners'
+            },
+            {
+              slug: 'video-recorders',
+              name: 'Video Recorders',
+            },
+            {
+              slug: 'televisions',
+              name: 'television',
+            },
+          ]
+        }
+      ]
+    }
+  },
 	methods: {
 		showMobileMenu: function () {
 			document.querySelector( 'body' ).classList.add( 'mmenu-active' );
