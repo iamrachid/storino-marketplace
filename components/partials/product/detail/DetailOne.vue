@@ -173,33 +173,20 @@
 
 		<hr class="product-divider mt-0">
 
-		<div
-			class="product-form product-qty"
-			v-if="!stickyCart"
-			key="normalCart"
-		>
+		<div class="product-form product-qty" v-if="!stickyCart" key="normalCart">
 			<div class="product-form-group">
-				<input-quantity
-					class="mr-2"
-					:max="product.stock"
-					@change-qty="changeQty"
-				></input-quantity>
+				<input-quantity class="mr-2" :max="product.stock" @change-qty="changeQty" />
 
-				<button
-					class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
-					:class="{disabled: !isCartActive}"
-					@click="addCart"
-				><i class="d-icon-bag"></i>Add to Cart</button>
+				<button class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
+					:class="{disabled: !isCartActive}" @click="addCart">
+          <i class="d-icon-bag"></i>
+          Add to Cart
+        </button>
 			</div>
 		</div>
 
-		<sticky-wrapper
-			v-else
-			stickyClass="product-sticky-content"
-			:offsetTop="650"
-			:top="73"
-		>
-			<div class="sticky-content fix-top product-sticky-content">
+		<sticky-wrapper v-if="stickyCart" stickyClass="product-sticky-content" :offsetTop="200">
+			<div class="sticky-content fix-bottom product-sticky-content">
 				<div class="container">
 					<div class="sticky-product-details">
 						<figure class="product-image">

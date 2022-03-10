@@ -4,7 +4,6 @@
 			<header-default></header-default>
 			<nuxt></nuxt>
 			<footer-default></footer-default>
-			<scroll-top-button></scroll-top-button>
 
 			<cart-popup class="cart-popup"></cart-popup>
 		</div>

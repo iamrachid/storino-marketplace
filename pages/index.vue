@@ -31,17 +31,6 @@ export default {
 		ProductCollection,
 		ServiceSection,
 	},
-	data: function () {
-		return {
-			bestSelling: null,
-			featured: null,
-			latest: null,
-			topRated: null,
-			posts: null,
-			onSale: null,
-			timer: null
-		};
-	},
 	mounted: function () {
 		this.timer = setTimeout( () => {
 			if ( this.$route.path === '/' && getCookie( 'newsletter' ) !== 'false' ) {
