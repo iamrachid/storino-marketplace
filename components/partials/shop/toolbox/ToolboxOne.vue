@@ -62,18 +62,6 @@
 					class="toolbox-item toolbox-layout"
 					:class="{ 'mr-lg-0': $route.path.includes('right-sidebar')}"
 				>
-					<nuxt-link
-						:to="{query: {...$route.query, type: 'list'}}"
-						class="d-icon-mode-list btn-layout"
-						title="select list type"
-						:class="{active: $route.query.type === 'list'}"
-					></nuxt-link>
-					<nuxt-link
-						:to="{query: {...$route.query, type: 'grid'}}"
-						class="d-icon-mode-grid btn-layout"
-						title="select grid type"
-						:class="{active: $route.query.type !== 'list'}"
-					></nuxt-link>
 				</div>
 
 				<a

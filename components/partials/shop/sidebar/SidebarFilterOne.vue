@@ -3,10 +3,9 @@
 		<div
 			class="sidebar-overlay"
 			@click="hideSidebar"
-		></div>
+		>Hide</div>
 		<a
 			class="sidebar-close"
-			href="#"
 			@click.prevent="hideSidebar"
 		><i class="d-icon-times"></i></a>
 

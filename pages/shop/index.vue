@@ -16,21 +16,7 @@
 					></sidebar-filter-one>
 
 					<div class="col-lg-8 col-xl-9 main-content">
-						<div
-							class="shop-banner banner"
-							style="background-image: url(./images/home/shop-banner.jpg); background-color: #dce0e3;"
-						>
-							<div class="banner-content">
-								<h4 class="banner-subtitle d-inline-block mb-2 text-secondary text-uppercase ls-normal bg-dark">
-									Through thursday</h4>
-								<h1 class="banner-title font-weight-bold ls-normal text-uppercase">20% Off Suede Shoes</h1>
-								<nuxt-link
-									to="/shop"
-									class="btn btn-outline btn-dark btn-rounded"
-								>Shop now</nuxt-link>
-							</div>
-						</div>
-
+            <shop-banner-two :banner="banner"></shop-banner-two>
 						<product-list-one></product-list-one>
 					</div>
 				</div>
@@ -40,15 +26,26 @@
 </template>
 
 <script>
-import ShopBanner from '~/components/partials/shop/ShopBanner';
-import ProductListOne from '~/components/partials/shop/product-list/ProductListOne';
-import SidebarFilterOne from '~/components/partials/shop/sidebar/SidebarFilterOne';
+import ProductListOne from "~/components/partials/shop/product-list/ProductListOne";
+import SidebarFilterOne from "~/components/partials/shop/sidebar/SidebarFilterOne";
+import ShopBannerTwo from "~/components/shop/ShopBannerTwo";
 
 export default {
 	components: {
-		ShopBanner,
+    ShopBannerTwo,
 		SidebarFilterOne,
 		ProductListOne
-	}
+	},
+  data(){
+    return {
+      banner: {
+        img: './images/home/shop-banner.jpg',
+        cta: 'Shop Now',
+        title: '20% Off Suede Shoes',
+        subtitle: 'Through thursday'
+
+      }
+    }
+  }
 };
 </script>

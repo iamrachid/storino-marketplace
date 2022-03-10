@@ -6,7 +6,7 @@
 
 		<toolbox-three v-else></toolbox-three>
 
-		<div :class="`${$route.query.type === 'list' ? 'product-lists': 'row gutter-no split-line ' + gridClasses[itemsPerRow]} product-wrapper`">
+		<div :class="'row gutter-no split-line product-wrapper' + gridClasses[itemsPerRow]">
 			<template v-if="products">
 				<div
 					class="product-wrap"
@@ -16,13 +16,7 @@
 					<product-two
 						:product="item"
 						class="text-center"
-						v-if="$route.query.type !== 'list'"
 					></product-two>
-
-					<product-eight
-						:product="item"
-						v-else
-					></product-eight>
 				</div>
 			</template>
 
@@ -124,7 +118,7 @@ export default {
 			this.getProducts();
 		}
 	},
-	mounted: function () {
+	async fetch () {
 		this.getProducts();
 	},
 	methods: {
