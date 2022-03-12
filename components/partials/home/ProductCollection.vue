@@ -2,20 +2,20 @@
   <section class="grey-section pt-2 pb-8">
     <div class="container pb-4">
 
-      <product-collection />
+      <ProductCollectionCart />
 
-      <product-collection />
+      <ProductCollectionCart />
 
     </div>
   </section>
 </template>
 
 <script>
-import ProductCollection from "~/components/product/ProductCollectionCard";
+import ProductCollectionCart from "~/components/product/ProductCollectionCart";
 
 export default {
   components: {
-    ProductCollection
+    ProductCollectionCart
   },
 };
 </script>
