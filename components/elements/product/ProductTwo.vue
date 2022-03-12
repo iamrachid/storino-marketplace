@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="product"
-		:class="{'product-variable': product.variants.length > 0}"
-	>
+	<div class="product" :class="{'product-variable': product.variants.length > 0}">
 		<figure class="product-media">
 			<nuxt-link :to="`/product/default/${product.slug}`">
 				<img
@@ -17,85 +14,62 @@
 			</nuxt-link>
 
 			<div class="product-label-group">
-				<div
-					class="product-label label-new"
-					v-if="product.is_new"
-				>New</div>
-				<div
-					class="product-label label-stock"
-					v-if="product.stock === '0'"
-				>Out</div>
-				<div
-					class="product-label label-top"
-					v-if="product.is_top"
-				>Top</div>
-				<div
-					class="product-label label-sale"
-					v-if="product.discount > 0"
-				>
-					<template v-if="product.variants.length > 0">Sale</template>
+				<div class="product-label label-new" v-if="product.is_new">
+          New
+        </div>
+				<div class="product-label label-stock" v-if="product.stock === '0'">
+          Out
+        </div>
+				<div class="product-label label-top" v-if="product.is_top">
+          Top
+        </div>
+				<div class="product-label label-sale" v-if="product.discount > 0">
+					<template v-if="product.variants.length > 0">Discount</template>
 					<template v-else>-{{ product.discount }}%</template>
 				</div>
 			</div>
 
 			<div class="product-action-vertical">
-				<a
-					href="javascript:;"
-					class="btn-product-icon btn-cart"
-					title="Add to cart"
-					v-if="product.variants.length === 0"
-					@click="addCart"
-				><i class="d-icon-bag"></i></a>
 
-				<nuxt-link
-					:to="`/product/default/${product.slug}`"
-					class="btn-product-icon btn-cart"
-					title="Go to detail"
-					v-else
-				><i class="d-icon-arrow-right"></i></nuxt-link>
+				<a href="#" class="btn-product-icon btn-cart"
+					 title="Add to cart" v-if="product.variants.length === 0"
+					 @click.prevent="addCart">
+          <i class="d-icon-bag"></i>
+        </a>
 
-				<a
-					href="javascript:;"
-					class="btn-wishlist btn-product-icon"
-					title="Add to wishlist"
-					@click="wishlistHandler($event)"
-					v-if="!isWishlisted"
-				><i class="d-icon-heart"></i></a>
+				<nuxt-link :to="`/product/default/${product.slug}`" class="btn-product-icon btn-cart"
+					title="Go to detail" v-else>
+          <i class="d-icon-arrow-right"></i>
+        </nuxt-link>
 
-				<a
-					href="javascript:;"
-					class="btn-wishlist btn-product-icon"
-					title='Remove from wishlist'
-					v-if="isWishlisted"
-					@click="wishlistHandler($event)"
-				>
+				<a href="#" class="btn-wishlist btn-product-icon"
+           title="Add to wishlist" v-if="!isWishlisted"
+           @click.prevent="wishlistHandler($event)">
+          <i class="d-icon-heart"></i>
+        </a>
+
+				<a href="#" class="btn-wishlist btn-product-icon"
+           title='Remove from wishlist' v-if="isWishlisted"
+           @click.prevent="wishlistHandler($event)">
 					<i class="d-icon-heart-full"></i>
 				</a>
 			</div>
 
 			<div class="product-action">
-				<a
-					href="#"
-					class="btn-product btn-quickview"
-					title="Quick View"
-					@click.prevent="openQuickview"
-				>Quick View</a>
+				<a href="#" class="btn-product btn-quickview" title="Quick View" @click.prevent="openQuickview">Quick View</a>
 			</div>
 		</figure>
 
 		<div class="product-details">
-			<div
-				class="product-cat"
-				v-if="isCat"
-			>
-				<span
-					v-for="(cat,index) in product.product_categories"
-					:key="`product-category-${index}`"
-				>
+
+    <!--  Add collections on top of the item name
+    <div class="product-cat" v-if="isCat">
+				<span v-for="(cat,index) in product.product_categories" :key="`product-category-${index}`">
 					<nuxt-link :to="{ path: '/shop', query: { category: cat.slug }}">{{ cat.name }}</nuxt-link>
 					<template v-if="index < product.product_categories.length - 1">,</template>
 				</span>
 			</div>
+			-->
 
 			<h3 class="product-name">
 				<nuxt-link :to="'/product/default/' + product.slug">{{ product.name }}</nuxt-link>
@@ -115,21 +89,15 @@
 					<template v-else>
 						<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
 					</template>
+
 				</template>
 			</div>
 
 			<div class="ratings-container">
 				<div class="ratings-full">
-					<span
-						class="ratings"
-						:style="{width: product.ratings * 20 + '%'}"
-					></span>
-					<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
+					<span class="ratings" :style="{width: product.ratings * 20 + '%'}"></span>
 				</div>
-				<a
-					href="javascript:;"
-					class="rating-reviews"
-				>( {{ product.reviews }} reviews )</a>
+				<p class="rating-reviews">( {{ product.reviews }} reviews )</p>
 			</div>
 		</div>
 	</div>
@@ -152,9 +120,8 @@ export default {
 	computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
 		isWishlisted: function () {
-			if ( this.wishList.find( item => item.name === this.product.name ) )
-				return true;
-			return false;
+			return !!this.wishList.find(item => item.name === this.product.name);
+
 		}
 	},
 	methods: {
@@ -178,6 +145,7 @@ export default {
 				this.addToCart( { product: saledProduct } );
 			}
 		},
+
 		openQuickview: function () {
 			this.$modal.show(
 				() => import( '~/components/elements/modal/QuickView' ),

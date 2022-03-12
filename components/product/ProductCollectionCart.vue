@@ -3,41 +3,22 @@
     <div class="row gutter-no products-banner">
       <div class="col-12 col-xs-6 mb-0">
         <div class="category-filters d-flex flex-column">
-          <h3
-              class="category-title font-weight-bold appear-animate"
-              v-animate
-              data-animation-options="{
-									'name': 'fadeInUpShorter'
-								}"
-          >
+
+          <h3 class="category-title font-weight-bold appear-animate" v-animate data-animation-options="{ 'name': 'fadeInUpShorter' }" >
             {{ category.name }}
           </h3>
-          <ul
-              class="category-list appear-animate"
-              v-animate
-              data-animation-options="{
-									'name': 'fadeInUpShorter',
-									'delay': '.3s'
-								}"
-          >
-            <li
-                v-for="item in category.children"
-                :key="'filter-' + item.slug"
-            >
-              <a href="javascript:;" @click="getProductHandler(item.slug, 1)">{{ item.name }}</a
-              >
+
+          <ul class="category-list appear-animate" v-animate data-animation-options="{ 'name': 'fadeInUpShorter', 'delay': '.3s' }">
+            <li v-for="item in category.children" :key="'filter-' + item.slug">
+              <a href="#" @click.prevent="getProductHandler(item.slug, 1)">{{ item.name }}</a>
             </li>
           </ul>
-          <nuxt-link
-              to="/shop"
-              class="btn btn-link btn-underline font-primary appear-animate mt-3"
-              v-animate
-              data-animation-options="{
-									'name': 'fadeInUpShorter',
-									'delay': '.3s'
-								}"
-          >View all products<i class="d-icon-arrow-right"></i
-          ></nuxt-link>
+
+          <nuxt-link to="/shop" class="btn btn-link btn-underline font-primary appear-animate mt-3"
+              v-animate data-animation-options="{ 'name': 'fadeInUpShorter', 'delay': '.3s' }" >
+            View all products<i class="d-icon-arrow-right"></i>
+          </nuxt-link>
+
         </div>
       </div>
 

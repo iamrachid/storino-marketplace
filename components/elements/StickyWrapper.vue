@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="sticky-wrapper"
-		ref="stickyRef"
-	>
+	<div class="sticky-wrapper" ref="stickyRef">
 		<slot></slot>
 	</div>
 </template>
@@ -32,7 +29,6 @@ export default {
 		},
 		top: {
 			type: Number,
-			defualt: 0
 		}
 	},
 	data: function () {
@@ -74,32 +70,34 @@ export default {
 		stickyWrapperHandler: function () {
 			this.stickyContent = this.$refs.stickyRef.querySelector( '.' + this.stickyClass );
 			this.stickyHeight = this.stickyContent && this.$refs.stickyRef.querySelector( '.' + this.stickyClass ).offsetHeight;
-			this.scrollDir = window.pageYOffset - this.prevPos > 0 ? 'down' : 'up';
+			this.scrollDir = window.scrollY - this.prevPos > 0 ? 'down' : 'up';
 
 			if ( this.type === 'desktop' ) {
-				if ( window.pageYOffset > this.terminal && window.innerWidth > this.breakpoint ) {
+				if ( window.scrollY > this.terminal && window.innerWidth > this.breakpoint ) {
 					if ( !this.isSticky ) this.toggleStickyContent( true );
 
 					if ( this.direction === 'normal' || this.scrollDir === this.direction )
-						this.stickyContent.classList.add( 'fixed' );
-					else this.stickyContent.classList.remove( 'fixed' );
+            this.toggleStickyContent( true );
+					else
+            this.toggleStickyContent( false );
 				} else {
 					this.toggleStickyContent( false );
 				}
 			}
 
 			if ( this.type === 'mobile' ) {
-				if ( window.pageYOffset > this.terminal && window.innerWidth < this.breakpoint ) {
+				if ( window.scrollY > this.terminal && window.innerWidth < this.breakpoint ) {
 					if ( !this.isSticky ) this.toggleStickyContent( true );
 					if ( this.direction === 'normal' || this.scrollDir === this.direction )
 						this.stickyContent.classList.add( 'fixed' );
-					else this.stickyContent.classList.remove( 'fixed' );
+					else
+            this.stickyContent.classList.remove( 'fixed' );
 				} else {
 					this.toggleStickyContent( false );
 				}
 			}
 
-			this.prevPos = window.pageYOffset;
+			this.prevPos = window.scrollY;
 		}
 	}
 };
