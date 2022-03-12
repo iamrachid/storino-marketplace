@@ -107,7 +107,7 @@ import CartMenu from '~/components/common/partials/CartMenu';
 import MainMenu from '~/components/common/partials/MainMenu';
 import HeaderLogin from '~/components/common/partials/HeaderLogin';
 import StickyWrapper from '~/components/elements/StickyWrapper';
-import SubMenu from "~/components/header/SubMenu";
+import SubMenu from "~/components/common/partials/SubMenu";
 import {mapGetters} from "vuex";
 
 export default {
