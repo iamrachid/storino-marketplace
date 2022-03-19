@@ -1,9 +1,6 @@
 <template>
 	<div class="product-details">
-		<div
-			class="product-navigation"
-			v-if="showNav"
-		>
+		<div class="product-navigation" v-if="showNav">
 			<ul class="breadcrumb breadcrumb-lg">
 				<li>
 					<nuxt-link
@@ -17,11 +14,6 @@
 					>Products</a></li>
 				<li>Detail</li>
 			</ul>
-
-			<product-nav
-				:next="next"
-				:prev="prev"
-			></product-nav>
 		</div>
 
 		<h2 class="product-name">{{ product.name }}</h2>

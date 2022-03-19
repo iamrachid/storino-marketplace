@@ -1,47 +1,29 @@
 <template>
 	<aside :class="`col-lg-3 sidebar-fixed sidebar-toggle-remain shop-sidebar sticky-sidebar-wrapper ${sidebarClass}`">
-		<div
-			class="sidebar-overlay"
-			@click="hideSidebar"
-		>Hide</div>
-		<a
-			class="sidebar-close"
-			@click.prevent="hideSidebar"
-		><i class="d-icon-times"></i></a>
+		<div class="sidebar-overlay" @click="hideSidebar">
+      Hide
+    </div>
+		<a class="sidebar-close" @click.prevent="hideSidebar">
+      <i class="d-icon-times" />
+    </a>
 
-		<div
-			class="widget-2 mt-5 d-lg-show"
-			v-if="!loaded"
-			key="sidebar-content-skel"
-		>
-		</div>
+		<div class="widget-2 mt-5 d-lg-show" v-if="!loaded" key="sidebar-content-skel" />
 
-		<div
-			class="sidebar-content"
-			v-else
-		>
-			<div
-				class="filter-actions mb-4"
-				v-if="showFilterButton"
-			>
-				<a
-					href="#"
-					@click.prevent="toggleSidebar($event)"
-					class="sidebar-toggle-btn toggle-remain btn btn-outline btn-primary btn-icon-right btn-rounded"
-				>Filter<i :class="sidebarClass === 'right-sidebar'? 'd-icon-arrow-right': 'd-icon-arrow-left'"></i></a>
-				<nuxt-link
-					:to="{path: $route.path, query: $route.query.type ? {type: $route.query.type } : null}"
-					class="filter-clean"
-				>Clean All</nuxt-link>
+		<div class="sidebar-content" v-else>
+			<div class="filter-actions mb-4" v-if="showFilterButton">
+				<a href="#" @click.prevent="toggleSidebar($event)"
+					class="sidebar-toggle-btn toggle-remain btn btn-outline btn-primary btn-icon-right btn-rounded">
+          Filter<i :class="sidebarClass === 'right-sidebar'? 'd-icon-arrow-right': 'd-icon-arrow-left'" />
+        </a>
+				<nuxt-link :to="{path: $route.path, query: $route.query.type ? {type: $route.query.type } : null}"
+					class="filter-clean">
+          Clean All
+        </nuxt-link>
 			</div>
 
 			<div :class="`widget widget-collapsible ${!showFilterButton ? 'border-no' : ''}`">
-				<h3
-					class="widget-title"
-					@click="toggleState(0)"
-					:class="{'collapsed': !openState[0]}"
-				>
-					All Categories<span class="toggle-btn"></span>
+				<h3 class="widget-title" @click="toggleState(0)" :class="{'collapsed': !openState[0]}">
+					All Categories<span class="toggle-btn"/>
 				</h3>
 
 				<vue-slide-toggle :open="openState[0]">
@@ -167,11 +149,8 @@
 
 				<vue-slide-toggle :open="openState[4]">
 					<ul class="widget-body filter-items">
-						<li
-							v-for="(item,index) in shopBrands"
-							:key="'brand-filter' + index"
-							:class="{active: isActivedBrand(item)}"
-						>
+						<li v-for="(item,index) in shopBrands" :key="'brand-filter' + index"
+							:class="{active: isActivedBrand(item)}">
 							<nuxt-link :to="brandFilterRoute(item)">{{ item.name }}</nuxt-link>
 						</li>
 					</ul>

@@ -10,15 +10,12 @@
 				</ul>
 
 				<div class="row main-content-wrap gutter-lg">
-					<sidebar-filter-one
-						:showFilterButton="false"
-						class="col-xl-3 col-lg-4"
-					></sidebar-filter-one>
+					<sidebar-filter-one :showFilterButton="false" class="col-xl-3 col-lg-4" />
 
 					<div class="col-lg-8 col-xl-9 main-content">
-            <shop-banner-two :banner="banner"></shop-banner-two>
 						<product-list-one></product-list-one>
 					</div>
+
 				</div>
 			</div>
 		</div>
