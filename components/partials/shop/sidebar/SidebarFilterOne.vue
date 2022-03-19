@@ -18,10 +18,7 @@
 
 		<div
 			class="sidebar-content"
-			v-sticky="isSticky"
 			v-else
-			sticky-offset="{top: 0}"
-			ref="stickySidebar"
 		>
 			<div
 				class="filter-actions mb-4"
@@ -38,7 +35,7 @@
 				>Clean All</nuxt-link>
 			</div>
 
-			<div :class="`widget widget-collapsible ${ !isSticky && !showFilterButton ? 'border-no' : ''}`">
+			<div :class="`widget widget-collapsible ${!showFilterButton ? 'border-no' : ''}`">
 				<h3
 					class="widget-title"
 					@click="toggleState(0)"
@@ -187,7 +184,7 @@
 <script>
 import { VueSlideToggle } from 'vue-slide-toggle';
 import { VueTreeList, Tree } from 'vue-tree-list';
-import Sticky from 'vue-sticky-directive';
+
 
 import { scrollHandler } from '~/utils';
 
@@ -198,9 +195,6 @@ export default {
 	components: {
 		VueSlideToggle,
 		VueTreeList
-	},
-	directives: {
-		Sticky
 	},
 	props: {
 		sidebarClass: {
@@ -236,7 +230,6 @@ export default {
 			shopBrands: shopBrands,
 			priceReset: true,
 			loaded: false,
-			isSticky: true
 		};
 	},
 	watch: {
@@ -292,14 +285,6 @@ export default {
 			let temp = [ ...this.openState ];
 			temp[ index ] = !temp[ index ];
 			this.openState = temp;
-			window.width > 991 &&
-				this.$nextTick( () => {
-					setTimeout( () => {
-						this.$refs.stickySidebar[
-							'@@vue-sticky-directive'
-						].update();
-					}, 140 );
-				} );
 		},
 		sizeFilterRoute: function ( item ) {
 			let selectedSizes = this.$route.query.sizes
@@ -380,7 +365,6 @@ export default {
 			);
 		},
 		resizeHandler: function () {
-			this.isSticky = window.innerWidth > 991 ? true : false;
 			window.innerWidth > 991 && this.hideSidebar();
 		},
 		hideSidebar: function () {
