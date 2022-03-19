@@ -23,26 +23,15 @@
 </template>
 
 <script>
-import ProductListOne from "~/components/partials/shop/product-list/ProductListOne";
-import SidebarFilterOne from "~/components/partials/shop/sidebar/SidebarFilterOne";
-import ShopBannerTwo from "~/components/shop/ShopBannerTwo";
+import ShopBanner from '~/components/partials/shop/ShopBanner';
+import ProductListOne from '~/components/partials/shop/product-list/ProductListOne';
+import SidebarFilterOne from '~/components/partials/shop/sidebar/SidebarFilterOne';
 
 export default {
-	components: {
-    ShopBannerTwo,
-		SidebarFilterOne,
-		ProductListOne
-	},
-  data(){
-    return {
-      banner: {
-        img: './images/home/shop-banner.jpg',
-        cta: 'Shop Now',
-        title: '20% Off Suede Shoes',
-        subtitle: 'Through thursday'
-
-      }
-    }
+  components: {
+    ShopBanner,
+    SidebarFilterOne,
+    ProductListOne
   }
 };
 </script>
