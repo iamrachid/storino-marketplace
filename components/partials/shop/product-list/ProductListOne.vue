@@ -1,10 +1,6 @@
 <template>
 	<div>
-		<toolbox-one v-if="type === 'default'"></toolbox-one>
-
-		<toolbox-two v-else-if="type === 'horizontal'"></toolbox-two>
-
-		<toolbox-three v-else></toolbox-three>
+		<toolbox-one />
 
     <div :class="`${$route.query.type === 'list' ? 'product-lists': 'row gutter-no split-line ' + gridClasses[itemsPerRow]} product-wrapper`">
       <template v-if="products">
@@ -87,10 +83,6 @@ export default {
 		itemsPerRow: {
 			type: Number,
 			default: 3
-		},
-		type: {
-			type: String,
-			default: 'default'
 		}
 	},
 	data: function () {
