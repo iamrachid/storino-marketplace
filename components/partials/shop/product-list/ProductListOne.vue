@@ -6,19 +6,25 @@
 
 		<toolbox-three v-else></toolbox-three>
 
-		<div :class="'row gutter-no split-line product-wrapper' + gridClasses[itemsPerRow]">
-			<template v-if="products">
-				<div
-					class="product-wrap"
-					v-for="item in products"
-					:key="`shop-${item.slug}`"
-				>
-					<product-two
-						:product="item"
-						class="text-center"
-					></product-two>
-				</div>
-			</template>
+    <div :class="`${$route.query.type === 'list' ? 'product-lists': 'row gutter-no split-line ' + gridClasses[itemsPerRow]} product-wrapper`">
+      <template v-if="products">
+        <div
+            class="product-wrap"
+            v-for="item in products"
+            :key="`shop-${item.slug}`"
+        >
+          <product-two
+              :product="item"
+              class="text-center"
+              v-if="$route.query.type !== 'list'"
+          ></product-two>
+
+          <product-eight
+              :product="item"
+              v-else
+          ></product-eight>
+        </div>
+      </template>
 
 			<template v-else>
 				<div
