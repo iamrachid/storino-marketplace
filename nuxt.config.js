@@ -92,8 +92,10 @@ export default {
         { src: '~/plugins', ssr: false },
         { src: '~/plugins/directives/parallax.js', ssr: false },
         { src: '~/plugins/localstorage.client.js', ssr: false },
-        { src: '~/plugins/filters.js', ssr: false },
-        { src: '~/plugins/directives/animate.js', ssr: false }
+        { src: '~/plugins/filters.js', ssr: true },
+        { src: '~/plugins/directives/animate.js', ssr: false },
+        { src: '~/plugins/notifications-ssr', ssr: true },
+        { src: '~/plugins/notifications-client', ssr: false }
     ],
 
     buildModules: [

@@ -1,7 +1,7 @@
 <template>
 	<div class="product" :class="{'product-variable': product.variants.length > 0}">
 		<figure class="product-media">
-			<nuxt-link :to="`/product/default/${product.slug}`">
+			<nuxt-link :to="`/product/${product.slug}`">
 				<img
 					v-for="(item,index) in product.large_pictures.slice(0,2)"
 					:key="`one-large-${index}`"

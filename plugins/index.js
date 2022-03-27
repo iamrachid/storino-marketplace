@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VModal from 'vue-js-modal';
-import Notifications from 'vue-notification'
 import VueNouislider from 'vue-nouislider/dist/vue-nouislider.common';
 import VueAwesomeSwiper from 'vue-awesome-swiper/dist/ssr'
 import VueLazyLoad from 'vue-lazyload';
@@ -8,7 +7,6 @@ import zoom from 'vue-image-zoom';
 import 'vue-nouislider/dist/vue-nouislider.css';
 
 Vue.use( VModal );
-Vue.use( Notifications );
 Vue.use( VueAwesomeSwiper );
 Vue.use( VueNouislider );
 Vue.use( zoom );

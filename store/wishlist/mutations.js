@@ -1,5 +1,3 @@
-
-
 export default {
     [ 'TOGGLE_WISHLIST' ]( state, payload ) {
         let index = state.data.findIndex( item => item.name === payload.name );
