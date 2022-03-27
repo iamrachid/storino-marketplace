@@ -68,7 +68,7 @@
 					<div class="dropdown-box">
 						<ul class="menu vertical-menu category-menu">
 							<li><a href="#" @click.prevent="" class="menu-title">Browse Our Categories</a></li>
-              <sub-menu v-for="category in categories" :key="category.name" :category="category"/>
+              <sub-menu v-for="category in categories" :key="category.slug" :category="category"/>
 						</ul>
 					</div>
 				</div>
@@ -109,6 +109,8 @@ import HeaderLogin from '~/components/common/partials/HeaderLogin';
 import StickyWrapper from '~/components/elements/StickyWrapper';
 import SubMenu from "~/components/common/partials/SubMenu";
 import {mapGetters} from "vuex";
+import {baseSlider17} from "~/utils/data/carousel";
+import axios from "axios";
 
 export default {
 	components: {
@@ -119,13 +121,45 @@ export default {
 		StickyWrapper,
     SubMenu
 	},
-  computed: {
-    ...mapGetters( 'categories', [ 'categories' ] ),
+  data: function () {
+    return {
+      categories: null,
+    };
+  },
+  async fetch() {
+    const categories = await axios.get('http://localhost:3000/category/root');
+    this.categories = this.categoriesFormatter(categories.data.result);
   },
 	methods: {
 		showMobileMenu: function () {
 			document.querySelector( 'body' ).classList.add( 'mmenu-active' );
-		}
+		},
+
+    categoriesFormatter: function (categories) {
+      const map = [];
+      categories.forEach(category => {
+        const key = category.parents[0].slug;
+        const objIndex = map.findIndex((obj => obj.slug === key));
+        if(objIndex === -1) {
+          map.push({
+            name: category.parents[0].name,
+            slug: category.parents[0].slug,
+            children: [{
+              name: category.name,
+              slug: category.slug,
+              children: category.children
+            }]
+          })
+        } else {
+          map[objIndex].children.push({
+            name: category.name,
+            slug: category.slug,
+            children: category.children
+          })
+        }
+      });
+      return map;
+    }
 	}
 };
 </script>
