@@ -1,15 +1,12 @@
 <template>
 	<div class="product" :class="{'product-variable': product.variants.length > 0}">
 		<figure class="product-media">
-			<nuxt-link :to="`/product/${product.slug}`">
+			<nuxt-link :to="`/product/${product._id}`">
 				<img
-					v-for="(item,index) in product.large_pictures.slice(0,2)"
-					:key="`one-large-${index}`"
-					v-lazy="`${baseUrl}${item.url}`"
+					v-lazy="`${product.images[0].src}`"
 					alt="large-picture"
-					:width="item.width"
-					:height="item.height"
-					:class="{'last-image': index === 1}"
+					:width="800"
+					:height="900"
 				/>
 			</nuxt-link>
 
@@ -17,7 +14,7 @@
 				<div class="product-label label-new" v-if="product.is_new">
           New
         </div>
-				<div class="product-label label-stock" v-if="product.stock === '0'">
+				<div class="product-label label-stock" v-if="product.outStock.hide">
           Out
         </div>
 				<div class="product-label label-top" v-if="product.is_top">
@@ -62,42 +59,28 @@
 
 		<div class="product-details">
 
-    <!--  Add collections on top of the item name
-    <div class="product-cat" v-if="isCat">
-				<span v-for="(cat,index) in product.product_categories" :key="`product-category-${index}`">
-					<nuxt-link :to="{ path: '/shop', query: { category: cat.slug }}">{{ cat.name }}</nuxt-link>
-					<template v-if="index < product.product_categories.length - 1">,</template>
-				</span>
-			</div>
-			-->
-
 			<h3 class="product-name">
-				<nuxt-link :to="'/product/default/' + product.slug">{{ product.name }}</nuxt-link>
+				<nuxt-link :to="'/product/' + product.slug">{{ product.name }}</nuxt-link>
 			</h3>
 
 			<div class="product-price">
-				<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-					<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
+				<template v-if="product.type === 'simple' ">
+          <ins class="new-price">${{ product.price.salePrice | priceFormat }}</ins>
+          <del class="old-price">${{ product.price.comparePrice | priceFormat }}</del>
 				</template>
-
-				<template v-else>
-					<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-						<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-					</template>
-
-					<template v-else>
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-					</template>
-
-				</template>
+        <template v-else-if="this.minPrice === this.maxPrice">
+          <ins class="new-price">${{ this.minPrice | priceFormat }}</ins>
+        </template>
+        <template v-else>
+          <ins class="new-price">${{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}</ins>
+        </template>
 			</div>
 
 			<div class="ratings-container">
 				<div class="ratings-full">
-					<span class="ratings" :style="{width: product.ratings * 20 + '%'}"></span>
+					<span class="ratings" :style="{width: product.review.rating * 20 + '%'}"></span>
 				</div>
-				<p class="rating-reviews">( {{ product.reviews }} reviews )</p>
+				<p class="rating-reviews">( {{ product.review.reviews.length  }} reviews )</p>
 			</div>
 		</div>
 	</div>
@@ -110,14 +93,21 @@ import { baseUrl } from '~/api';
 export default {
 	props: {
 		product: Object,
-		isCat: true
 	},
-	data: function () {
-		return {
-			baseUrl: baseUrl
-		};
-	},
-	computed: {
+  data() {
+    return {
+      maxPrice: 0,
+      minPrice: 1e10,
+    };
+  },
+  mounted() {
+    // console.log(this.product);
+    this.product.variants.forEach(option => {
+      if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
+      if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
+    });
+  },
+  computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
 		isWishlisted: function () {
 			return !!this.wishList.find(item => item.name === this.product.name);
@@ -155,9 +145,18 @@ export default {
 					height: 'auto',
 					adaptive: true,
 					class: 'quickview-modal scrollable'
-				}
+				},{
+            'before-open': this.beforeOpen,
+            'before-close': this.beforeClose
+        }
 			);
-		}
+		},
+    beforeOpen (event) {
+      //TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE ROUTE
+    },
+    beforeClose (event) {
+      ////TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE ROUTE
+    }
 	}
 };
 </script>
