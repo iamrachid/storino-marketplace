@@ -4,8 +4,6 @@
 
       <ProductCollectionCart />
 
-      <ProductCollectionCart />
-
     </div>
   </section>
 </template>

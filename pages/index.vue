@@ -3,7 +3,7 @@
 		<div class="page-content">
 			<intro-section></intro-section>
 
-			<category-section></category-section>
+			<category-section />
 
       <!--			<banner-section></banner-section>-->
 
