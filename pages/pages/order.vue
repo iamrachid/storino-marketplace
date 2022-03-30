@@ -6,9 +6,9 @@
 					<nuxt-link to="/pages/cart">1. Shopping Cart</nuxt-link>
 				</h3>
 				<h3 class="title title-simple title-step">
-					<nuxt-link to="/pages/checkout">2. Checkout</nuxt-link>
+					<nuxt-link to="/pages/checkout" disabled="true">2. Checkout</nuxt-link>
 				</h3>
-				<h3 class="title title-simple title-step active"><a href="javascript:;">3. Order Complete</a></h3>
+				<h3 class="title title-simple title-step active"><a href="javascript:;" disabled="true">3. Order Complete</a></h3>
 			</div>
 			<div class="container mt-8">
 				<div class="order-message mr-auto ml-auto">
@@ -70,7 +70,7 @@
 					</div>
 					<div class="overview-item">
 						<span>Email:</span>
-						<strong>12345@gmail.com</strong>
+						<strong>{{customer.email}}</strong>
 					</div>
 					<div class="overview-item">
 						<span>Total:</span>
@@ -134,13 +134,14 @@
 				<h2 class="title title-simple text-left pt-10 mb-2">Billing Address</h2>
 				<div class="address-info pb-8 mb-6">
 					<p class="address-detail pb-2">
-						John Doe<br />
-						Riode Company<br />
-						Steven street<br />
-						El Carjon, CA 92020<br />
-						123456789
+						{{customer.firsname}} {{customer.lasname}}<br />
+            {{ customer.address.address1 }}<br />
+            {{ customer.address.city }}<br />
+            {{ customer.address.province }}<br />
+            {{ customer.address.country }}<br />
+            {{ customer.phone }}
 					</p>
-					<p class="email">mail@riode.com</p>
+					<p class="email">{{ customer.email }}</p>
 				</div>
 
 				<nuxt-link
@@ -157,7 +158,12 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters( 'cart', [ 'cartList', 'totalPrice' ] )
-	}
+		...mapGetters( 'cart', [ 'cartList', 'totalPrice' ] ),
+    ...mapGetters('order', ['customer'])
+	},
+  mounted() {
+    console.log(this.customer);
+    console.log(this.cartList);
+  }
 };
 </script>

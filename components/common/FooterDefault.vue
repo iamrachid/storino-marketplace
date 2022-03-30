@@ -234,6 +234,6 @@
 </template>
 <script>
 export default {
-  name: "Footer Default",
+  name: "FooterDefault",
 }
 </script>
