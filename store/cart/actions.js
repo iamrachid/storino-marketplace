@@ -7,9 +7,6 @@ export default {
             text: `has been added to your cart!`,
             data: payload.product
         } );
-        // this._vm.$notify( {
-        //     text: `has been added to your cart!`
-        // } );
     },
     removeFromCart: function ( { commit }, payload ) {
         commit( 'REMOVE_FROM_CART', payload );
