@@ -8,30 +8,14 @@
 						to="/"
 					><i class="d-icon-home"></i></nuxt-link>
 				</li>
-				<li><a
-						href="javascript:;"
-						class="active"
-					>Products</a></li>
+				<li>
+          <a href="javascript:;" class="active">Products</a></li>
 				<li>Detail</li>
+
 			</ul>
 		</div>
 
 		<h2 class="product-name">{{ product.name }}</h2>
-
-		<div class='product-meta'>
-			{{product.sku ? 'SKU:' : ''}} <span class='product-sku'>{{ product.sku }}</span>
-			CATEGORIES: <span class='product-brand'>
-				<span
-					v-for="(item, index) in product.product_categories"
-					:key="`category-${item.slug}`"
-				>
-					<nuxt-link :to="{path:'/shop', query:{category: item.slug}}">
-						{{ item.name }}
-					</nuxt-link>
-					<template v-if="index < product.product_categories.length - 1">,</template>
-				</span>
-			</span>
-		</div>
 
 		<div class="product-price">
 			<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
@@ -177,7 +161,7 @@
 			</div>
 		</div>
 
-		<sticky-wrapper v-if="stickyCart" stickyClass="product-sticky-content" :offsetTop="200">
+		<sticky-wrapper v-if="stickyCart" stickyClass="product-sticky-content" :breakpoint="767" :offsetTop="600">
 			<div class="sticky-content fix-bottom product-sticky-content">
 				<div class="container">
 					<div class="sticky-product-details">
@@ -353,8 +337,6 @@ export default {
 	},
 	props: {
 		product: Object,
-		prev: Object,
-		next: Object,
 		showNav: {
 			type: Boolean,
 			default: true

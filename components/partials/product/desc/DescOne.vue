@@ -3,28 +3,16 @@
 		<element-tabs>
 			<ul class="nav nav-tabs justify-content-center">
 				<li class="nav-item">
-					<a
-						class="nav-link active"
-						href="#product-tab-description"
-					>Description</a>
+					<a class="nav-link active" href="#product-tab-description">Description</a>
 				</li>
 				<li class="nav-item">
-					<a
-						class="nav-link"
-						href="#product-tab-additional"
-					>Additional information</a>
+					<a class="nav-link" href="#product-tab-additional">Additional information</a>
 				</li>
-				<!-- <li class="nav-item">
-					<a
-						class="nav-link"
-						href="#product-tab-size-guide"
-					>Size Guide</a>
-				</li> -->
+        <li class="nav-item">
+					<a class="nav-link" href="#product-tab-size-guide">Size Guide</a>
+				</li>
 				<li class="nav-item">
-					<a
-						class="nav-link"
-						href="#product-tab-reviews"
-					>Reviews ({{product.reviews}})</a>
+					<a class="nav-link" href="#product-tab-reviews">Reviews ({{product.reviews}})</a>
 				</li>
 			</ul>
 		</element-tabs>
@@ -105,10 +93,7 @@
 							</a>
 						</figure>
 
-						<div
-							class="d-flex justify-content-between flex-wrap pb-3"
-							style="max-width: 55.3rem;"
-						>
+						<div class="d-flex justify-content-around flex-wrap pb-3">
 							<div class="icon-box icon-box-side icon-border pt-2 pb-2 mb-lg-4">
 								<div class="icon-box-icon">
 									<i class="d-icon-lock"></i>
@@ -120,7 +105,6 @@
 									<p>Guarantee with no doubt</p>
 								</div>
 							</div>
-							<div class="divider d-lg-show"></div>
 							<div class="icon-box icon-box-side icon-border pt-2 pb-2 mb-lg-4">
 								<div class="icon-box-icon">
 									<i class="d-icon-truck"></i>
@@ -182,7 +166,7 @@
 					</li>
 				</ul>
 			</div>
-			<!-- <div
+			<div
 				class="tab-pane "
 				id="product-tab-size-guide"
 			>
@@ -244,7 +228,7 @@
 						</tbody>
 					</table>
 				</figure>
-			</div> -->
+			</div>
 			<div
 				class="tab-pane "
 				id="product-tab-reviews"

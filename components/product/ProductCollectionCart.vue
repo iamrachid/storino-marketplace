@@ -40,7 +40,7 @@
     <div class="overflow-hidden products-box">
       <div class="row gutter-no line-grid">
 
-        <template v-if="!products">
+        <template v-if="products.length === 0">
           <div class="col-md-4 col-6 mb-0" v-for="item in [1, 2, 3, 4, 5, 6]" :key="`product-${item}`">
             <div class="product-loading-overlay"></div>
           </div>
@@ -68,6 +68,8 @@ export default {
     ProductTwo,
   },
   async fetch() {
+    this.products = [];
+    console.log(this.category.length === 0)
     const category = await axios.get('http://localhost:3000/category/fashion:kids-fashion');
     this.category = category.data.result[0];
     const products = await axios.get('http://localhost:3000/category/fashion:kids-fashion/products?limit=6');
@@ -76,7 +78,7 @@ export default {
   data() {
     return {
       category: Object,
-      products: Object,
+      products: Array,
     };
   },
   methods: {

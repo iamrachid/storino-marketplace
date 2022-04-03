@@ -13,25 +13,21 @@
 						<media-one
 							:product="product"
 							class="pb-lg-0 pb-6"
-						></media-one>
+						/>
 					</div>
 
 					<div class="col-md-6">
 						<detail-one
 							:product="product"
-							:prev="prev"
-							:next="next"
 							:stickyCart="true"
-						></detail-one>
+						/>
 					</div>
 				</div>
 
-				<desc-one :product="product"></desc-one>
+				<desc-one :product="product"/>
 
-				<related-products
-					:products="related"
-					class="pt-3 mt-10"
-				></related-products>
+<!--				<related-products :category="product.categories[0].slug" class="pt-3 mt-10"/>-->
+				<related-products category="fashion:kids-fashion:bottoms" class="pt-3 mt-10"/>
 			</div>
 		</div>
 
@@ -77,9 +73,11 @@ import SwiperCarousel from '~/components/elements/SwiperCarousel';
 
 import Api, { baseUrl, currentDemo } from '~/api';
 import { baseSlider17 } from '~/utils/data/carousel';
+import ServiceSection from "~/components/partials/home/ServiceSection";
 
 export default {
 	components: {
+    ServiceSection,
 		SwiperCarousel,
 		MediaOne,
 		DetailOne,

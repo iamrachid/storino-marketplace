@@ -21,20 +21,6 @@
 			</div>
 		</swiper-carousel>
 
-		<a
-			href="javascript:;"
-			class="product-image-full"
-			@click="openLightBox"
-		>
-			<i class="d-icon-zoom"></i>
-		</a>
-
-		<light-box
-			ref="lightBox"
-			:media="lightBoxMedia"
-			:show-light-box="false"
-		/>
-
 		<div class="product-thumbs-wrap">
 			<div class="product-thumbs">
 				<swiper-carousel
@@ -86,8 +72,6 @@
 </template>
 
 <script>
-import LightBox from 'vue-image-lightbox';
-
 import SwiperCarousel from '~/components/elements/SwiperCarousel';
 
 import { baseUrl } from '~/api';
@@ -96,7 +80,6 @@ import { baseSlider4, baseSlider13 } from '~/utils/data/carousel';
 export default {
 	components: {
 		SwiperCarousel,
-		LightBox
 	},
 	data: function () {
 		return {
@@ -107,19 +90,6 @@ export default {
 	},
 	props: {
 		product: Object
-	},
-	computed: {
-		lightBoxMedia: function () {
-			return this.product.large_pictures.reduce( ( acc, cur ) => {
-				return [
-					...acc,
-					{
-						src: `${ baseUrl }${ cur.url }`,
-						thumb: `${ baseUrl }${ cur.url }`
-					}
-				];
-			}, [] );
-		}
 	},
 	mounted: function () {
 		let self = this;
@@ -144,11 +114,6 @@ export default {
 		updatedThumb: function () {
 			this.$refs.thumbRef.mySwiper.update();
 		},
-		openLightBox: function () {
-			this.$refs.lightBox.showImage(
-				this.$refs.mediaRef.mySwiper.activeIndex
-			);
-		}
 	}
 };
 </script>
