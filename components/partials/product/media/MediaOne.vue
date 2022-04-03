@@ -3,19 +3,17 @@
 		<swiper-carousel
 			class="product-single-carousel swiper-theme swiper-nav-inner"
 			:options="{...baseSlider4, spaceBetween: 0}"
-			ref="mediaRef"
-		>
+			ref="mediaRef">
 			<div
 				class="swiper-slide"
-				v-for="(item,index) in product.large_pictures"
-				:key="`large-${index}`"
-			>
+				v-for="(item,index) in product.images.slice(0,4)"
+				:key="`large-${index}`">
 				<figure class="product-image d-flex">
 					<img
-						:src="`${baseUrl}${item.url}`"
+						:src="item.src"
 						alt="large-picture"
-						:width="item.width"
-						:height="item.height"
+						:width="500"
+						:height="500"
 					/>
 				</figure>
 			</div>
@@ -27,21 +25,18 @@
 					class="swiper-theme swiper-nav-full h-100 w-100"
 					:options="baseSlider13"
 					ref="thumbRef"
-					@resize="updatedThumb"
-				>
+					@resize="updatedThumb">
 					<div
 						class="product-thumb swiper-slide"
-						v-for="(item,index) in product.pictures"
+						v-for="(item,index) in product.images.slice(0,4)"
 						:key="`thumb-one-${index}`"
 						:class="{active: index === 0}"
-						@click="activeThumb(index)"
-					>
+						@click="activeThumb(index)">
 						<img
-							v-lazy="`${baseUrl}${item.url}`"
+							v-lazy="item.src"
 							alt="product thumbnail"
-							:width="item.width"
-							:height="item.height"
-						>
+							:width="500"
+							:height="500">
 					</div>
 				</swiper-carousel>
 			</div>

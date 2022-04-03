@@ -42,7 +42,6 @@ export default {
 	},
   async fetch() {
     const response = await axios.get(`http://localhost:3000/category/${this.category}/products?limit=4`);
-    console.log(response.data.result)
     this.products = response.data.result;
   }
 };

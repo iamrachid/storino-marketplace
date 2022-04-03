@@ -69,7 +69,6 @@ export default {
   },
   async fetch() {
     this.products = [];
-    console.log(this.category.length === 0)
     const category = await axios.get('http://localhost:3000/category/fashion:kids-fashion');
     this.category = category.data.result[0];
     const products = await axios.get('http://localhost:3000/category/fashion:kids-fashion/products?limit=6');

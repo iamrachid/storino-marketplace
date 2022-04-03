@@ -37,9 +37,7 @@
 		<template v-if="product.discount > 0">
 			<count-down
 				class="product-countdown-container font-weight-semi-bold"
-				until='2021-12-31'
-				:type="2"
-			></count-down>
+				until='2021-12-31' :type="2"/>
 		</template>
 
 		<div class="ratings-container">
@@ -58,10 +56,7 @@
 
 		<p class="product-short-desc">{{ product.short_description }}</p>
 
-		<div
-			class="product-form product-variations product-color"
-			v-if="vColors.length > 0"
-		>
+		<div class="product-form product-variations product-color" v-if="vColors.length > 0">
 			<label>Color:</label>
 
 			<div class="select-box">
@@ -82,10 +77,7 @@
 			</div>
 		</div>
 
-		<div
-			class="product-form product-variations product-size"
-			v-if="vSizes.length > 0"
-		>
+		<div class="product-form product-variations product-size" v-if="vSizes.length > 0">
 			<label>Size:</label>
 
 			<div class="product-form-group">
@@ -120,14 +112,8 @@
 		</div>
 
 		<vue-slide-toggle :open="curIndex > -1">
-			<div
-				class="product-variation-price"
-				v-if="curIndex > -1"
-			>
-				<div
-					class="single-product-price"
-					v-if="product.variants[curIndex].price"
-				>
+			<div class="product-variation-price" v-if="curIndex > -1">
+				<div class="single-product-price" v-if="product.variants[curIndex].price">
 					<div
 						class="product-price"
 						v-if="product.variants[curIndex].sale_price"
