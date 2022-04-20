@@ -15,30 +15,28 @@
 			</ul>
 		</div>
 
-		<h2 class="product-name">{{ product.name }}</h2>
+		<h2 class="product-name">{{ product2.name }}</h2>
 
-		<div class="product-price">
-			<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-				<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
-			</template>
+    <div class="product-price">
+      <template v-if="product2.type === 'simple' ">
+        <ins class="new-price">${{ product2.price.salePrice | priceFormat }}</ins>
+        <del class="old-price">${{ product2.price.comparePrice | priceFormat }}</del>
+      </template>
+      <template v-else-if="this.minPrice === this.maxPrice">
+        <ins class="new-price">${{ this.minPrice | priceFormat }}</ins>
+      </template>
+      <template v-else>
+        <ins class="new-price">${{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}</ins>
+      </template>
+    </div>
 
-			<template v-else>
-				<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-					<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-					<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-				</template>
-
-				<template v-else>
-					<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-				</template>
-			</template>
-		</div>
-
+		<!--
 		<template v-if="product.discount > 0">
 			<count-down
 				class="product-countdown-container font-weight-semi-bold"
 				until='2021-12-31' :type="2"/>
 		</template>
+		-->
 
 		<div class="ratings-container">
 			<div class="ratings-full">
@@ -54,14 +52,13 @@
 			>( {{ product.reviews }} reviews )</a>
 		</div>
 
-		<p class="product-short-desc">{{ product.short_description }}</p>
+		<p class="product-short-desc">{{ product2.description }}</p>
 
-		<div class="product-form product-variations product-color" v-if="vColors.length > 0">
-			<label>Color:</label>
+		<div class="product-form product-variations product-color" v-for="option in product2.options">
+			<label>{{ option.name }} :</label>
 
 			<div class="select-box">
-				<select
-					name="color"
+				<select name="color"
 					class="form-control"
 					aria-label="color-select-box"
 					v-model="curColor"
@@ -70,46 +67,13 @@
 
 					<option
 						:value="item.name"
-						:key="`color-${item.name}`"
-						v-for="item in displayColors"
+						:key='item._id'
+						v-for="item in option.values"
 					>{{ item.name }}</option>
 				</select>
 			</div>
 		</div>
 
-		<div class="product-form product-variations product-size" v-if="vSizes.length > 0">
-			<label>Size:</label>
-
-			<div class="product-form-group">
-				<div class="select-box">
-					<select
-						name="size"
-						class="form-control"
-						aria-label="size-select-box"
-						v-model="curSize"
-					>
-						<option :value="null">Choose an Option</option>
-
-						<option
-							:value="item.name"
-							:key="`size-${item.name}`"
-							v-for="item in displaySizes"
-						>{{ item.name }}</option>
-					</select>
-				</div>
-
-				<vue-slide-toggle
-					:open="curColor !== null || curSize !== null"
-					class="overflow-hidden reset-value-button w-100 mb-0"
-				>
-					<a
-						href="#"
-						@click.prevent="cleanAll"
-						class="product-variation-clean"
-					>Clean All</a>
-				</vue-slide-toggle>
-			</div>
-		</div>
 
 		<vue-slide-toggle :open="curIndex > -1">
 			<div class="product-variation-price" v-if="curIndex > -1">
@@ -318,7 +282,9 @@ export default {
 			curColor: null,
 			tIndex: -1,
 			quantity: 1,
-			baseUrl: baseUrl
+			baseUrl: baseUrl,
+      maxPrice: 0,
+      minPrice: 10e10,
 		};
 	},
 	props: {
@@ -330,7 +296,8 @@ export default {
 		stickyCart: {
 			type: Boolean,
 			default: false
-		}
+		},
+    product2: Object,
 	},
 	computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
@@ -370,11 +337,9 @@ export default {
 			}
 		},
 		isCartActive: function () {
-			if ( parseInt( this.product.stock ) < parseInt( this.quantity ) ) return false;
-			if ( this.product.variants.length === 0 ) return true;
+			// TODO CHECK STOCK if ( parseInt( this.product.stock ) < parseInt( this.quantity ) ) return false;
+			if ( this.product2.type === 'simple' ) return true;
 			if ( this.curSize && this.curColor ) return true;
-			if ( this.curColor && this.vSizes.length === 0 ) return true;
-			if ( this.curSize && this.vColors.length === 0 ) return true;
 
 			return false;
 		},
@@ -414,6 +379,13 @@ export default {
 						} );
 				} );
 		}
+    if(this.product2.type !== "simple") {
+      console.log("haha")
+      this.product2.variants.forEach(option => {
+        if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
+        if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
+      });
+    }
 	},
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
@@ -486,6 +458,7 @@ export default {
 				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
 			}, 1000 );
 		}
-	}
+	},
+
 };
 </script>

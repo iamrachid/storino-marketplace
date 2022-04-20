@@ -9,13 +9,12 @@
 					</div>
 
 					<div class="col-md-6">
-						<detail-one :product="product" :stickyCart="true"/>
+						<detail-one :product="product" :product2="product2" :stickyCart="true"/>
 					</div>
 				</div>
 				<desc-one :product="product2"/>
 
-        <!--<related-products :category="product.categories[0].slug" class="pt-3 mt-10"/>-->
-				<related-products category="fashion:kids-fashion:bottoms" class="pt-3 mt-10"/>
+        <related-products :category="product2.categories[0].slug" class="pt-3 mt-10"/>
       </div>
 		</div>
 
@@ -78,8 +77,8 @@ export default {
 	},
 	async fetch() {
 		this.loaded = false;
-    const product = await axios.get('http://localhost:3000/products/623cb0f1ab655d0daba4478a');
-    this.product2 = product.data.result[0];
+    const product = await axios.get('http://localhost:3000/products/623cad78ab655d0daba43cef');
+    this.product2 = product.data.result;
     console.log(this.product2);
 
 		Api.get(

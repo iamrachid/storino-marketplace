@@ -11,10 +11,7 @@
 		<div class="tab-content">
 			<div class="tab-pane active in" id="product-tab-description">
 				<div class="row mt-6">
-          <div>
-
-            <!-- TODO description of produuct?? -->
-            {{product.description}}
+          <div v-html="product.html">
           </div>
 
           <div class="d-flex justify-content-around flex-wrap pb-3">
