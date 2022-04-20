@@ -358,47 +358,50 @@ export default {
 				item => item.color.name === color && item.size.name === size
 			);
 		},
-		cleanAll: function () {
-			this.curSize = null;
-			this.curColor = null;
-		},
+
 		changeQty: function ( qty ) {
 			this.quantity = qty;
 		},
+
 		addCart: function () {
-			if ( this.isCartActive ) {
-				let productName = this.product.name;
-				if ( this.curColor ) productName += '-' + this.curColor;
-				if ( this.curSize ) productName += '-' + this.curSize;
+			if ( this.product2.type === 'simple' ) {
+				const name = this.product2.name;
+        const type = this.product2.type;
+				const price = this.product2.price.salePrice;
+        const qty = this.quantity;
+				const img = this.product2.images[0].src;
+        const _id = this.product2._id;
 
-				let productPrice;
-				if (
-					this.curIndex > -1 &&
-					this.product.variants[ this.curIndex ].price
-				) {
-					productPrice = this.product.variants[ this.curIndex ]
-						.sale_price
-						? this.product.variants[ this.curIndex ].sale_price
-						: this.product.variants[ this.curIndex ].price;
-				} else {
-					productPrice = this.product.sale_price
-						? this.product.sale_price
-						: this.product.price;
-				}
-
-				let saledProduct = {
-					...this.product,
-					price: this.product.display_price[ 0 ]
-				};
 				this.addToCart( {
 					product: {
-						...this.product,
-						name: productName,
-						price: productPrice,
-						qty: this.quantity
+            _id,
+            img,
+						name,
+						price,
+						qty,
+            type,
 					}
 				} );
 			}
+      if (this.currentVariant !== null){
+        const name = this.product2.name;
+        const type = this.product2.type;
+        const price = this.currentVariant.price.salePrice;
+        const qty = this.quantity;
+        const img = this.product2.images[0].src;
+        const _id = this.product2._id;
+
+        this.addToCart( {
+          product: {
+            _id,
+            img,
+            name,
+            price,
+            qty,
+            type,
+          }
+        } );
+      }
 		},
 		wishlistHandler: function ( e ) {
 			let currentTarget = e.currentTarget;

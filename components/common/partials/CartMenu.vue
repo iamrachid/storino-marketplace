@@ -28,15 +28,15 @@
 					<div
 						class="product product-cart"
 						v-for="item in cartList"
-						:key="`cart-item-${item.name}`"
+						:key="`cart-item-${item._id}`"
 					>
 						<figure class="product-media">
-							<nuxt-link :to="'/product/default/' + item.slug">
+							<nuxt-link :to="'/product/' + item._id">
 								<img
-									v-lazy="`${baseUrl}${item.pictures[0].url}`"
+									v-lazy="item.img"
 									alt="product"
-									:width="item.pictures[0].width"
-									:height="item.pictures[0].height"
+									:width="400"
+									:height="400"
 								/>
 							</nuxt-link>
 							<button
@@ -48,7 +48,7 @@
 						</figure>
 						<div class="product-detail">
 							<nuxt-link
-								:to="'/product/default/' + item.slug"
+								:to="'/product/' + item._id"
 								class="product-name"
 							>{{ item.name }}</nuxt-link>
 							<div class="price-box">
