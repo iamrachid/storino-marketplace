@@ -1,5 +1,5 @@
 export default {
-    customer: state => {
-        return state.customer;
+    order: state => {
+        return state.order;
     }
 }

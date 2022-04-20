@@ -1,6 +1,6 @@
 export default {
-  setCustomer: ({commit, state}, newValue) => {
-    commit('SET_CUSTOMER', newValue);
-    return state.customer;
+  setOrder: ({commit, state}, newValue) => {
+    commit('SET_ORDER', newValue);
+    return state.data;
   }
 }

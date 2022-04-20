@@ -1,5 +1,5 @@
 export default {
-  SET_CUSTOMER: (state, newValue) => {
-    state.customer = newValue;
+  SET_ORDER: (state, newValue) => {
+    state.data = newValue;
   }
 };

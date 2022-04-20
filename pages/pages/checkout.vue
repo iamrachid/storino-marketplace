@@ -78,12 +78,11 @@
 										/>
 									</div>
 								</div>
-
 								<label>Address *</label>
 								<input
 									type="text"
 									class="form-control"
-                  v-model="customer.address.address1"
+                  v-model="shipping.address.address1"
 									aria-label="street input"
 									required
 									placeholder="House number and street name"
@@ -95,23 +94,41 @@
 										<input
 											type="text"
 											class="form-control"
-                      v-model="customer.address.city"
+                      v-model="shipping.address.city"
 											aria-label="city input"
 											required
 										/>
 									</div>
 									<div class="col-xs-6">
-										<label>Province *</label>
-										<input
-											type="text"
-											class="form-control"
-                      v-model="customer.address.province"
-											aria-label="input state"
-											required
-										/>
+                    <label>Country / Region *</label>
+
+                    <div class="select-box">
+                      <select
+                        v-model="shipping.address.country"
+                        class="form-control"
+                        aria-label="country select"
+                        name="country"
+                        default-value="us"
+                        @change="getProvinces()"
+                      >
+                        <option v-for="item in countries" :key="item._id" :value="item">{{item.name}}</option>
+                      </select>
+                    </div>
 									</div>
 								</div>
 
+                <label>Province *</label>
+
+                <div class="select-box">
+                  <select
+                    v-model="shipping.address.province"
+                    class="form-control"
+                    aria-label="province select"
+                    name="province"
+                  >
+                    <option v-for="item in provinces" :key="item._id" :value="item">{{item.name}}</option>
+                  </select>
+                </div>
 								<div class="row">
 									<div class="col-xs-6">
 										<label>ZIP *</label>
@@ -139,7 +156,7 @@
 								<input
 									type="text"
 									class="form-control"
-                  v-model="customer.email"
+                  v-model="shipping.email"
 									aria-label="input email address"
 									required
 								/>
@@ -183,53 +200,28 @@
 												<tr class="sumnary-shipping shipping-row-last">
 													<td colSpan="2">
 														<h4 class="summary-subtitle">Calculate Shipping</h4>
-														<ul>
-															<li>
-																<div class="custom-radio">
-																	<input
-																		type="radio"
-																		id="flat_rate"
-																		name="shipping"
-																		class="custom-control-input"
-																		checked
-																	/>
-																	<label
-																		class="custom-control-label"
-																		for="flat_rate"
-																	>Flat rate</label>
-																</div>
-															</li>
-
-															<li>
-																<div class="custom-radio">
-																	<input
-																		type="radio"
-																		id="free-shipping"
-																		name="shipping"
-																		class="custom-control-input"
-																	/>
-																	<label
-																		class="custom-control-label"
-																		for="free-shipping"
-																	>Free shipping</label>
-																</div>
-															</li>
-
-															<li>
-																<div class="custom-radio">
-																	<input
-																		type="radio"
-																		id="local_pickup"
-																		name="shipping"
-																		class="custom-control-input"
-																	/>
-																	<label
-																		class="custom-control-label"
-																		for="local_pickup"
-																	>Local pickup</label>
-																</div>
-															</li>
-														</ul>
+														<table>
+                              <tr v-for="item in shippers" :key="item._id">
+                                <td>
+                                  <div class="custom-radio text-left">
+                                    <input
+                                      type="radio"
+                                      :id="item._id"
+                                      v-model="shipping.shipper"
+                                      :value="item"
+                                      class="custom-control-input"
+                                      required
+                                    />
+                                    <label
+                                      class="custom-control-label"
+                                      :for="item._id"
+                                    >{{ item.name}}</label>
+  <!--                                  <span>{{item.price}}</span>-->
+                                  </div>
+                                </td>
+                                <td>{{item.price | priceFormat}}</td>
+                              </tr>
+														</table>
 													</td>
 												</tr>
 												<tr class="summary-total">
@@ -247,41 +239,27 @@
 											<h4 class="summary-subtitle ls-m pb-3">Payment Methods</h4>
 
 											<div class="checkbox-group">
-												<element-card
-													class="card"
-													:is-opened="true"
-												>
-													<template v-slot:header>
-														<a
-															href="javascript:;"
-															class="text-body text-normal ls-m"
-														>Check payments</a>
-													</template>
-
-<!--													<div class="card-wrapper">-->
-<!--														<div class="card-body ls-m overflow-hidden">-->
-<!--															Please send a check to Store Name, Store Street,-->
-<!--															Store Town, Store State / County, Store Postcode.-->
-<!--														</div>-->
-<!--													</div>-->
-												</element-card>
-
-												<element-card
-													class="card"
-													:is-opened="false"
-												>
-													<template v-slot:header>
-														<a
-															href="javascript:;"
-															class="text-body text-normal ls-m"
-														>Cash on delivery</a>
-													</template>
-
-<!--													<div class="card-body ls-m overflow-hidden">-->
-<!--														Please send a check to Store Name, Store Street,-->
-<!--														Store Town, Store State / County, Store Postcode.-->
-<!--													</div>-->
-												</element-card>
+                        <table>
+                          <tr v-for="item in methods" :key="item._id">
+                            <td>
+                              <div class="custom-radio text-left">
+                                <input
+                                  type="radio"
+                                  :id="item._id"
+                                  v-model="method"
+                                  :value="item"
+                                  class="custom-control-input"
+                                  required
+                                />
+                                <label
+                                  class="custom-control-label"
+                                  :for="item._id"
+                                >{{ item.name}}</label>
+                                <!--                                  <span>{{item.price}}</span>-->
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
 											</div>
 										</element-radio>
 
@@ -336,6 +314,7 @@ import Sticky from 'vue-sticky-directive';
 import ElementAccordion from '~/components/elements/ElementAccordion';
 import ElementRadio from '~/components/elements/ElementRadio';
 import ElementCard from '~/components/elements/ElementCard';
+import Api, { baseUrl } from "~/api/api";
 
 export default {
 	components: {
@@ -348,25 +327,81 @@ export default {
 	},
 	data: function () {
 		return {
+      countries: [],
+      provinces: [],
+      shippers:[
+        {
+          _id: "6257ec734c52160fdc5d7952",
+          name: "delivery guy 1",
+          price: 0
+        },
+        {
+          _id: "6257ec8b4c52160fdc5d796f",
+          name: "Delivery guy 2",
+          price: 0
+        }
+      ],
+      methods: [
+        {
+          _id: "5feb408a2ef4130539efb9e0",
+          name: "CashOnDelivery"
+        },
+        {
+          _id: "5feb408a2ef4130539efb9e1",
+          name: "Paypal"
+        }
+      ],
+
+      zone: {
+        _id: "6257ecca4c52160fdc5d79bb",
+        name: "Agadir",
+      },
 			isSticky: false,
       customer: {
         firsname: '',
-        lasname: '',
+        lastname: '',
         email: '',
-        phone: '',
+      },
+      shipping: {
+        shipper:{},
+        zone: {},
+        price: 0,
         ipAddress: '',
         address: {
           address1: '',
-          country: '',
-          province: '',
-          city: '',
-        }
+          country: {},
+          province: {},
+          city: {},
+          phone: '',
+        },
       },
-      paymentMethod: '',
+      method: {
+        _id: "5feb408a2ef4130539efb9e0",
+        name: "CashOnDelivery"
+      },
+      watch:{
+        shipping(newValue){
+            // this.getProvinces(newValue._id)
+          console.log('Heeeeeeere');
+        }
+      }
     };
 	},
 	computed: {
 		...mapGetters( 'cart', [ 'cartList', 'totalPrice' ] ),
+    details(){
+      const details = [];
+      this.cartList.forEach(item => {
+        const detail = {
+          product: {
+            _id: item._id
+          },
+          quantity: item.quantity
+        };
+        details.push(detail);
+      })
+      return details;
+    }
 	},
 	mounted: function () {
 		this.resizeHandler();
@@ -374,20 +409,43 @@ export default {
       window.addEventListener( 'resize', this.resizeHandler, {
         passive: true
       } );
+    // this.getCountries();
 	},
 	destroyed: function () {
     if(process.server)
   		window.removeEventListener( 'resize', this.resizeHandler );
 	},
+
 	methods: {
-    ...mapActions('order', ['setCustomer']),
+    ...mapActions('order', ['setOrder']),
 		resizeHandler: function () {
 			this.isSticky = window.innerWidth > 991 ? true : false;
 		},
-    formHandler(){
-      this.setCustomer(this.customer);
-      this.$router.replace('order')
+    async formHandler(){
+      const data = {
+        customer:this.customer,
+        shipping: this.shipping,
+        details: this.details,
+        method: this.method
+      };
+      this.setOrder(data);
+      console.log(data);
+      // await Api.post(`${baseUrl}/orders/create`, data);
+      // this.$router.replace('order')
+    },
+    async getCountries(){
+      const response = await Api.get(`${ baseUrl }/countries`);
+      this.countries = response.data.results;
+    },
+
+    async getProvinces(){
+      console.log('Hahahah');
+      const response = await Api.get(`${ baseUrl }/provinces?country=${this.shipping.address.country._id}`);
+      this.provinces = response.data.results;
     }
-	}
+	},
+  async fetch(){
+      await this.getCountries();
+  }
 };
 </script>
