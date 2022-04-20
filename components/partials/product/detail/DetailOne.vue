@@ -30,14 +30,6 @@
       </template>
     </div>
 
-		<!--
-		<template v-if="product.discount > 0">
-			<count-down
-				class="product-countdown-container font-weight-semi-bold"
-				until='2021-12-31' :type="2"/>
-		</template>
-		-->
-
 		<div class="ratings-container">
 			<div class="ratings-full">
 				<span
@@ -54,44 +46,35 @@
 
 		<p class="product-short-desc">{{ product2.description }}</p>
 
-		<div class="product-form product-variations product-color" v-for="option in product2.options">
+		<div class="product-form product-variations product-color" v-for="(option,i) in product2.options">
 			<label>{{ option.name }} :</label>
 
 			<div class="select-box">
-				<select name="color"
+				<select
 					class="form-control"
 					aria-label="color-select-box"
-					v-model="curColor"
+					v-model="options['option'+i]"
 				>
-					<option :value="null">Choose an Option</option>
+					<option value="" selected >Choose an Option</option>
 
 					<option
-						:value="item.name"
+						:value="item._id"
 						:key='item._id'
 						v-for="item in option.values"
-					>{{ item.name }}</option>
+					>{{ item.value1 }}</option>
 				</select>
 			</div>
 		</div>
 
 
-		<vue-slide-toggle :open="curIndex > -1">
-			<div class="product-variation-price" v-if="curIndex > -1">
-				<div class="single-product-price" v-if="product.variants[curIndex].price">
+		<vue-slide-toggle :open="currentVariant !== null">
+			<div class="product-variation-price" v-if="currentVariant !== null">
+				<div class="single-product-price">
 					<div
 						class="product-price"
-						v-if="product.variants[curIndex].sale_price"
 						key="sale_price"
 					>
-						<ins class="new-price">${{ product.variants[curIndex].sale_price | priceFormat }}</ins>
-						<del class="old-price">${{ product.variants[curIndex].price | priceFormat }}</del>
-					</div>
-
-					<div
-						class="product-price"
-						v-else
-					>
-						<ins class="new-price">${{ product.variants[curIndex].price | priceFormat }}</ins>
+						<ins class="new-price">${{ currentVariant.price.salePrice | priceFormat }}</ins>
 					</div>
 				</div>
 			</div>
@@ -104,7 +87,7 @@
 				<input-quantity class="mr-2" :max="product.stock" @change-qty="changeQty" />
 
 				<button class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
-					:class="{disabled: !isCartActive}" @click="addCart">
+					:class="{disabled: currentVariant === null && this.product2.type === 'variable' }" @click="addCart">
           <i class="d-icon-bag"></i>
           Add to Cart
         </button>
@@ -118,7 +101,7 @@
 						<figure class="product-image">
 							<a href="javascript:;">
 								<img
-									v-lazy="`${baseUrl}${product.pictures[0].url}`"
+									v-lazy="product2.images[0].src"
 									width="90"
 									height="90"
 									alt="Product image"
@@ -128,55 +111,25 @@
 
 						<div>
 							<h4 class="product-title">
-								<a href="javascript:;">{{ product.name }}</a>
+								<a href="javascript:;">{{ product2.name.slice(0,25) }}...</a>
 							</h4>
 
 							<div class="product-info">
-								<div
-									class="product-price"
-									v-if="curIndex > -1"
-								>
-									<template v-if="product.price">
-										<template v-if="product.sale_price">
-											<ins class="new-price">${{ product.sale_price | priceFormat }}</ins>
-											<del class="old-price">${{ product.price | priceFormat }}</del>
-										</template>
-
-										<template v-else>
-											<ins class="new-price">${{ product.price | priceFormat }}</ins>
-										</template>
-									</template>
-
-									<template v-else>
-										<template v-if="product.variants[curIndex].sale_price">
-											<ins class="new-price">${{ product.variants[curIndex].sale_price | priceFormat }}</ins>
-											<del class="old-price">${{ product.variants[curIndex].price | priceFormat }}</del>
-										</template>
-
-										<template v-else>
-											<ins class="new-price">${{ product.variants[curIndex].price | priceFormat }}</ins>
-										</template>
-									</template>
-								</div>
-
-								<template v-else>
-									<div class="product-price">
-										<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-											<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
-										</template>
-
-										<template v-else>
-											<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-												<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-												<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-											</template>
-
-											<template v-else>
-												<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-											</template>
-										</template>
-									</div>
-								</template>
+								<div class="product-price">
+                  <template v-if="product2.type === 'simple' ">
+                    <ins class="new-price">${{ product2.price.salePrice | priceFormat }}</ins>
+                    <del class="old-price">${{ product2.price.comparePrice | priceFormat }}</del>
+                  </template>
+                  <template v-else-if="currentVariant !== null">
+                    <ins class="new-price">${{ currentVariant.price.salePrice | priceFormat }}</ins>
+                  </template>
+                  <template v-else-if="this.minPrice === this.maxPrice">
+                    <ins class="new-price">${{ this.minPrice | priceFormat }}</ins>
+                  </template>
+                  <template v-else>
+                    <ins class="new-price">${{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}</ins>
+                  </template>
+                </div>
 
 								<div class="ratings-container">
 									<div class="ratings-full">
@@ -187,6 +140,7 @@
 										<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
 									</div>
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -201,7 +155,7 @@
 
 							<button
 								class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
-								:class="{disabled: !isCartActive}"
+								:class="{disabled: currentVariant === null && this.product2.type === 'variable'}"
 								@click="addCart"
 							><i class="d-icon-bag"></i>Add to Cart</button>
 						</div>
@@ -260,29 +214,23 @@ import { mapActions, mapGetters } from 'vuex';
 import { VueSlideToggle } from 'vue-slide-toggle';
 
 import InputQuantity from '~/components/elements/InputQuantity';
-import ProductNav from '~/components/partials/product/ProductNav';
-import CountDown from '~/components/elements/CountDown';
 import StickyWrapper from '~/components/elements/StickyWrapper';
-
-import { baseUrl } from '~/api';
 
 export default {
 	components: {
 		VueSlideToggle,
 		InputQuantity,
-		ProductNav,
-		CountDown,
 		StickyWrapper
 	},
 	data: function () {
 		return {
+      options: {},
 			vSizes: [],
 			vColors: [],
 			curSize: null,
 			curColor: null,
 			tIndex: -1,
 			quantity: 1,
-			baseUrl: baseUrl,
       maxPrice: 0,
       minPrice: 10e10,
 		};
@@ -301,16 +249,6 @@ export default {
 	},
 	computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
-		displayColors: function () {
-			return this.vColors.filter(
-				item => !this.isDisabled( item.name, this.curSize )
-			);
-		},
-		displaySizes: function () {
-			return this.vSizes.filter(
-				item => !this.isDisabled( this.curColor, item.name )
-			);
-		},
 		curIndex: function () {
 			if ( this.curColor && this.vSizes.length === 0 ) {
 				let index = this.product.variants.findIndex( item => item.color.name === this.curColor );
@@ -336,6 +274,18 @@ export default {
 				return -1;
 			}
 		},
+    currentVariant: function() {
+      if(this.product2.type === 'simple') return null;
+      if(Object.keys(this.options).length !== this.product2.options.length) return null;
+      let variant = this.product2.variants;
+      this.product2.options.forEach((option,i) => {
+        variant = variant.filter(variant => {
+          return variant['option'+(i+1)].value === this.options['option'+i]
+        })
+      })
+      return variant[0];
+    },
+
 		isCartActive: function () {
 			// TODO CHECK STOCK if ( parseInt( this.product.stock ) < parseInt( this.quantity ) ) return false;
 			if ( this.product2.type === 'simple' ) return true;
@@ -380,12 +330,13 @@ export default {
 				} );
 		}
     if(this.product2.type !== "simple") {
-      console.log("haha")
       this.product2.variants.forEach(option => {
         if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
         if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
       });
     }
+
+
 	},
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
