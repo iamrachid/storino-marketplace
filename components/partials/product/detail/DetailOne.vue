@@ -34,14 +34,14 @@
 			<div class="ratings-full">
 				<span
 					class="ratings"
-					:style="{width: product.ratings * 20 + '%'}"
+					:style="{width: product2.review.rating * 20 + '%'}"
 				></span>
-				<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
+				<span class="tooltiptext tooltip-top">{{ product2.review.rating | priceFormat }}</span>
 			</div>
 			<a
 				href="javascript:;"
 				class="rating-reviews"
-			>( {{ product.reviews }} reviews )</a>
+			>( {{ product2.review.reviews.length }} reviews )</a>
 		</div>
 
 		<p class="product-short-desc">{{ product2.description }}</p>
@@ -84,7 +84,7 @@
 
 		<div class="product-form product-qty" v-if="!stickyCart" key="normalCart">
 			<div class="product-form-group">
-				<input-quantity class="mr-2" :max="product.stock" @change-qty="changeQty" />
+				<input-quantity class="mr-2" max="10" @change-qty="changeQty" />
 
 				<button class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
 					:class="{disabled: currentVariant === null && this.product2.type === 'variable' }" @click="addCart">
@@ -135,9 +135,9 @@
 									<div class="ratings-full">
 										<span
 											class="ratings"
-											:style="{width: product.ratings * 20 + '%'}"
+											:style="{width: product2.review.rating * 20 + '%'}"
 										></span>
-										<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
+										<span class="tooltiptext tooltip-top">{{ product2.review.rating | priceFormat }}</span>
 									</div>
 								</div>
 
@@ -149,7 +149,7 @@
 						<div class="product-form-group">
 							<input-quantity
 								class="mr-2"
-								:max="product.stock"
+								max="10"
 								@change-qty="changeQty"
 							></input-quantity>
 
@@ -249,31 +249,6 @@ export default {
 	},
 	computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
-		curIndex: function () {
-			if ( this.curColor && this.vSizes.length === 0 ) {
-				let index = this.product.variants.findIndex( item => item.color.name === this.curColor );
-				this.tIndex = index;
-				return index;
-			}
-
-			if ( this.curSize && this.vColors.length === 0 ) {
-				let index = this.product.variants.findIndex( item => item.size.name === this.curSize );
-				this.tIndex = index;
-				return index;
-			}
-
-			if ( this.curColor && this.curSize ) {
-				let index = this.product.variants.findIndex(
-					item =>
-						item.color.name === this.curColor &&
-						item.size.name === this.curSize
-				);
-				this.tIndex = index;
-				return index;
-			} else {
-				return -1;
-			}
-		},
     currentVariant: function() {
       if(this.product2.type === 'simple') return null;
       if(Object.keys(this.options).length !== this.product2.options.length) return null;
@@ -285,14 +260,6 @@ export default {
       })
       return variant[0];
     },
-
-		isCartActive: function () {
-			// TODO CHECK STOCK if ( parseInt( this.product.stock ) < parseInt( this.quantity ) ) return false;
-			if ( this.product2.type === 'simple' ) return true;
-			if ( this.curSize && this.curColor ) return true;
-
-			return false;
-		},
 		isWishlisted: function () {
 			if ( this.wishList.find( item => item.name === this.product.name ) )
 				return true;
@@ -300,64 +267,16 @@ export default {
 		}
 	},
 	mounted: function () {
-		if ( this.product.variants.length > 0 ) {
-			if ( this.product.variants[ 0 ].size )
-				this.product.variants.forEach( item => {
-					if (
-						!this.vSizes.find(
-							vsize => vsize.name === item.size.name
-						)
-					)
-						this.vSizes.push( {
-							name: item.size.name,
-							text: item.size.size,
-							image: item.size.thumbnail
-						} );
-				} );
-
-			if ( this.product.variants[ 0 ].color )
-				this.product.variants.forEach( item => {
-					if (
-						!this.vColors.find(
-							vColor => vColor.name === item.color.name
-						)
-					)
-						this.vColors.push( {
-							name: item.color.name,
-							text: item.color.color,
-							image: item.color.thumbnail
-						} );
-				} );
-		}
     if(this.product2.type !== "simple") {
       this.product2.variants.forEach(option => {
         if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
         if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
       });
     }
-
-
 	},
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
 		...mapActions( 'wishlist', [ 'addWishlist' ] ),
-		isDisabled: function ( color, size ) {
-			if ( !color || !size ) return false;
-
-			if ( this.vSizes.length === 0 )
-				return !this.product.variants.find(
-					item => item.color.name === color
-				);
-
-			if ( this.vColors.length === 0 )
-				return !this.product.variants.find(
-					item => item.size.name === size
-				);
-
-			return !this.product.variants.find(
-				item => item.color.name === color && item.size.name === size
-			);
-		},
 
 		changeQty: function ( qty ) {
 			this.quantity = qty;
@@ -403,12 +322,13 @@ export default {
         } );
       }
 		},
+
 		wishlistHandler: function ( e ) {
 			let currentTarget = e.currentTarget;
 			currentTarget.classList.add( 'load-more-overlay', 'loading' );
 
 			setTimeout( () => {
-				this.addWishlist( this.product );
+				this.addWishlist( this.product2._id );
 				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
 			}, 1000 );
 		}

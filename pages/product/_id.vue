@@ -2,14 +2,14 @@
 	<main class="main pt-8 single-product bt-lg-none">
 
 		<div class="page-content mb-10 pb-6" v-if="loaded">
-			<div class="container" v-if="product">
+			<div class="container" v-if="product2">
 				<div class="product product-single row mb-7">
 					<div class="col-md-6">
 						<media-one :product="product2" class="pb-lg-0 pb-6"/>
 					</div>
 
 					<div class="col-md-6">
-						<detail-one :product="product" :product2="product2" :stickyCart="true"/>
+						<detail-one :product2="product2" :stickyCart="true"/>
 					</div>
 				</div>
 				<desc-one :product="product2"/>
@@ -55,7 +55,6 @@ import DescOne from '~/components/partials/product/desc/DescOne';
 import RelatedProducts from '~/components/partials/product/RelatedProducts';
 import SwiperCarousel from '~/components/elements/SwiperCarousel';
 
-import Api, { baseUrl, currentDemo } from '~/api';
 import { baseSlider17 } from '~/utils/data/carousel';
 import axios from "axios";
 
@@ -77,18 +76,10 @@ export default {
 	},
 	async fetch() {
 		this.loaded = false;
-    const product = await axios.get('http://localhost:3000/products/623cad78ab655d0daba43cef');
+    const query = 'http://localhost:3000/products/' + this.$route.params.id;
+    const product = await axios.get(query );
     this.product2 = product.data.result;
-    console.log(this.product2);
-
-		Api.get(
-			`${ baseUrl }/demo-${ currentDemo }/product/${ this.$route.params.slug }`
-		)
-			.then( response => {
-				this.product = response.data.data;
-				this.loaded = true;
-			} )
-			.catch( error => ( { error: JSON.stringify( error ) } ) );
+    this.loaded = true;
 	}
 };
 </script>
