@@ -62,7 +62,7 @@
 										<input
 											type="text"
 											class="form-control"
-											v-model="customer.firsname"
+											v-model="customer.firstname"
 											aria-label="first name input"
 											required
 										/>
@@ -78,6 +78,14 @@
 										/>
 									</div>
 								</div>
+                <label>Email Address *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="customer.email"
+                  aria-label="input email address"
+                  required
+                />
 								<label>Address *</label>
 								<input
 									type="text"
@@ -89,16 +97,6 @@
 								/>
 
 								<div class="row">
-									<div class="col-xs-6">
-										<label>Town / City *</label>
-										<input
-											type="text"
-											class="form-control"
-                      v-model="shipping.address.city"
-											aria-label="city input"
-											required
-										/>
-									</div>
 									<div class="col-xs-6">
                     <label>Country / Region *</label>
 
@@ -115,31 +113,33 @@
                       </select>
                     </div>
 									</div>
+                  <div class="col-xs-6">
+                    <label>Province *</label>
+
+                    <div class="select-box">
+                      <select
+                        v-model="shipping.address.province"
+                        class="form-control"
+                        aria-label="province select"
+                        name="province"
+                        @change="getShippers"
+                      >
+                        <option v-for="item in provinces" :key="item._id" :value="item">{{item.name}}</option>
+                      </select>
+                    </div>
+                  </div>
 								</div>
-
-                <label>Province *</label>
-
-                <div class="select-box">
-                  <select
-                    v-model="shipping.address.province"
-                    class="form-control"
-                    aria-label="province select"
-                    name="province"
-                  >
-                    <option v-for="item in provinces" :key="item._id" :value="item">{{item.name}}</option>
-                  </select>
-                </div>
 								<div class="row">
 									<div class="col-xs-6">
-										<label>ZIP *</label>
-										<input
-											type="text"
-											class="form-control"
-											name="zip"
-											aria-label="input zip"
-											required
-										/>
-									</div>
+                    <label>Town / City *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="shipping.address.city.name"
+                      aria-label="city input"
+                      required
+                    />
+                  </div>
 									<div class="col-xs-6">
 										<label>Phone *</label>
 										<input
@@ -151,15 +151,6 @@
 										/>
 									</div>
 								</div>
-
-								<label>Email Address *</label>
-								<input
-									type="text"
-									class="form-control"
-                  v-model="shipping.email"
-									aria-label="input email address"
-									required
-								/>
 							</div>
 
 							<aside
@@ -329,42 +320,16 @@ export default {
 		return {
       countries: [],
       provinces: [],
-      shippers:[
-        {
-          _id: "6257ec734c52160fdc5d7952",
-          name: "delivery guy 1",
-          price: 0
-        },
-        {
-          _id: "6257ec8b4c52160fdc5d796f",
-          name: "Delivery guy 2",
-          price: 0
-        }
-      ],
-      methods: [
-        {
-          _id: "5feb408a2ef4130539efb9e0",
-          name: "CashOnDelivery"
-        },
-        {
-          _id: "5feb408a2ef4130539efb9e1",
-          name: "Paypal"
-        }
-      ],
-
-      zone: {
-        _id: "6257ecca4c52160fdc5d79bb",
-        name: "Agadir",
-      },
+      shippers:[],
+      methods: [],
 			isSticky: false,
       customer: {
-        firsname: '',
+        firstname: '',
         lastname: '',
         email: '',
       },
       shipping: {
         shipper:{},
-        zone: {},
         price: 0,
         ipAddress: '',
         address: {
@@ -372,19 +337,12 @@ export default {
           country: {},
           province: {},
           city: {},
-          phone: '',
         },
       },
       method: {
         _id: "5feb408a2ef4130539efb9e0",
         name: "CashOnDelivery"
       },
-      watch:{
-        shipping(newValue){
-            // this.getProvinces(newValue._id)
-          console.log('Heeeeeeere');
-        }
-      }
     };
 	},
 	computed: {
@@ -396,8 +354,10 @@ export default {
           product: {
             _id: item._id
           },
-          quantity: item.quantity
+          quantity: item.qty
         };
+        if (item.type === 'variable')
+          detail.product.variant = item.variant;
         details.push(detail);
       })
       return details;
@@ -426,11 +386,12 @@ export default {
         customer:this.customer,
         shipping: this.shipping,
         details: this.details,
-        method: this.method
+        method: this.method,
       };
       this.setOrder(data);
       console.log(data);
-      // await Api.post(`${baseUrl}/orders/create`, data);
+      const response = await Api.post(`${baseUrl}/orders/create`, data);
+      console.log(response);
       // this.$router.replace('order')
     },
     async getCountries(){
@@ -439,13 +400,23 @@ export default {
     },
 
     async getProvinces(){
-      console.log('Hahahah');
       const response = await Api.get(`${ baseUrl }/provinces?country=${this.shipping.address.country._id}`);
       this.provinces = response.data.results;
+    },
+
+    async getShippers(){
+      const response = await Api.get(`${ baseUrl }/shippers?country=${this.shipping.address.country._id}&province=${this.shipping.address.province._id}`);
+      this.shippers = response.data.results;
+    },
+
+    async getMethods(){
+      const response = await Api.get(`${ baseUrl }/methods`);
+      this.methods = response.data.results;
     }
 	},
   async fetch(){
       await this.getCountries();
+      await this.getMethods();
   }
 };
 </script>

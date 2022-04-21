@@ -309,6 +309,7 @@ export default {
         const qty = this.quantity;
         const img = this.product2.images[0].src;
         const _id = this.product2._id;
+        const variant = {_id: this.currentVariant._id};
 
         this.addToCart( {
           product: {
@@ -318,6 +319,7 @@ export default {
             price,
             qty,
             type,
+            variant
           }
         } );
       }

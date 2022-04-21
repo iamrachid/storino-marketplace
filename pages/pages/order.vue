@@ -134,7 +134,7 @@
 				<h2 class="title title-simple text-left pt-10 mb-2">Billing Address</h2>
 				<div class="address-info pb-8 mb-6">
 					<p class="address-detail pb-2">
-						{{customer.firsname}} {{customer.lasname}}<br />
+            {{ customer.firstname }} {{ customer.lastname }}<br />
             {{ customer.address.address1 }}<br />
             {{ customer.address.city }}<br />
             {{ customer.address.province }}<br />

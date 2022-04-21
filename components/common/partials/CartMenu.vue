@@ -38,6 +38,7 @@
 									:width="400"
 									:height="400"
 								/>
+
 							</nuxt-link>
 							<button
 								class="btn btn-link btn-close"
