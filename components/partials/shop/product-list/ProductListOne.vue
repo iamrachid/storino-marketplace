@@ -67,7 +67,7 @@ import ToolboxOne from '~/components/partials/shop/toolbox/ToolboxOne';
 import ToolboxTwo from '~/components/partials/shop/toolbox/ToolboxTwo';
 import ToolboxThree from '~/components/partials/shop/toolbox/ToolboxThree';
 
-import Api, { baseUrl, currentDemo } from '~/api';
+import Api, { baseUrl, currentDemo } from '~/api/api';
 import { scrollHandler } from '~/utils';
 
 export default {
@@ -126,12 +126,16 @@ export default {
 
 			this.products = null;
 			this.page = this.$route.query.page ? this.$route.query.page : 1;
-			Api.get( `${ baseUrl }/demo-${ currentDemo }/shop`, {
-				params: { ...this.$route.query, is_product: true, is_post: false, from: this.perPage * ( this.page - 1 ), to: this.perPage * this.page, limit: this.perPage }
-			} )
+			Api.get( `${ baseUrl }/category/${this.$route.query.category}/products`,{
+        params:{
+          limit: this.perPage,
+          page: this.page,
+        }
+      })
 				.then( response => {
-					this.products = response.data.data;
-					this.total = response.data.total;
+					this.products = response.data.result;
+					this.total = response.data.paginate.total;
+          //fixme
 					this.totalPage = parseInt( this.total / this.perPage ) + ( this.total % this.perPage ? 1 : 0 );
 				} )
 				.catch( error => ( { error: JSON.stringify( error ) } ) );

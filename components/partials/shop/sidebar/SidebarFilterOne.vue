@@ -167,7 +167,7 @@ import { VueTreeList, Tree } from 'vue-tree-list';
 
 import { scrollHandler } from '~/utils';
 
-import Api, { baseUrl, currentDemo } from '~/api';
+import Api, { baseUrl, currentDemo } from '~/api/api';
 import { shopColors, shopSizes, shopBrands } from '~/utils/data/shop';
 
 export default {
@@ -187,6 +187,7 @@ export default {
 	},
 	data: function () {
 		return {
+      category: null,
 			categories: [],
 			featured: [],
 			openState: new Array( 100 ).fill( true ),
@@ -238,17 +239,21 @@ export default {
 	destroyed: function () {
 		window.removeEventListener( 'resize', this.resizeHandler );
 	},
-	mounted: function () {
-		Api.get( `${ baseUrl }/demo-${ currentDemo }/shop/sidebar` )
-			.then( response => {
-				this.categories = response.data.categories;
-				this.featured = response.data.featured;
-				this.loaded = true;
-			} )
-			.catch( error => ( { error: JSON.stringify( error ) } ) );
-	},
 	methods: {
-		toggleSidebar: function ( e ) {
+    getCategories() {
+      this.category = this.$route.query.category
+      if (!this.category)
+        this.category = 'root';
+      Api.get( `${ baseUrl }/category/${this.category}` )
+        .then( response => {
+          console.log(response);
+          this.categories = response.data.result[0].children;
+          console.log(this.categories);
+          this.loaded = true;
+        } )
+        .catch( error => ( { error: JSON.stringify( error ) } ) );
+    },
+    toggleSidebar: function ( e ) {
 			if ( window.innerWidth > 991 ) {
 				e.currentTarget.closest( '.shop-sidebar' ).classList.toggle( 'closed' );
 
@@ -357,6 +362,9 @@ export default {
 					.classList.remove( 'sidebar-active' );
 			}
 		}
-	}
+	},
+  async fetch() {
+    this.getCategories()
+  }
 };
 </script>
