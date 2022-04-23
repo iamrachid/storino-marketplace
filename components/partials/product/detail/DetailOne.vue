@@ -236,7 +236,6 @@ export default {
 		};
 	},
 	props: {
-		product: Object,
 		showNav: {
 			type: Boolean,
 			default: true
@@ -261,7 +260,7 @@ export default {
       return variant[0];
     },
 		isWishlisted: function () {
-			if ( this.wishList.find( item => item.name === this.product.name ) )
+			if ( this.wishList.find( item => item._id === this.product2._id ) )
 				return true;
 			return false;
 		}

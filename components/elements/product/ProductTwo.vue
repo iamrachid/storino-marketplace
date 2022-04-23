@@ -139,7 +139,7 @@ export default {
 		openQuickview: function () {
 			this.$modal.show(
 				() => import( '~/components/elements/modal/QuickView' ),
-				{ slug: this.product.slug },
+				{ _id: this.product._id },
 				{
 					width: '988',
 					height: 'auto',

@@ -4,7 +4,7 @@
 		:class="{'product-variable': product.variants.length > 0}"
 	>
 		<figure class="product-media">
-			<nuxt-link :to="`/product/default/${product.slug}`">
+			<nuxt-link :to="`/product/${product._id}`">
 				<img
 					v-for="(item,index) in product.large_pictures.slice(0,2)"
 					:key="`one-large-${index}`"
@@ -51,7 +51,7 @@
 			</div>
 
 			<h3 class="product-name">
-				<nuxt-link :to="'/product/default/' + product.slug">{{ product.name }}</nuxt-link>
+				<nuxt-link :to="'/product/' + product._id">{{ product.name }}</nuxt-link>
 			</h3>
 
 			<div class="product-price">
@@ -99,7 +99,7 @@
 				><i class="d-icon-bag"></i><span>Add to Cart</span></a>
 
 				<nuxt-link
-					:to="`/product/default/${product.slug}`"
+					:to="`/product/default/${product._id}`"
 					class="btn-product btn-cart"
 					title="Go to detail"
 					v-else
@@ -179,7 +179,7 @@ export default {
 		openQuickview: function () {
 			this.$modal.show(
 				() => import( '~/components/elements/modal/QuickView' ),
-				{ slug: this.product.slug },
+				{ _id: this.product._id},
 				{
 					width: '988',
 					height: 'auto',
