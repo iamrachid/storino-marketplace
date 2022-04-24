@@ -81,20 +81,10 @@ export default {
     };
   },
   methods: {
-    getProductHandler: function (category, index) {
-      // TODO METHOD TO CHANGE PRODUCT OF SUBCATEGORY
-      this.products = null;
-      Api.get(`${baseUrl}/demo-${currentDemo}/shop`, {
-        params: {
-          from: 0,
-          to: 6,
-          category: category,
-        },
-      })
-          .then((response) => {
-            this.products = response.data.data;
-          })
-          .catch((error) => ({ error: JSON.stringify(error) }));
+     getProductHandler: async function (category, index) {
+      this.products = [];
+      const products = await axios.get(`http://localhost:3000/category/${category}/products?limit=6`);
+      this.products = products.data.result;
     },
   },
 
