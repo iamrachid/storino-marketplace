@@ -38,7 +38,7 @@
 								<vue-slide-toggle :open="openState[0]">
 									<ul
 										class="d-block pt-2 pb-2 text-white"
-										style="background: #222529"
+										style="background: grey"
 									>
 										<li>
 											<nuxt-link :to="{ path: '/shop', query: { category: 'air-conditioners' }}">Air Conditioners</nuxt-link>
@@ -270,10 +270,9 @@
 							</li>
 						</ul>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

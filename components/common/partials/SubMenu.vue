@@ -7,7 +7,6 @@
         <!--    TODO show submenus in subcategory.children  -->
       </li>
     </ul>
-
   </li>
 </template>
 
