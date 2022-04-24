@@ -16,30 +16,29 @@
 
 		<div class="page-content pt-10 pb-10 mb-2">
 			<div class="container">
-				<template v-if="wishList.length > 0">
+				<template v-if="products.length > 0">
 					<table class="shop-table wishlist-table mt-2 mb-4">
 						<thead>
 							<tr>
 								<th class="product-name"><span>Product</span></th>
 								<th></th>
 								<th class="product-price"><span>Price</span></th>
-								<th class="product-stock-status"><span>Stock status</span></th>
 								<th class="product-add-to-cart"></th>
 								<th class="product-remove"></th>
 							</tr>
 						</thead>
 						<tbody class="wishlist-items-wrapper">
 							<tr
-								:key="'wishlist' + item.name"
-								v-for="item in wishList"
+								:key="'wishlist' + item._id"
+								v-for="item in products"
 							>
 								<td class="product-thumbnail">
 									<figure>
 										<nuxt-link :to="'/product/' + item._id">
 											<img
-												:src="`${baseUrl}${item.pictures[0].url}`"
-												:width="100"
-												:height="100"
+												:src="item.images[0].src"
+												:width="400"
+												:height="400"
 												alt="product"
 											/>
 										</nuxt-link>
@@ -48,33 +47,27 @@
 
 								<td class="product-name">
 									<div class="product-name-section">
-										<nuxt-link :to="'/product/default/' + item.slug">{{item.name}}</nuxt-link>
+										<nuxt-link :to="'/product/' + item.slug">{{item.title}}</nuxt-link>
 									</div>
 								</td>
 
-								<td class="product-price">
-									<span
-										class="amount"
-										v-if="item.display_price[0] !== item.display_price[1]"
-									>${{ item.display_price[ 0 ] | priceFormat }} – ${{ item.display_price[ 1 ] | priceFormat }}</span>
-									<template v-else-if="item.discount > 0 && item.variants.length > 0">
-										<span class="amount">${{ item.sale_price | priceFormat }}</span>
-										<span class="amount">${{ item.price | priceFormat }}</span>
-									</template>
-									<span
-										class="amount"
-										v-else
-									>${{ item.display_price[ 0 ] | priceFormat }}</span>
-								</td>
-
-								<td class="product-stock-status">
-									<span :class="item.stock > 0 ? 'wishlist-in-stock' : 'wishlist-out-stock'">{{ item.stock > 0 ? 'In Stock' : 'Out of Stock' }}</span>
-								</td>
+                <td class="product-price">
+                  <template v-if="item.type === 'simple' ">
+                    <ins class="new-price">${{ item.price.salePrice | priceFormat }}</ins>
+                    <del class="old-price">${{ item.price.comparePrice | priceFormat }}</del>
+                  </template>
+                  <template v-else-if="minPrice(item) === maxPrice(item) ">
+                    <ins class="new-price">${{ minPrice(item) | priceFormat }}</ins>
+                  </template>
+                  <template v-else>
+                    <ins class="new-price">${{ minPrice(item) | priceFormat }} &ndash; ${{ maxPrice(item) | priceFormat }}</ins>
+                  </template>
+                </td>
 
 								<td class="product-add-to-cart">
-									<template v-if="item.stock > 0">
+									<template>
 										<nuxt-link
-											:to="'/product/default/' + item.slug"
+											:to="'/product/' + item._id"
 											class="btn-product btn-primary"
 											v-if="item.variants.length > 0"
 										><span>Select options</span></nuxt-link>
@@ -92,7 +85,7 @@
 										href="javascript:;"
 										class="product-remove"
 										title="Remove this product"
-										@click="toggleWishlist(item)"
+										@click="toggleWishlist({ id: item._id })"
 									>
 										<i class="fas fa-times"></i>
 									</a>
@@ -153,12 +146,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { baseUrl } from '~/api';
+import axios from "axios";
 
 export default {
 	data: function () {
 		return {
-			baseUrl: baseUrl
+      products : []
 		};
 	},
 	computed: {
@@ -167,7 +160,7 @@ export default {
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
 		...mapActions( 'wishlist', [ 'toggleWishlist' ] ),
-		moveToCartHandler: function ( data ) {
+		/*moveToCartHandler: function ( data ) {
 			if ( data.stock > 0 ) {
 				let product = {
 					...data,
@@ -176,10 +169,69 @@ export default {
 				this.addToCart( { product: product } );
 			}
 			this.toggleWishlist( data );
-		}
+		},*/
+
+    minPrice: function(item) {
+      let min = 10e10;
+      item.variants.forEach(option => {
+        if (option.price.salePrice < min) min = option.price.salePrice;
+      });
+      return min;
+    },
+
+    maxPrice: function(item) {
+      let max = 0;
+      item.variants.forEach(option => {
+        if (option.price.salePrice > max) max = option.price.salePrice;
+      });
+      return max;
+    },
+
+    moveToCartHandler: function (product) {
+      if ( product.type === 'simple' ) {
+        const name = product.name;
+        const type = product.type;
+        const price = product.price.salePrice;
+        const qty = 1;
+        const img = product.images[0].src;
+        const _id = product._id;
+
+        this.addToCart( {
+          product: {
+            _id,
+            img,
+            name,
+            price,
+            qty,
+            type,
+          }
+        } );
+
+        this.toggleWishlist( {id: product._id} );
+      }
+    },
 	},
-  fetch() {
-    // TODO Implements in backend get multiple items with IDs
+  watch: {
+    async wishList(newState) {
+      if(newState.length > 0) {
+        let filter = '';
+        newState.forEach(item => filter = filter + '_id='+item.id+'&' );
+        const query = 'http://localhost:3000/products?' + filter;
+        const product = await axios.get(query);
+        this.products = product.data.result;
+      } else {
+        this.products = [];
+      }
+    }
+  },
+  async fetch() {
+    if(this.wishList.length > 0) {
+      let filter = '';
+      this.wishList.forEach(item => filter = filter + '_id='+item.id+'&' );
+      const query = 'http://localhost:3000/products?' + filter;
+      const product = await axios.get(query);
+      this.products = product.data.result;
+    }
   }
 };
 </script>

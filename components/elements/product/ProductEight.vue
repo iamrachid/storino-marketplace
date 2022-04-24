@@ -1,42 +1,34 @@
 <template>
 	<div
 		class="product product-list"
-		:class="{'product-variable': product.variants.length > 0}"
+		:class="{'product-variable': product.style === 'variable'}"
 	>
 		<figure class="product-media">
 			<nuxt-link :to="`/product/${product._id}`">
 				<img
-					v-for="(item,index) in product.large_pictures.slice(0,2)"
-					:key="`one-large-${index}`"
-					v-lazy="`${baseUrl}${item.url}`"
+					v-lazy="`${product.images[0].src}`"
 					alt="large-picture"
-					:width="item.width"
-					:height="item.height"
-					:class="{'last-image': index === 1}"
+					:width="400"
+					:height="400"
+					:class="{'last-image': true }"
 				/>
 			</nuxt-link>
 
-			<div class="product-label-group">
-				<div
-					class="product-label label-new"
-					v-if="product.is_new"
-				>New</div>
-				<div
-					class="product-label label-stock"
-					v-if="product.stock === '0'"
-				>Out</div>
-				<div
-					class="product-label label-top"
-					v-if="product.is_top"
-				>Top</div>
-				<div
-					class="product-label label-sale"
-					v-if="product.discount > 0"
-				>
-					<template v-if="product.variants.length > 0">Sale</template>
-					<template v-else>-{{ product.discount }}%</template>
-				</div>
-			</div>
+      <div class="product-label-group">
+        <div class="product-label label-new" v-if="product.is_new">
+          New
+        </div>
+        <div class="product-label label-stock" v-if="product.outStock.hide">
+          Out
+        </div>
+        <div class="product-label label-top" v-if="product.is_top">
+          Top
+        </div>
+        <div class="product-label label-sale" v-if="product.discount > 0">
+          <template v-if="product.variants.length > 0">Discount</template>
+          <template v-else>-{{ product.discount }}%</template>
+        </div>
+      </div>
 		</figure>
 
 		<div class="product-details">
@@ -54,36 +46,25 @@
 				<nuxt-link :to="'/product/' + product._id">{{ product.name }}</nuxt-link>
 			</h3>
 
-			<div class="product-price">
-				<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-					<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
-				</template>
+      <div class="product-price">
+        <template v-if="product.type === 'simple' ">
+          <ins class="new-price">${{ product.price.salePrice | priceFormat }}</ins>
+          <del class="old-price">${{ product.price.comparePrice | priceFormat }}</del>
+        </template>
+        <template v-else-if="this.minPrice === this.maxPrice">
+          <ins class="new-price">${{ this.minPrice | priceFormat }}</ins>
+        </template>
+        <template v-else>
+          <ins class="new-price">${{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}</ins>
+        </template>
+      </div>
 
-				<template v-else>
-					<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-						<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-					</template>
-
-					<template v-else>
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-					</template>
-				</template>
-			</div>
-
-			<div class="ratings-container">
-				<div class="ratings-full">
-					<span
-						class="ratings"
-						:style="{width: product.ratings * 20 + '%'}"
-					></span>
-					<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
-				</div>
-				<a
-					href="javascript:;"
-					class="rating-reviews"
-				>( {{ product.reviews }} reviews )</a>
-			</div>
+      <div class="ratings-container">
+        <div class="ratings-full">
+          <span class="ratings" :style="{width: product.review.rating * 20 + '%'}"></span>
+        </div>
+        <p class="rating-reviews">( {{ product.review.reviews.length  }} reviews )</p>
+      </div>
 
 			<div class="product-short-desc">
 				{{ product.short_description }}
@@ -99,7 +80,7 @@
 				><i class="d-icon-bag"></i><span>Add to Cart</span></a>
 
 				<nuxt-link
-					:to="`/product/default/${product._id}`"
+					:to="`/product/${product._id}`"
 					class="btn-product btn-cart"
 					title="Go to detail"
 					v-else
@@ -136,46 +117,65 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { baseUrl } from '~/api';
 
 export default {
 	props: {
 		product: Object
 	},
-	data: function () {
-		return {
-			baseUrl: baseUrl
-		};
-	},
+  data() {
+    return {
+      maxPrice: 0,
+      minPrice: 1e10,
+    };
+  },
+  mounted() {
+    // console.log(this.product);
+    this.product.variants.forEach(option => {
+      if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
+      if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
+    });
+  },
 	computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
-		isWishlisted: function () {
-			if ( this.wishList.find( item => item.name === this.product.name ) )
-				return true;
-			return false;
-		}
+    isWishlisted: function () {
+      return !!this.wishList.find(item => item.id === this.product._id);
+    }
 	},
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
 		...mapActions( 'wishlist', [ 'toggleWishlist' ] ),
-		wishlistHandler: function ( e, toAdd = true ) {
-			let currentTarget = e.currentTarget;
-			currentTarget.classList.add( 'load-more-overlay', 'loading' );
+    wishlistHandler: function ( e ) {
+      let currentTarget = e.currentTarget;
+      currentTarget.classList.add( 'load-more-overlay', 'loading' );
 
-			setTimeout( () => {
-				this.toggleWishlist( this.product );
-				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
-			}, 1000 );
-		},
-		addCart: function () {
-			if ( this.product.stock > 0 ) {
-				let saledProduct = {
-					...this.product,
-					price: this.product.display_price[ 0 ]
-				};
-				this.addToCart( { product: saledProduct } );
-			}
-		},
+      setTimeout( () => {
+        currentTarget.classList.remove( 'load-more-overlay', 'loading' );
+        this.toggleWishlist({id: this.product._id} );
+      }, 1000 );
+    },
+
+    addCart: function () {
+      if ( this.product.type === 'simple' ) {
+        const name = this.product.name;
+        const type = this.product.type;
+        const price = this.product.price.salePrice;
+        const qty = this.quantity;
+        const img = this.product.images[0].src;
+        const _id = this.product._id;
+
+        this.addToCart( {
+          product: {
+            _id,
+            img,
+            name,
+            price,
+            qty,
+            type,
+          }
+        } );
+      }
+    },
+
 		openQuickview: function () {
 			this.$modal.show(
 				() => import( '~/components/elements/modal/QuickView' ),

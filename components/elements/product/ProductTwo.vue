@@ -1,5 +1,5 @@
 <template>
-	<div class="product" :class="{'product-variable': product.variants.length > 0}">
+	<div class="product" :class="{'product-variable': product.style === 'variable'}">
 		<figure class="product-media">
 			<nuxt-link :to="`/product/${product._id}`">
 				<img

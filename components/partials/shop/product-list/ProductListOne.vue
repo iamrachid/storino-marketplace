@@ -126,7 +126,7 @@ export default {
 
 			this.products = null;
 			this.page = this.$route.query.page ? this.$route.query.page : 1;
-			Api.get( `${ baseUrl }/category/${this.$route.query.category}/products`,{
+			Api.get( `${ baseUrl }/category/${this.$route.query.category ? this.$route.query.category : 'all' }/products`,{
         params:{
           limit: this.perPage,
           page: this.page,
