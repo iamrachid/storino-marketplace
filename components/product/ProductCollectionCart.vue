@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     getProductHandler: function (category, index) {
-      // METHOD TO CHANGE PRODUCT OF SUBCATEGORY
+      // TODO METHOD TO CHANGE PRODUCT OF SUBCATEGORY
       this.products = null;
       Api.get(`${baseUrl}/demo-${currentDemo}/shop`, {
         params: {

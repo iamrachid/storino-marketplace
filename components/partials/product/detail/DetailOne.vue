@@ -259,11 +259,10 @@ export default {
       })
       return variant[0];
     },
-		isWishlisted: function () {
-			if ( this.wishList.find( item => item._id === this.product2._id ) )
-				return true;
-			return false;
-		}
+
+    isWishlisted: function () {
+      return !!this.wishList.find(item => item.id === this.product2._id);
+    }
 	},
 	mounted: function () {
     if(this.product2.type !== "simple") {
@@ -275,7 +274,7 @@ export default {
 	},
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
-		...mapActions( 'wishlist', [ 'addWishlist' ] ),
+    ...mapActions( 'wishlist', [ 'toggleWishlist' ] ),
 
 		changeQty: function ( qty ) {
 			this.quantity = qty;
@@ -324,15 +323,15 @@ export default {
       }
 		},
 
-		wishlistHandler: function ( e ) {
-			let currentTarget = e.currentTarget;
-			currentTarget.classList.add( 'load-more-overlay', 'loading' );
+    wishlistHandler: function ( e ) {
+      let currentTarget = e.currentTarget;
+      currentTarget.classList.add( 'load-more-overlay', 'loading' );
 
-			setTimeout( () => {
-				this.addWishlist( this.product2._id );
-				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
-			}, 1000 );
-		}
+      setTimeout( () => {
+        currentTarget.classList.remove( 'load-more-overlay', 'loading' );
+        this.toggleWishlist({id: this.product2._id} );
+      }, 1000 );
+    },
 	},
 
 };

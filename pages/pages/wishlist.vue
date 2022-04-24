@@ -35,7 +35,7 @@
 							>
 								<td class="product-thumbnail">
 									<figure>
-										<nuxt-link :to="'/product/default/' + item.slug">
+										<nuxt-link :to="'/product/' + item._id">
 											<img
 												:src="`${baseUrl}${item.pictures[0].url}`"
 												:width="100"
@@ -177,6 +177,9 @@ export default {
 			}
 			this.toggleWishlist( data );
 		}
-	}
+	},
+  fetch() {
+    // TODO Implements in backend get multiple items with IDs
+  }
 };
 </script>

@@ -29,12 +29,12 @@
 			<div class="product-action-vertical">
 
 				<a href="#" class="btn-product-icon btn-cart"
-					 title="Add to cart" v-if="product.variants.length === 0"
+					 title="Add to cart" v-if="product.type === 'simple'"
 					 @click.prevent="addCart">
           <i class="d-icon-bag"></i>
         </a>
 
-				<nuxt-link :to="`/product/default/${product.slug}`" class="btn-product-icon btn-cart"
+				<nuxt-link :to="`/product/${product._id}`" class="btn-product-icon btn-cart"
 					title="Go to detail" v-else>
           <i class="d-icon-arrow-right"></i>
         </nuxt-link>
@@ -110,8 +110,7 @@ export default {
   computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
 		isWishlisted: function () {
-			return !!this.wishList.find(item => item.name === this.product.name);
-
+			return !!this.wishList.find(item => item.id === this.product._id);
 		}
 	},
 	methods: {
@@ -123,18 +122,31 @@ export default {
 
 			setTimeout( () => {
 				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
-				this.toggleWishlist( this.product );
+				this.toggleWishlist({id: this.product._id} );
 			}, 1000 );
 		},
+
 		addCart: function () {
-			if ( this.product.stock > 0 ) {
-				let saledProduct = {
-					...this.product,
-					price: this.product.display_price[ 0 ]
-				};
-				this.addToCart( { product: saledProduct } );
-			}
-		},
+      if ( this.product.type === 'simple' ) {
+        const name = this.product.name;
+        const type = this.product.type;
+        const price = this.product.price.salePrice;
+        const qty = this.quantity;
+        const img = this.product.images[0].src;
+        const _id = this.product._id;
+
+        this.addToCart( {
+          product: {
+            _id,
+            img,
+            name,
+            price,
+            qty,
+            type,
+          }
+        } );
+      }
+    },
 
 		openQuickview: function () {
 			this.$modal.show(
@@ -152,7 +164,7 @@ export default {
 			);
 		},
     beforeOpen (event) {
-      //TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE ROUTE
+      //TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE
     },
     beforeClose (event) {
       //TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE ROUTE

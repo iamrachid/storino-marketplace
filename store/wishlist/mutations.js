@@ -1,6 +1,6 @@
 export default {
     [ 'TOGGLE_WISHLIST' ]( state, payload ) {
-        let index = state.data.findIndex( item => item.name === payload.name );
+        let index = state.data.findIndex( item => item.id === payload.id );
         if ( index === -1 ) {
             state.data.push( payload );
         } else {
@@ -8,7 +8,7 @@ export default {
         }
     },
     [ 'ADD_WISHLIST' ]( state, payload ) {
-        let index = state.data.findIndex( item => item.name === payload.name );
+        let index = state.data.findIndex( item => item.id === payload.id );
         if ( index === -1 ) {
             state.data.push( payload );
         }

@@ -2,19 +2,19 @@
 	<main class="main pt-8 single-product bt-lg-none">
 
 		<div class="page-content mb-10 pb-6" v-if="loaded">
-			<div class="container" v-if="product2">
+			<div class="container" v-if="product">
 				<div class="product product-single row mb-7">
 					<div class="col-md-6">
-						<media-one :product="product2" class="pb-lg-0 pb-6"/>
+						<media-one :product="product" class="pb-lg-0 pb-6"/>
 					</div>
 
 					<div class="col-md-6">
-						<detail-one :product2="product2" :stickyCart="true"/>
+						<detail-one :product2="product" :stickyCart="true"/>
 					</div>
 				</div>
-				<desc-one :product="product2"/>
+				<desc-one :product="product"/>
 
-        <related-products :category="product2.categories[0].slug" class="pt-3 mt-10"/>
+        <related-products :category="product.categories[0].slug" class="pt-3 mt-10"/>
       </div>
 		</div>
 
@@ -71,14 +71,13 @@ export default {
 			baseSlider17: baseSlider17,
 			product: null,
 			loaded: false,
-      product2: null,
 		};
 	},
 	async fetch() {
 		this.loaded = false;
     const query = 'http://localhost:3000/products/' + this.$route.params.id;
     const product = await axios.get(query );
-    this.product2 = product.data.result;
+    this.product = product.data.result;
     this.loaded = true;
 	}
 };
