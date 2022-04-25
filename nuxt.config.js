@@ -1,7 +1,7 @@
 export default {
     head: {
-        titleTemplate: 'Riode - Ultimate eCommerce Template',
-        title: 'Riode - Ultimate eCommerce Template',
+        titleTemplate: 'Storeino marketplace',
+        title: 'Storeino marketplace',
         meta: [
             { charset: 'utf-8' },
             {
