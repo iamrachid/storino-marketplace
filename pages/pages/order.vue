@@ -58,23 +58,24 @@
 				<div class="order-results">
 					<div class="overview-item">
 						<span>Order number:</span>
-						<strong>4935</strong>
+						<strong>{{ order.orderId }}</strong>
 					</div>
 					<div class="overview-item">
 						<span>Status:</span>
-						<strong>Processing</strong>
+						<strong>{{ order.status }}</strong>
 					</div>
 					<div class="overview-item">
 						<span>Date:</span>
-						<strong>{{new Date().toLocaleDateString( 'en-US', { year: 'numeric', month: 'short', day: "2-digit", timeZone: "UTC" } )}}</strong>
+						<strong>{{ order.createdAt }}</strong>
+<!--						<strong>{{new Date().toLocaleDateString( 'en-US', { year: 'numeric', month: 'short', day: "2-digit", timeZone: "UTC" } )}}</strong>-->
 					</div>
 					<div class="overview-item">
 						<span>Email:</span>
-						<strong>{{customer.email}}</strong>
+						<strong>{{order.customer.email}}</strong>
 					</div>
 					<div class="overview-item">
 						<span>Total:</span>
-						<strong>${{ totalPrice | priceFormat }}</strong>
+						<strong>{{ order.total | priceFormat }}{{currency}}</strong>
 					</div>
 					<div class="overview-item">
 						<span>Payment method:</span>
@@ -95,37 +96,37 @@
 						</thead>
 						<tbody>
 							<tr
-								:key="'order-' + item.name"
-								v-for="(item) in cartList"
+								:key="'order-' + item._id"
+								v-for="(item) in order.details"
 							>
-								<td class="product-name">{{ item.name }} <span> <i class="fas fa-times"></i> {{ item.qty }}</span></td>
-								<td class="product-price">${{  item.qty * item.price  | priceFormat }}</td>
+								<td class="product-name">{{ item.product.name }} </td>
+								<td class="product-price">{{ item.product.price.salePrice  | priceFormat }} {{currency}} <span> <i class="fas fa-times"></i> {{ item.quantity }}</span> </td>
 							</tr>
 
 							<tr class="summary-subtotal">
 								<td>
 									<h4 class="summary-subtitle">Subtotal:</h4>
 								</td>
-								<td class="summary-subtotal-price">${{ totalPrice | priceFormat }}</td>
+								<td class="summary-subtotal-price">{{ subtotal | priceFormat }} {{currency}}</td>
 							</tr>
 							<tr class="summary-subtotal">
 								<td>
 									<h4 class="summary-subtitle">Shipping:</h4>
 								</td>
-								<td class="summary-subtotal-price">Free shipping</td>
+								<td class="summary-subtotal-price">{{order.shipping.shipper.name}} ({{order.shipping.price == 0  ? 'Free' : order.shipping.price }})</td>
 							</tr>
 							<tr class="summary-subtotal">
 								<td>
 									<h4 class="summary-subtitle">Payment method:</h4>
 								</td>
-								<td class="summary-subtotal-price">Cash on delivery</td>
+								<td class="summary-subtotal-price">{{ order.method.name }}</td>
 							</tr>
 							<tr class="summary-subtotal">
 								<td>
 									<h4 class="summary-subtitle">Total:</h4>
 								</td>
 								<td>
-									<p class="summary-total-price">${{ totalPrice | priceFormat }}</p>
+									<p class="summary-total-price">{{ order.total | priceFormat }} {{currency}}</p>
 								</td>
 							</tr>
 						</tbody>
@@ -134,14 +135,14 @@
 				<h2 class="title title-simple text-left pt-10 mb-2">Billing Address</h2>
 				<div class="address-info pb-8 mb-6">
 					<p class="address-detail pb-2">
-            {{ customer.firstname }} {{ customer.lastname }}<br />
-            {{ customer.address.address1 }}<br />
-            {{ customer.address.city }}<br />
-            {{ customer.address.province }}<br />
-            {{ customer.address.country }}<br />
-            {{ customer.phone }}
+            {{ order.customer.firstname }} {{order.customer.lastname }}<br />
+            {{order.shipping.address.address1 }}<br />
+            {{order.shipping.address.city.name }}<br />
+            {{order.shipping.address.province.name }}<br />
+            {{order.shipping.address.country.name }}<br />
+            {{order.customer.phone }}
 					</p>
-					<p class="email">{{ customer.email }}</p>
+					<p class="email">{{ order.customer.email }}</p>
 				</div>
 
 				<nuxt-link
@@ -158,8 +159,15 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters( 'cart', [ 'cartList', 'totalPrice' ] ),
-    ...mapGetters('order', ['customer'])
+    ...mapGetters('order', ['order']),
+    subtotal(){
+      return this.order.details.reduce( ( acc, cur ) => {
+        return acc + cur.price;
+      }, 0 );
+    },
+    currency(){
+      return this.order.currency;
+    }
 	},
   mounted() {
     console.log(this.customer);

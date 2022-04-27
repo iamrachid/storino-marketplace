@@ -27,5 +27,8 @@ export default {
     },
     [ 'UPDATE_CART' ] ( state, payload ) {
         state.data = payload.cartItems;
+    },
+    [ 'EMPTY_CART' ] ( state) {
+        state.data = [];
     }
 };

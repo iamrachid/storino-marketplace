@@ -13,5 +13,8 @@ export default {
     },
     updateCart: function ( { commit }, payload ) {
         commit( 'UPDATE_CART', payload );
-    }
+    },
+    emptyCart( { commit }) {
+        commit( 'EMPTY_CART');
+    },
 }

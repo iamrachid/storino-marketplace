@@ -327,6 +327,7 @@ export default {
         firstname: '',
         lastname: '',
         email: '',
+        phone: ''
       },
       shipping: {
         shipper:{},
@@ -378,7 +379,8 @@ export default {
 
 	methods: {
     ...mapActions('order', ['setOrder']),
-		resizeHandler: function () {
+    ...mapActions('cart', ['emptyCart']),
+    resizeHandler: function () {
 			this.isSticky = window.innerWidth > 991 ? true : false;
 		},
     async formHandler(){
@@ -388,11 +390,12 @@ export default {
         details: this.details,
         method: this.method,
       };
-      this.setOrder(data);
-      console.log(data);
       const response = await Api.post(`${baseUrl}/orders/create`, data);
-      console.log(response);
-      // this.$router.replace('order')
+      if(response.status == 200){
+        this.emptyCart();
+        this.setOrder(response.data.result);
+      }
+      this.$router.replace('order')
     },
     async getCountries(){
       const response = await Api.get(`${ baseUrl }/countries`);

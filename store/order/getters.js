@@ -1,5 +1,5 @@
 export default {
     order: state => {
-        return state.order;
+        return state.data;
     }
 }
