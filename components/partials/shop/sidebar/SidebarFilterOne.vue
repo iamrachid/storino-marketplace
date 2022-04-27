@@ -241,17 +241,30 @@ export default {
 	},
 	methods: {
     getCategories() {
-      this.category = this.$route.query.category
-      if (!this.category)
-        this.category = 'root';
-      Api.get( `${ baseUrl }/category/${this.category}` )
-        .then( response => {
-          console.log(response);
-          this.categories = response.data.result[0].children;
-          console.log(this.categories);
-          this.loaded = true;
-        } )
-        .catch( error => ( { error: JSON.stringify( error ) } ) );
+      if (!this.$route.query.category)
+      {
+        this.category = 'level=0';
+        Api.get( `${ baseUrl }/category?${this.category}` )
+            .then( response => {
+              console.log(response.data);
+              response.data.result.forEach(category => this.categories.push(category));
+              this.categories = response.data.result[0].children;
+              console.log(this.categories);
+              this.loaded = true;
+            } )
+            .catch( error => ( { error: JSON.stringify( error ) } ) );
+      }
+      else {
+        this.category = 'slug=' + this.$route.query.category;
+        Api.get( `${ baseUrl }/category?${this.category}` )
+            .then( response => {
+              console.log(response.data);
+              this.categories = response.data.result[0].children;
+              console.log(this.categories);
+              this.loaded = true;
+            } )
+            .catch( error => ( { error: JSON.stringify( error ) } ) );
+      }
     },
     toggleSidebar: function ( e ) {
 			if ( window.innerWidth > 991 ) {

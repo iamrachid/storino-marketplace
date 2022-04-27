@@ -127,39 +127,13 @@ export default {
     };
   },
   async fetch() {
-    const categories = await axios.get('http://localhost:3000/category/root');
-    this.categories = this.categoriesFormatter(categories.data.result);
+    const categories = await axios.get('http://localhost:3000/category?level=0');
+    this.categories = categories.data.result;
   },
 	methods: {
 		showMobileMenu: function () {
 			document.querySelector( 'body' ).classList.add( 'mmenu-active' );
 		},
-
-    categoriesFormatter: function (categories) {
-      const map = [];
-      categories.forEach(category => {
-        const key = category.parents[0].slug;
-        const objIndex = map.findIndex((obj => obj.slug === key));
-        if(objIndex === -1) {
-          map.push({
-            name: category.parents[0].name,
-            slug: category.parents[0].slug,
-            children: [{
-              name: category.name,
-              slug: category.slug,
-              children: category.children
-            }]
-          })
-        } else {
-          map[objIndex].children.push({
-            name: category.name,
-            slug: category.slug,
-            children: category.children
-          })
-        }
-      });
-      return map;
-    }
 	}
 };
 </script>

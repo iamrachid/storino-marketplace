@@ -29,7 +29,7 @@
             Featured
           </h4>
           <h3 class="banner-title ls-s">
-            Fashion Design<br />
+            {{ category.name }}<br />
             <span class="d-inline-block font-weight-normal">Collection</span>
           </h3>
         </div>
@@ -67,11 +67,17 @@ export default {
   components: {
     ProductTwo,
   },
+  props: {
+    categorySearch : {
+      type: String,
+      required: true
+    },
+  },
   async fetch() {
     this.products = [];
-    const category = await axios.get('http://localhost:3000/category/fashion:kids-fashion');
+    const category = await axios.get(`http://localhost:3000/category/${this.categorySearch}`);
     this.category = category.data.result[0];
-    const products = await axios.get('http://localhost:3000/category/fashion:kids-fashion/products?limit=6');
+    const products = await axios.get(`http://localhost:3000/category/${this.categorySearch}/products?limit=6`);
     this.products = products.data.result;
   },
   data() {
