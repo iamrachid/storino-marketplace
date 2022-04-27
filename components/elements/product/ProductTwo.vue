@@ -3,10 +3,10 @@
 		<figure class="product-media">
 			<nuxt-link :to="`/product/${product._id}`">
 				<img
-					v-lazy="`${product.images[0].src}`"
+					v-lazy="`${product.images[0].src}?height=400`"
 					alt="large-picture"
-					:width="800"
-					:height="900"
+					:width="400"
+					:height="400"
 				/>
 			</nuxt-link>
 

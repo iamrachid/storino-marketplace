@@ -2,8 +2,9 @@
   <section class="grey-section pt-2 pb-8">
     <div class="container pb-4">
 
-      <ProductCollectionCart />
+      <ProductCollectionCart category-search="fashion"/>
 
+      <ProductCollectionCart category-search="informatique"/>
     </div>
   </section>
 </template>
