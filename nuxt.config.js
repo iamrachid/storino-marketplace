@@ -1,7 +1,7 @@
 export default {
     head: {
-        titleTemplate: 'Riode - Ultimate eCommerce Template',
-        title: 'Riode - Ultimate eCommerce Template',
+        titleTemplate: 'Storeino marketplace',
+        title: 'Storeino marketplace',
         meta: [
             { charset: 'utf-8' },
             {
@@ -91,9 +91,11 @@ export default {
     plugins: [
         { src: '~/plugins', ssr: false },
         { src: '~/plugins/directives/parallax.js', ssr: false },
-        { src: '~/plugins/localstorage.js', ssr: false },
-        { src: '~/plugins/filters.js', ssr: false },
-        { src: '~/plugins/directives/animate.js', ssr: false }
+        { src: '~/plugins/localstorage.client.js', ssr: false },
+        { src: '~/plugins/filters.js', ssr: true },
+        { src: '~/plugins/directives/animate.js', ssr: false },
+        { src: '~/plugins/notifications-ssr', ssr: true },
+        { src: '~/plugins/notifications-client', ssr: false }
     ],
 
     buildModules: [

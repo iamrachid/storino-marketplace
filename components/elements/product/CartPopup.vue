@@ -13,17 +13,17 @@
 
                 <div class="product product-purchased  product-cart mb-0">
                     <figure class="product-media pure-media">
-						<nuxt-link :to="`/product/default/${props.item.data.slug}`">
+						<nuxt-link :to="`/product/${props.item.data._id}`">
 							<img 
-								:src="`${baseUrl}${props.item.data.pictures[0].url}`" 
+								:src="props.item.data.img"
 								alt="product"
-								:width="props.item.data.pictures[0].width"
-								:height="props.item.data.pictures[0].height"
+								:width="400"
+								:height="400"
 							>
 						</nuxt-link>
                     </figure>
                     <div class="product-detail">
-                        <nuxt-link :to="`/product/default/${props.item.data.slug}`" class="product-name">{{ props.item.data.name }}</nuxt-link>
+                        <nuxt-link :to="`/product/default/${props.item.data.name}`" class="product-name">{{ props.item.data.name }}</nuxt-link>
                         <span class="price-box">
                             <span class="product-quantity">{{ props.item.data.qty }}</span>
                             <span class="product-price">${{ props.item.data.price | priceFormat }}</span>
@@ -41,17 +41,11 @@
 </template>
 
 <script>
-import { baseUrl } from '~/api/index';
 
 export default {
 	name: 'Notify',
 	props: {
 		data: Object
-	},
-	data: function() {
-		return {
-			baseUrl: baseUrl
-		};
 	}
 };
 </script>

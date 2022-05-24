@@ -32,21 +32,6 @@ export default {
           name: 'Electronics',
           img: './images/home/categories/6.png',
           subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
         }
       ],
     };

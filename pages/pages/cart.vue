@@ -32,19 +32,19 @@
 									>
 										<td class="product-thumbnail">
 											<figure>
-												<nuxt-link :to="'/product/default/' + item.slug">
+												<nuxt-link :to="'/product/' + item._id">
 													<img
-														:src="`${baseUrl}${item.pictures[0].url}`"
-														:width="100"
-														:height="100"
-														alt="product"
+														:src="item.img"
+														:width="400"
+														:height="400"
+														alt="product-image"
 													/>
 												</nuxt-link>
 											</figure>
 										</td>
 										<td class="product-name">
 											<div class="product-name-section">
-												<nuxt-link :to="'/product/default/' + item.slug">{{item.name}}</nuxt-link>
+												<nuxt-link :to="'/product/' + item._id">{{item.name.slice(30)}}</nuxt-link>
 											</div>
 										</td>
 										<td class="product-subtotal">
@@ -53,7 +53,7 @@
 
 										<td class="product-quantity">
 											<input-quantity
-												:max="item.stock"
+												max="10"
 												:qty="item.qty"
 												@change-qty="qty=> changeQty(qty, item.name)"
 											></input-quantity>

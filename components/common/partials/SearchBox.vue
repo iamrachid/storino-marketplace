@@ -87,7 +87,9 @@ export default {
 		};
 	},
 	created: function () {
-		document.querySelector( 'body' ).addEventListener( 'click', this.onBodyClick );
+    if(process.client){
+      document.querySelector( 'body' ).addEventListener( 'click', this.onBodyClick );
+    }
 	},
 	watch: {
 		$route: function () {

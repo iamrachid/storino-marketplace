@@ -1,39 +1,22 @@
 <template>
-	<sticky-wrapper
-		type="mobile"
-		:breakpoint="768"
-		direction="down"
-		stickyClass="sticky-footer"
-	>
+	<sticky-wrapper type="mobile" :breakpoint="768" direction="down" stickyClass="sticky-footer">
 		<div class="sticky-footer sticky-content fix-bottom">
-			<nuxt-link
-				to="/"
-				class="sticky-link"
-			>
+			<nuxt-link to="/" class="sticky-link">
 				<i class="d-icon-home"></i>
 				<span>Home</span>
 			</nuxt-link>
 
-			<nuxt-link
-				to="/shop"
-				class="sticky-link"
-			>
+			<nuxt-link to="/shop" class="sticky-link">
 				<i class="d-icon-volume"></i>
 				<span>Categories</span>
 			</nuxt-link>
 
-			<nuxt-link
-				to="/pages/wishlist"
-				class="sticky-link"
-			>
+			<nuxt-link to="/pages/wishlist" class="sticky-link">
 				<i class="d-icon-heart"></i>
 				<span>Wishlist</span>
 			</nuxt-link>
 
-			<nuxt-link
-				to="/pages/account"
-				class="sticky-link"
-			>
+			<nuxt-link to="/pages/account" class="sticky-link">
 				<i class="d-icon-user"></i>
 				<span>Account</span>
 			</nuxt-link>

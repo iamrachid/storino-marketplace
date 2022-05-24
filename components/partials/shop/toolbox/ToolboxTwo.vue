@@ -122,20 +122,6 @@
 						<option value="36">36</option>
 					</select>
 				</div>
-				<div class="toolbox-item toolbox-layout">
-					<nuxt-link
-						:to="{query: {...$route.query, type: 'list'}}"
-						class="d-icon-mode-list btn-layout"
-						title="select list type"
-						:class="{active: $route.query.type === 'list'}"
-					></nuxt-link>
-					<nuxt-link
-						:to="{query: {...$route.query, type: 'grid'}}"
-						class="d-icon-mode-grid btn-layout"
-						title="select grid type"
-						:class="{active: $route.query.type !== 'list'}"
-					></nuxt-link>
-				</div>
 			</div>
 		</nav>
 
