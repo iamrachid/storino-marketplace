@@ -363,7 +363,6 @@
 import SwiperCarousel from '~/components/elements/SwiperCarousel';
 import CountUp from '~/components/elements/CountUp';
 
-import { baseUrl } from '~/api';
 import { baseSlider16 } from '~/utils/data/carousel';
 
 export default {
@@ -373,7 +372,6 @@ export default {
 	},
 	data: function () {
 		return {
-			baseUrl: baseUrl,
 			baseSlider16: baseSlider16
 		};
 	}

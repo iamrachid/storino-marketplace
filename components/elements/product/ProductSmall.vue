@@ -5,7 +5,7 @@
 				<img
 					v-for="(item,index) in product.large_pictures.slice(0,2)"
 					:key="`one-large-${index}`"
-					v-lazy="`${baseUrl}${item.url}`"
+					v-lazy="`${item.image.src}`"
 					alt="large-picture"
 					:width="item.width"
 					:height="item.height"
@@ -54,8 +54,6 @@
 </template>
 
 <script>
-import { baseUrl } from '~/api';
-
 export default {
 	props: {
 		product: Object

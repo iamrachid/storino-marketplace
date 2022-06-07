@@ -260,6 +260,7 @@
 												class="custom-checkbox"
 												id="terms-condition"
 												name="terms-condition"
+                        required
 											/>
 											<label
 												class="form-control-label"
@@ -395,7 +396,7 @@ export default {
         this.emptyCart();
         this.setOrder(response.data.result);
       }
-      this.$router.replace('order')
+      this.$router.replace('thankyou')
     },
     async getCountries(){
       const response = await Api.get(`${ baseUrl }/countries`);

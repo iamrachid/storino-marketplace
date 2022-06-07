@@ -59,7 +59,6 @@
 
 <script>
 import ProductTwo from '~/components/elements/product/ProductTwo';
-import Api, {baseUrl, currentDemo} from "~/api";
 import axios from "axios";
 
 export default {

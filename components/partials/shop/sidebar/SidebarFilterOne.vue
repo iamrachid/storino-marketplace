@@ -37,7 +37,7 @@
 								:to="{query: {category: item.slug, type: $route.query.type}}"
 								:class="{active: item.slug === $route.query.category}"
 							>
-								{{ item.name }} ({{ item. count }})
+								{{ item.name }}
 								<i
 									class="fas fa-chevron-down"
 									v-if="item.children"

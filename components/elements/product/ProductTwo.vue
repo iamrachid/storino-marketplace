@@ -60,7 +60,7 @@
 		<div class="product-details">
 
 			<h3 class="product-name">
-				<nuxt-link :to="'/product/' + product.slug">{{ product.name }}</nuxt-link>
+				<nuxt-link :to="'/product/' + product._id">{{ product.name }}</nuxt-link>
 			</h3>
 
 			<div class="product-price">
@@ -88,7 +88,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { baseUrl } from '~/api';
 
 export default {
 	props: {

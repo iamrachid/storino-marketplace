@@ -87,14 +87,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { baseUrl } from '~/api/index';
-
 export default {
-	data: function () {
-		return {
-			baseUrl: baseUrl
-		};
-	},
 	computed: {
 		...mapGetters( 'cart', [ 'cartList', 'totalCount', 'totalPrice' ] )
 	},

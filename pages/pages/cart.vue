@@ -274,7 +274,6 @@ import Sticky from 'vue-sticky-directive';
 
 import InputQuantity from '~/components/elements/InputQuantity';
 
-import { baseUrl } from '~/api';
 
 export default {
 	components: {
@@ -286,7 +285,6 @@ export default {
 	data: function () {
 		return {
 			isSticky: false,
-			baseUrl: baseUrl,
 			cartItems: [],
 			isChanged: false
 		};

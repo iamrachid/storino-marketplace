@@ -134,7 +134,6 @@ import SwiperCarousel from '~/components/elements/SwiperCarousel';
 import ProductSmall from '~/components/elements/product/ProductSmall';
 import PostSix from '~/components/elements/post/PostSix';
 
-import Api, { baseUrl, currentDemo } from '~/api';
 import { baseSlider4 } from '~/utils/data/carousel';
 
 export default {
@@ -180,19 +179,6 @@ export default {
 		window.removeEventListener( 'resize', this.resizeHandler );
 	},
 	methods: {
-		getBlog: function () {
-			let params = {
-				only_data: true
-			};
-
-			Api.get( `${ baseUrl }/demo-${ currentDemo }/shop/sidebar`, {
-				params: params
-			} )
-				.then( response => {
-					this.featured = response.data.featured;
-				} )
-				.catch( error => ( { error: JSON.stringify( error ) } ) );
-		},
 		sidebarToggleHandler: function () {
 			document
 				.querySelector( 'body' )

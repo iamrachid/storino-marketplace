@@ -135,7 +135,6 @@ export default {
 				.then( response => {
 					this.products = response.data.result;
 					this.total = response.data.paginate.total;
-          //fixme
 					this.totalPage = parseInt( this.total / this.perPage ) + ( this.total % this.perPage ? 1 : 0 );
 				} )
 				.catch( error => ( { error: JSON.stringify( error ) } ) );
