@@ -6,12 +6,13 @@
 
     <div class="row">
 <!--      TODO Index to be removed in v-for & in :key-->
-      <category-item v-for="(category, index) in categories" :key="category.name+index" :category="category.name" :img="category.img" :sub-categories="category.subcategories"></category-item>
+      <category-item v-for="(category, index) in categories" :key="+index" :category="category"></category-item>
     </div>
   </section>
 </template>
 <script>
 import CategoryItem from "~/components/elements/category/CategoryItem";
+import Api, { baseUrl } from "~/api/api";
 export default {
   name: 'CategorySection',
   components: { CategoryItem },
@@ -19,22 +20,116 @@ export default {
     return {
       categories: [
         {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
+          "parents": [],
+          "children": [
+            {
+              "slug": "fashion:women-fashion",
+              "name": "Women Fashion"
+            },
+            {
+              "slug": "fashion:men-fashion",
+              "name": "Men Fashion"
+            },
+            {
+              "slug": "fashion:kids-fashion",
+              "name": "Kids Fashion"
+            }
+          ],
+          "_id": "62a4990a958aa634e7c6c5dd",
+          "name": "Fashion",
+          "slug": "fashion",
+          "level": 0,
+          banner: ''
         },
         {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
+          "parents": [],
+          "children": [
+            {
+              "slug": "informatique:computer",
+              "name": "computer"
+            },
+            {
+              "slug": "informatique:storage",
+              "name": "Storage"
+            },
+            {
+              "slug": "informatique:network",
+              "name": "Network"
+            },
+            {
+              "slug": "informatique:computer-parts",
+              "name": "Computer Parts"
+            },
+            {
+              "slug": "informatique:accessories",
+              "name": "Accessories"
+            },
+            {
+              "slug": "informatique:other",
+              "name": "Other"
+            }
+          ],
+          "_id": "62a49918958aa634e7c6c617",
+          "name": "Informatique",
+          "slug": "informatique",
+          "level": 0
         },
         {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
+          "parents": [],
+          "children": [
+            {
+              "slug": "sport-and-fitness:bikes-and-cycling",
+              "name": "Bikes & Cycling"
+            },
+            {
+              "slug": "sport-and-fitness:hike-and-camping",
+              "name": "Hike & Camping"
+            },
+            {
+              "slug": "sport-and-fitness:exercices-and-fitness",
+              "name": "Exercices & Fitness"
+            },
+            {
+              "slug": "sport-and-fitness:water-sport",
+              "name": "Water Sport"
+            },
+            {
+              "slug": "sport-and-fitness:kayaking",
+              "name": "Kayaking"
+            },
+            {
+              "slug": "sport-and-fitness:surfing",
+              "name": "Surfing"
+            },
+            {
+              "slug": "sport-and-fitness:swimming",
+              "name": "Swimming"
+            },
+            {
+              "slug": "sport-and-fitness:sailing",
+              "name": "Sailing"
+            },
+            {
+              "slug": "sport-and-fitness:beach",
+              "name": "Beach"
+            }
+          ],
+          "_id": "62a4991a958aa634e7c6c628",
+          "name": "Sport & Fitness",
+          "slug": "sport-and-fitness",
+          "level": 0
         }
       ],
     };
   },
+  methods: {
+    async getTopCategories(){
+      const url = baseUrl + '/config/top';
+      // this.banner = (await Api.get(url)).data.result.top;
+    },
+  },
+  async fetch() {
+    await this.getTopCategories();
+  }
 };
 </script>

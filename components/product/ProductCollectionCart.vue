@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="banner col-12 col-xs-6 mb-0" style="background-image: url(/images/home/banner/3.jpg); background-color: #ebebeb;">
+      <div class="banner col-12 col-xs-6 mb-0" :style="'background-image: url(' + category.banner + '); background-color: #ebebeb;'">
 
         <div class="banner-content appear-animate" v-animate data-animation-options="{ 'name': 'fadeInUpShorter', 'delay': '.4s'}" >
           <h4 class="banner-subtitle mb-2 ls-s font-weight-normal">
@@ -74,14 +74,14 @@ export default {
   },
   async fetch() {
     this.products = [];
-    const category = await axios.get(`http://localhost:3000/category/${this.categorySearch}`);
-    this.category = category.data.result[0];
+    const category = await axios.get(`http://localhost:3000/category/${this.categorySearch}?limit=0`);
+    this.category = category.data.result;
     const products = await axios.get(`http://localhost:3000/category/${this.categorySearch}/products?limit=6`);
     this.products = products.data.result;
   },
   data() {
     return {
-      category: Object,
+      category: {},
       products: Array,
     };
   },

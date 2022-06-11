@@ -5,26 +5,26 @@
       data-animation-options="{'name': 'fadeIn'}"
       v-animate
     >
-      <nuxt-link :to="{ path: '/shop', query: { category: urlify(category) } }">
+      <nuxt-link :to="{ path: '/shop', query: { category: category.slug } }">
         <figure class="category-media">
-          <img v-lazy="img" alt="category" width="190" height="169" />
+          <img v-lazy="category.banner" alt="category" width="190" height="169" />
         </figure>
       </nuxt-link>
       <div class="category-content px-2">
         <h4 class="category-name">
           <nuxt-link
-            :to="{ path: '/shop', query: { category: urlify(category) } }"
-            >{{ category }}</nuxt-link
+            :to="{ path: '/shop', query: { category: category.slug } }"
+            >{{ category.name }}</nuxt-link
           >
         </h4>
-        <ul v-if="!!subCategories" class="category-list">
-          <li v-for="category in subCategories">
+        <ul v-if="!!category.children" class="category-list">
+          <li v-for="(sub, index) in category.children" v-if="index < 5">
             <nuxt-link
               :to="{
                 path: '/shop',
-                query: { category: urlify(category) },
+                query: { category: sub.slug },
               }"
-              >{{ category }}</nuxt-link
+              >{{ sub.name }}</nuxt-link
             >
           </li>
         </ul>
@@ -38,7 +38,7 @@ let slugify = require('slugify');
 
 export default {
   name: 'CategoryItem',
-  props: ['img', 'category', 'subCategories'],
+  props: ['category'],
   methods: {
     urlify(text) {
       return slugify(text).toLowerCase();
