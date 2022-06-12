@@ -88,21 +88,6 @@
 								</button>
 							</div>
 
-							<div class="cart-coupon-box mb-8">
-								<h4 class="title coupon-title text-uppercase ls-m">Coupon Discount</h4>
-								<input
-									type="text"
-									name="coupon_code"
-									aria-label="input coupon"
-									class="input-text form-control text-grey ls-m mb-4"
-									id="coupon_code"
-									placeholder="Enter coupon code here..."
-								/>
-								<button
-									type="submit"
-									class="btn btn-md btn-dark btn-rounded btn-outline"
-								>Apply Coupon</button>
-							</div>
 						</div>
 
 						<aside
