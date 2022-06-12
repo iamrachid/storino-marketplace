@@ -10,7 +10,7 @@
 		>
 			<div class="cart-label d-lg-show ls-normal">
 				<span class="cart-name ls-m">Shopping Cart:</span>
-				<span class="cart-price">${{ totalPrice | priceFormat }}</span>
+				<span class="cart-price">{{ totalPrice | priceFormat }} MAD</span>
 			</div>
 			<i class="d-icon-bag"><span class="cart-count">{{totalCount}}</span></i>
 		</a>
@@ -54,7 +54,7 @@
 							>{{ item.name }}</nuxt-link>
 							<div class="price-box">
 								<span class="product-quantity">{{ item.qty }}</span>
-								<span class="product-price">${{ item.price | priceFormat }}</span>
+								<span class="product-price">{{ item.price | priceFormat }}MAD</span>
 							</div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@
 
 				<div class="cart-total">
 					<label>Subtotal:</label>
-					<span class="price">${{ totalPrice | priceFormat }}</span>
+					<span class="price">{{ totalPrice | priceFormat }}MAD</span>
 				</div>
 
 				<div class="cart-action">

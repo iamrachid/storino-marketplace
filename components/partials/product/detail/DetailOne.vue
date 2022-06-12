@@ -19,14 +19,14 @@
 
     <div class="product-price">
       <template v-if="product2.type === 'simple' ">
-        <ins class="new-price">${{ product2.price.salePrice | priceFormat }}</ins>
-        <del class="old-price">${{ product2.price.comparePrice | priceFormat }}</del>
+        <ins class="new-price">{{ product2.price.salePrice | priceFormat }}MAD</ins>
+        <del class="old-price" v-if="product2.price.comparePrice != 0 & product2.price.comparePrice != product2.price.salePrice">{{ product2.price.comparePrice | priceFormat }}MAD</del>
       </template>
       <template v-else-if="this.minPrice === this.maxPrice">
-        <ins class="new-price">${{ this.minPrice | priceFormat }}</ins>
+        <ins class="new-price">{{ this.minPrice | priceFormat }}MAD</ins>
       </template>
       <template v-else>
-        <ins class="new-price">${{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}</ins>
+        <ins class="new-price">{{ this.minPrice | priceFormat }}MAD &ndash; {{ this.maxPrice | priceFormat }}MAD</ins>
       </template>
     </div>
 

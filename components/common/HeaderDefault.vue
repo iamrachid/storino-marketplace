@@ -76,22 +76,10 @@
 
 				<div class="d-flex align-items-center ml-auto">
 					<div class="dropdown currency-dropdown mr-4 ls-normal">
-						<a href="#" @click.prevent="">USD</a>
+						<a href="#" @click.prevent="">MAD</a>
 						<ul class="dropdown-box">
-							<li><a href="#">USD</a></li>
-							<li><a href="#">EUR</a></li>
-						</ul>
-					</div>
-
-					<div class="dropdown language-dropdown ls-normal">
-						<a href="#">ENG</a>
-						<ul class="dropdown-box">
-							<li>
-								<a href="#">ENG</a>
-							</li>
-							<li>
-								<a href="#">FRH</a>
-							</li>
+							<li><a href="#">MAD</a></li>
+							<li><a href="#">$</a></li>
 						</ul>
 					</div>
 				</div>
