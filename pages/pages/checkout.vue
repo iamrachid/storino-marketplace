@@ -17,17 +17,6 @@
 						class="card"
 						:is-opened="false"
 					>
-						<template v-slot:header>
-							<div class="alert alert-light alert-primary alert-icon mb-4 card-header">
-								<i class='fas fa-exclamation-circle'></i>
-								<span class='text-body'>Have a coupon?</span>
-								<a
-									href='javascript:;'
-									class='text-primary'
-								>Click here to enter your code</a>
-							</div>
-						</template>
-
 						<div class="alert-body mb-4">
 							<p>If you have a coupon code, please apply it below.</p>
 							<form class="check-coupon-box d-flex">
@@ -176,7 +165,7 @@
 													v-for="(item) in cartList"
 												>
 													<td class="product-name">{{ item.name }} <span class="product-quantity"> ×&nbsp; {{ item.qty }}</span></td>
-													<td class="product-total text-body">${{ item.qty * item.price | priceFormat }}</td>
+													<td class="product-total text-body">{{ item.qty * item.price | priceFormat }}MAD</td>
 												</tr>
 
 												<tr class="summary-subtotal">
@@ -184,7 +173,7 @@
 														<h4 class="summary-subtitle">Subtotal</h4>
 													</td>
 													<td class="summary-subtotal-price pb-0 pt-0">
-														${{ totalPrice | priceFormat }}
+														{{ totalPrice | priceFormat }}MAD
 													</td>
 												</tr>
 
@@ -210,7 +199,7 @@
   <!--                                  <span>{{item.price}}</span>-->
                                   </div>
                                 </td>
-                                <td>{{item.price | priceFormat}}</td>
+                                <td>{{item.price | priceFormat}}MAD</td>
                               </tr>
 														</table>
 													</td>
@@ -220,7 +209,7 @@
 														<h4 class="summary-subtitle">Total</h4>
 													</td>
 													<td class=" pt-0 pb-0">
-														<p class="summary-total-price ls-s text-primary">${{ totalPrice | priceFormat }}</p>
+														<p class="summary-total-price ls-s text-primary">{{ totalOrder | priceFormat }}MAD</p>
 													</td>
 												</tr>
 											</tbody>
@@ -363,6 +352,9 @@ export default {
         details.push(detail);
       })
       return details;
+    },
+    totalOrder() {
+      return this.totalPrice + (this.shipping.shipper.price || 0 )
     }
 	},
 	mounted: function () {
