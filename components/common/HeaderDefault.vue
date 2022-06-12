@@ -33,11 +33,10 @@
 							class="icon-box icon-box-side"
 						>
 							<div class="icon-box-icon">
-								<i class="d-icon-phone"></i>
+								<i class="d-icon-truck"></i>
 							</div>
 							<div class="icon-box-content d-lg-show">
-								<h4 class="icon-box-title">Call Us Now:</h4>
-								<p>0(800) 123-456</p>
+								<p>Track your order now</p>
 							</div>
 						</a>
 

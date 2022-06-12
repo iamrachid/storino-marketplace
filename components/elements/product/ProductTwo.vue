@@ -2,12 +2,9 @@
 	<div class="product" :class="{'product-variable': product.style === 'variable'}">
 		<figure class="product-media">
 			<nuxt-link :to="`/product/${product._id}`">
-				<img
-					v-lazy="`${product.images[0].src}?height=400`"
-					alt="large-picture"
-					:width="400"
-					:height="400"
-				/>
+				<div
+          :style="{ 'height':'200px','background-image': 'url('+`${product.images[0].src}`+'?height=200)','background-repeat':'no-repeat','background-position-x':'center','background-color':'white'}"
+        ></div>
 			</nuxt-link>
 
 			<div class="product-label-group">
@@ -60,7 +57,7 @@
 		<div class="product-details">
 
 			<h3 class="product-name">
-				<nuxt-link :to="'/product/' + product._id">{{ product.name }}</nuxt-link>
+				<nuxt-link :to="'/product/' + product.slug">{{ product.name }}</nuxt-link>
 			</h3>
 
 			<div class="product-price">
@@ -88,6 +85,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+
 
 export default {
 	props: {
