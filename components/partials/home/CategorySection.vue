@@ -18,7 +18,7 @@ export default {
   components: { CategoryItem },
   data() {
     return {
-      categories: [
+      categories:  [
         {
           "parents": [],
           "children": [
@@ -39,7 +39,8 @@ export default {
           "name": "Fashion",
           "slug": "fashion",
           "level": 0,
-          banner: ''
+          "banner": "https://storeno.b-cdn.net/stores/6-2022/1654988278379.jpeg",
+          "img": "https://storeno.b-cdn.net/stores/6-2022/1654991604715.png"
         },
         {
           "parents": [],
@@ -72,7 +73,9 @@ export default {
           "_id": "62a49918958aa634e7c6c617",
           "name": "Informatique",
           "slug": "informatique",
-          "level": 0
+          "level": 0,
+          "banner": "https://storeno.b-cdn.net/stores/6-2022/1654988984943.jpeg",
+          "img": "https://storeno.b-cdn.net/stores/6-2022/1654991604729.png"
         },
         {
           "parents": [],
@@ -117,7 +120,8 @@ export default {
           "_id": "62a4991a958aa634e7c6c628",
           "name": "Sport & Fitness",
           "slug": "sport-and-fitness",
-          "level": 0
+          "level": 0,
+          "img": "https://storeno.b-cdn.net/stores/6-2022/1654991604599.png"
         }
       ],
     };

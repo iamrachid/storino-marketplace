@@ -7,7 +7,7 @@
     >
       <nuxt-link :to="{ path: '/shop', query: { category: category.slug } }">
         <figure class="category-media">
-          <img v-lazy="category.banner" alt="category" width="190" height="169" />
+          <img v-lazy="category.img" alt="category" width="190" height="169" />
         </figure>
       </nuxt-link>
       <div class="category-content px-2">
