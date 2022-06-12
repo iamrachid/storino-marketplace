@@ -2,7 +2,7 @@
 	<div
 		class="newsletter-popup"
 		id="newsletter-popup"
-		v-lazy:background-image="'./images/newsletter-popup.jpg'"
+		v-lazy:background-image="'https://d-themes.com/vue/riode/demo-22/images/newsletter-popup.jpg'"
 	>
 		<div class="newsletter-content">
 			<h4 class="text-uppercase text-dark">Up to <span class="text-primary">20% Off</span></h4>

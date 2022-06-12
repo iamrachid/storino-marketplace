@@ -20,18 +20,18 @@ export default {
       categories: [
         {
           name: 'Electronics',
-          img: './images/home/categories/6.png',
+          img: 'https://d-themes.com/vue/riode/demo-22/images/home/categories/1.png',
           subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
         },
         {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
+          name: 'Computers',
+          img: 'https://d-themes.com/vue/riode/demo-22/images/home/categories/3.png',
+          subcategories: ['Desktop PCs','Laptops', 'New arrivals', 'Pc Components', 'Pc Gaming']
         },
         {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
+          name: 'Beauty',
+          img: 'https://d-themes.com/vue/riode/demo-22/images/home/categories/5.png',
+          subcategories: ['Hair Care','Makeup', 'Perfumes', 'Skin Care']
         }
       ],
     };
