@@ -17,8 +17,8 @@
             >{{ category.name }}</nuxt-link
           >
         </h4>
-        <ul v-if="!!category.children" class="category-list">
-          <li v-for="(sub, index) in category.children" v-if="index < 5">
+        <ul v-if="!!subcategories" class="category-list">
+          <li v-for="(sub, index) in subcategories" v-if="index < 5">
             <nuxt-link
               :to="{
                 path: '/shop',
@@ -34,16 +34,22 @@
 </template>
 
 <script>
-let slugify = require('slugify');
+import axios from "axios";
 
 export default {
   name: 'CategoryItem',
-  props: ['category'],
-  methods: {
-    urlify(text) {
-      return slugify(text).toLowerCase();
-    },
+  props: ['slug'],
+  data() {
+    return {
+      subcategories: Array,
+      category: Object,
+    }
   },
+  async fetch() {
+    const result = await axios.get(`http://localhost:3000/category/${this.slug}`);
+    this.category = result.data.result;
+    this.subcategories = result.data.result.children;
+  }
 };
 </script>
 

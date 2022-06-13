@@ -24,7 +24,6 @@ export default {
   async fetch() {
     const result = await axios.get(`http://localhost:3000/config/featured`);
     this.categories = result.data.results.featured;
-    console.log(this.categories);
   }
 };
 </script>

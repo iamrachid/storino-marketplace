@@ -5,8 +5,6 @@
 
 			<category-section />
 
-      <!--			<banner-section></banner-section>-->
-
 			<product-collection></product-collection>
 
 			<service-section></service-section>
@@ -19,7 +17,7 @@ import IntroSection from '~/components/partials/home/IntroSection';
 import CategorySection from '~/components/partials/home/CategorySection';
 import ProductCollection from '~/components/partials/home/ProductCollection';
 import ServiceSection from '~/components/partials/home/ServiceSection';
-// import BannerSection from '~/components/partials/home/BannerSection';
+
 
 import { getCookie } from '~/utils';
 
@@ -27,7 +25,6 @@ export default {
 	components: {
 		IntroSection,
 		CategorySection,
-		// BannerSection,
 		ProductCollection,
 		ServiceSection,
 	},
