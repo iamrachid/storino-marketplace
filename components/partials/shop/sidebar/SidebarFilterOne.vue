@@ -190,7 +190,7 @@ export default {
       category: null,
 			categories: [],
 			featured: [],
-			openState: new Array( 100 ).fill( true ),
+			openState: new Array( 100 ).fill( false ),
 			prices: [ 0, 1000 ],
 			priceSettings: {
 				connect: true,
@@ -234,6 +234,7 @@ export default {
 			: 0;
 		this.prices[ 1 ] = this.$route.query.max_price ? parseInt( this.$route.query.max_price ) : 1000;
 		this.resizeHandler();
+    this.openState[0] = true;
 		window.addEventListener( 'resize', this.resizeHandler );
 	},
 	destroyed: function () {

@@ -26,7 +26,7 @@
                         <nuxt-link :to="`/product/default/${props.item.data.name}`" class="product-name">{{ props.item.data.name }}</nuxt-link>
                         <span class="price-box">
                             <span class="product-quantity">{{ props.item.data.qty }}</span>
-                            <span class="product-price">${{ props.item.data.price | priceFormat }}</span>
+                            <span class="product-price">{{ props.item.data.price | priceFormat }}MAD</span>
                         </span>
                     </div>
                 </div>

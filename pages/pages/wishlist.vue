@@ -1,5 +1,5 @@
 <template>
-	<main class="main">
+	<main class="main ">
 		<nav class="breadcrumb-nav">
 			<div class="container">
 				<ul class="breadcrumb">
@@ -235,3 +235,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.main {
+
+  min-height: 58vh;
+}
+
+</style>
