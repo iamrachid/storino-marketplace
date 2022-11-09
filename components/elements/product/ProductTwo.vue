@@ -1,135 +1,83 @@
 <template>
-	<div
-		class="product"
-		:class="{'product-variable': product.variants.length > 0}"
-	>
+	<div class="product" :class="{'product-variable': product.style === 'variable'}">
 		<figure class="product-media">
-			<nuxt-link :to="`/product/default/${product.slug}`">
-				<img
-					v-for="(item,index) in product.large_pictures.slice(0,2)"
-					:key="`one-large-${index}`"
-					v-lazy="`${baseUrl}${item.url}`"
-					alt="large-picture"
-					:width="item.width"
-					:height="item.height"
-					:class="{'last-image': index === 1}"
-				/>
+			<nuxt-link :to="`/product/${product._id}`">
+				<div
+          :style="{ 'height':'200px','background-image': 'url('+`${product.images[0].src}`+'?height=200)','background-repeat':'no-repeat','background-position-x':'center','background-color':'white'}"
+        ></div>
 			</nuxt-link>
 
 			<div class="product-label-group">
-				<div
-					class="product-label label-new"
-					v-if="product.is_new"
-				>New</div>
-				<div
-					class="product-label label-stock"
-					v-if="product.stock === '0'"
-				>Out</div>
-				<div
-					class="product-label label-top"
-					v-if="product.is_top"
-				>Top</div>
-				<div
-					class="product-label label-sale"
-					v-if="product.discount > 0"
-				>
-					<template v-if="product.variants.length > 0">Sale</template>
+				<div class="product-label label-new" v-if="product.is_new">
+          New
+        </div>
+				<div class="product-label label-stock" v-if="product.outStock.hide">
+          Out
+        </div>
+				<div class="product-label label-top" v-if="product.is_top">
+          Top
+        </div>
+				<div class="product-label label-sale" v-if="product.discount > 0">
+					<template v-if="product.variants.length > 0">Discount</template>
 					<template v-else>-{{ product.discount }}%</template>
 				</div>
 			</div>
 
 			<div class="product-action-vertical">
-				<a
-					href="javascript:;"
-					class="btn-product-icon btn-cart"
-					title="Add to cart"
-					v-if="product.variants.length === 0"
-					@click="addCart"
-				><i class="d-icon-bag"></i></a>
 
-				<nuxt-link
-					:to="`/product/default/${product.slug}`"
-					class="btn-product-icon btn-cart"
-					title="Go to detail"
-					v-else
-				><i class="d-icon-arrow-right"></i></nuxt-link>
+				<a href="#" class="btn-product-icon btn-cart"
+					 title="Add to cart" v-if="product.type === 'simple'"
+					 @click.prevent="addCart">
+          <i class="d-icon-bag"></i>
+        </a>
 
-				<a
-					href="javascript:;"
-					class="btn-wishlist btn-product-icon"
-					title="Add to wishlist"
-					@click="wishlistHandler($event)"
-					v-if="!isWishlisted"
-				><i class="d-icon-heart"></i></a>
+				<nuxt-link :to="`/product/${product._id}`" class="btn-product-icon btn-cart"
+					title="Go to detail" v-else>
+          <i class="d-icon-arrow-right"></i>
+        </nuxt-link>
 
-				<a
-					href="javascript:;"
-					class="btn-wishlist btn-product-icon"
-					title='Remove from wishlist'
-					v-if="isWishlisted"
-					@click="wishlistHandler($event)"
-				>
+				<a href="#" class="btn-wishlist btn-product-icon"
+           title="Add to wishlist" v-if="!isWishlisted"
+           @click.prevent="wishlistHandler($event)">
+          <i class="d-icon-heart"></i>
+        </a>
+
+				<a href="#" class="btn-wishlist btn-product-icon"
+           title='Remove from wishlist' v-if="isWishlisted"
+           @click.prevent="wishlistHandler($event)">
 					<i class="d-icon-heart-full"></i>
 				</a>
 			</div>
 
 			<div class="product-action">
-				<a
-					href="#"
-					class="btn-product btn-quickview"
-					title="Quick View"
-					@click.prevent="openQuickview"
-				>Quick View</a>
+				<a href="#" class="btn-product btn-quickview" title="Quick View" @click.prevent="openQuickview">Quick View</a>
 			</div>
 		</figure>
 
 		<div class="product-details">
-			<div
-				class="product-cat"
-				v-if="isCat"
-			>
-				<span
-					v-for="(cat,index) in product.product_categories"
-					:key="`product-category-${index}`"
-				>
-					<nuxt-link :to="{ path: '/shop', query: { category: cat.slug }}">{{ cat.name }}</nuxt-link>
-					<template v-if="index < product.product_categories.length - 1">,</template>
-				</span>
-			</div>
 
 			<h3 class="product-name">
-				<nuxt-link :to="'/product/default/' + product.slug">{{ product.name }}</nuxt-link>
+				<nuxt-link :to="'/product/' + product.slug">{{ product.name }}</nuxt-link>
 			</h3>
 
 			<div class="product-price">
-				<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-					<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
+				<template v-if="product.type === 'simple' ">
+          <ins class="new-price">{{ product.price.salePrice | priceFormat }}MAD</ins>
+          <del class="old-price" v-if="product.price.comparePrice != 0 & product.price.comparePrice != product.price.salePrice">{{ product.price.comparePrice | priceFormat }}MAD</del>
 				</template>
-
-				<template v-else>
-					<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-						<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-					</template>
-
-					<template v-else>
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-					</template>
-				</template>
+        <template v-else-if="this.minPrice === this.maxPrice">
+          <ins class="new-price">{{ this.minPrice | priceFormat }}MAD</ins>
+        </template>
+        <template v-else>
+          <ins class="new-price">{{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}MAD</ins>
+        </template>
 			</div>
 
 			<div class="ratings-container">
 				<div class="ratings-full">
-					<span
-						class="ratings"
-						:style="{width: product.ratings * 20 + '%'}"
-					></span>
-					<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
+					<span class="ratings" :style="{width: product.review.rating * 20 + '%'}"></span>
 				</div>
-				<a
-					href="javascript:;"
-					class="rating-reviews"
-				>( {{ product.reviews }} reviews )</a>
+				<p class="rating-reviews">( {{ product.review.reviews.length  }} reviews )</p>
 			</div>
 		</div>
 	</div>
@@ -137,24 +85,29 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { baseUrl } from '~/api';
+
 
 export default {
 	props: {
 		product: Object,
-		isCat: true
 	},
-	data: function () {
-		return {
-			baseUrl: baseUrl
-		};
-	},
-	computed: {
+  data() {
+    return {
+      maxPrice: 0,
+      minPrice: 1e10,
+    };
+  },
+  mounted() {
+    // console.log(this.product);
+    this.product.variants.forEach(option => {
+      if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
+      if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
+    });
+  },
+  computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
 		isWishlisted: function () {
-			if ( this.wishList.find( item => item.name === this.product.name ) )
-				return true;
-			return false;
+			return !!this.wishList.find(item => item.id === this.product._id);
 		}
 	},
 	methods: {
@@ -166,30 +119,53 @@ export default {
 
 			setTimeout( () => {
 				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
-				this.toggleWishlist( this.product );
+				this.toggleWishlist({id: this.product._id} );
 			}, 1000 );
 		},
+
 		addCart: function () {
-			if ( this.product.stock > 0 ) {
-				let saledProduct = {
-					...this.product,
-					price: this.product.display_price[ 0 ]
-				};
-				this.addToCart( { product: saledProduct } );
-			}
-		},
+      if ( this.product.type === 'simple' ) {
+        const name = this.product.name;
+        const type = this.product.type;
+        const price = this.product.price.salePrice;
+        const qty = this.quantity;
+        const img = this.product.images[0].src;
+        const _id = this.product._id;
+
+        this.addToCart( {
+          product: {
+            _id,
+            img,
+            name,
+            price,
+            qty,
+            type,
+          }
+        } );
+      }
+    },
+
 		openQuickview: function () {
 			this.$modal.show(
 				() => import( '~/components/elements/modal/QuickView' ),
-				{ slug: this.product.slug },
+				{ _id: this.product._id },
 				{
 					width: '988',
 					height: 'auto',
 					adaptive: true,
 					class: 'quickview-modal scrollable'
-				}
+				},{
+            'before-open': this.beforeOpen,
+            'before-close': this.beforeClose
+        }
 			);
-		}
+		},
+    beforeOpen (event) {
+      //TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE
+    },
+    beforeClose (event) {
+      //TODO NEEDS SOMETHING THAT DOESN'T CHANGE THE ROUTE
+    }
 	}
 };
 </script>

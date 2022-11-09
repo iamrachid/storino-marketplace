@@ -25,7 +25,6 @@
 		</div>
 
 		<footer-default></footer-default>
-		<scroll-top-button></scroll-top-button>
 		<mobile-menu></mobile-menu>
 		<footer-sticky></footer-sticky>
 	</div>
@@ -36,7 +35,6 @@ import HeaderDefault from '~/components/common/HeaderDefault';
 import FooterDefault from '~/components/common/FooterDefault';
 import FooterSticky from '~/components/common/FooterSticky';
 import MobileMenu from '~/components/common/MobileMenu';
-import ScrollTopButton from '~/components/common/ScrollTopButton';
 
 export default {
 	layout: 'layout-blank',
@@ -44,7 +42,6 @@ export default {
 		HeaderDefault,
 		FooterDefault,
 		FooterSticky,
-		ScrollTopButton,
 		MobileMenu
 	},
 	mounted: function () {

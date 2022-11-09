@@ -5,51 +5,25 @@
     </h2>
 
     <div class="row">
-<!--      TODO Index to be removed in v-for & in :key-->
-      <category-item v-for="(category, index) in categories" :key="category.name+index" :category="category.name" :img="category.img" :sub-categories="category.subcategories"></category-item>
+      <category-item v-for="category in categories" :key="category.slug" :slug="category.slug"/>
     </div>
   </section>
 </template>
 <script>
 import CategoryItem from "~/components/elements/category/CategoryItem";
+import Api, { baseUrl } from "~/api/api";
+import axios from "axios";
 export default {
   name: 'CategorySection',
   components: { CategoryItem },
   data() {
     return {
-      categories: [
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        },
-        {
-          name: 'Electronics',
-          img: './images/home/categories/6.png',
-          subcategories: ['Air Conditioners','Machines', 'Musical Instruments', 'Office Electronics', 'Televisions']
-        }
-      ],
+      categories:  Array,
     };
   },
+  async fetch() {
+    const result = await axios.get(`http://localhost:3000/config/top`);
+    this.categories = result.data.results.top;
+  }
 };
 </script>

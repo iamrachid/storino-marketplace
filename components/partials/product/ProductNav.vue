@@ -8,7 +8,7 @@
 				<i class="d-icon-arrow-left"></i> Prev
 				<span class="product-nav-popup">
 					<img
-						:src="`${baseUrl}${prev.pictures[0].url}`"
+						:src="`${prev.pictures[0].url}`"
 						alt="prev"
 						width="110"
 						height="123"
@@ -29,7 +29,7 @@
 				Next <i class="d-icon-arrow-right"></i>
 				<span class="product-nav-popup">
 					<img
-						:src="`${baseUrl}${next.pictures[0].url}`"
+						:src="`${next.pictures[0].url}`"
 						alt="product thumbnail"
 						width="110"
 						height="123"
@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { baseUrl } from '~/api';
 
 export default {
 	props: {
@@ -51,7 +50,6 @@ export default {
 	},
 	data: function() {
 		return {
-			baseUrl: baseUrl,
 			type: 'default'
 		};
 	},

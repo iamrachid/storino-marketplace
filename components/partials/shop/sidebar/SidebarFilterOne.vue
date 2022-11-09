@@ -1,51 +1,29 @@
 <template>
 	<aside :class="`col-lg-3 sidebar-fixed sidebar-toggle-remain shop-sidebar sticky-sidebar-wrapper ${sidebarClass}`">
-		<div
-			class="sidebar-overlay"
-			@click="hideSidebar"
-		></div>
-		<a
-			class="sidebar-close"
-			href="#"
-			@click.prevent="hideSidebar"
-		><i class="d-icon-times"></i></a>
+		<div class="sidebar-overlay" @click="hideSidebar">
+      Hide
+    </div>
+		<a class="sidebar-close" @click.prevent="hideSidebar">
+      <i class="d-icon-times" />
+    </a>
 
-		<div
-			class="widget-2 mt-5 d-lg-show"
-			v-if="!loaded"
-			key="sidebar-content-skel"
-		>
-		</div>
+		<div class="widget-2 mt-5 d-lg-show" v-if="!loaded" key="sidebar-content-skel" />
 
-		<div
-			class="sidebar-content"
-			v-sticky="isSticky"
-			v-else
-			sticky-offset="{top: 0}"
-			ref="stickySidebar"
-		>
-			<div
-				class="filter-actions mb-4"
-				v-if="showFilterButton"
-			>
-				<a
-					href="#"
-					@click.prevent="toggleSidebar($event)"
-					class="sidebar-toggle-btn toggle-remain btn btn-outline btn-primary btn-icon-right btn-rounded"
-				>Filter<i :class="sidebarClass === 'right-sidebar'? 'd-icon-arrow-right': 'd-icon-arrow-left'"></i></a>
-				<nuxt-link
-					:to="{path: $route.path, query: $route.query.type ? {type: $route.query.type } : null}"
-					class="filter-clean"
-				>Clean All</nuxt-link>
+		<div class="sidebar-content" v-else>
+			<div class="filter-actions mb-4" v-if="showFilterButton">
+				<a href="#" @click.prevent="toggleSidebar($event)"
+					class="sidebar-toggle-btn toggle-remain btn btn-outline btn-primary btn-icon-right btn-rounded">
+          Filter<i :class="sidebarClass === 'right-sidebar'? 'd-icon-arrow-right': 'd-icon-arrow-left'" />
+        </a>
+				<nuxt-link :to="{path: $route.path, query: $route.query.type ? {type: $route.query.type } : null}"
+					class="filter-clean">
+          Clean All
+        </nuxt-link>
 			</div>
 
-			<div :class="`widget widget-collapsible ${ !isSticky && !showFilterButton ? 'border-no' : ''}`">
-				<h3
-					class="widget-title"
-					@click="toggleState(0)"
-					:class="{'collapsed': !openState[0]}"
-				>
-					All Categories<span class="toggle-btn"></span>
+			<div :class="`widget widget-collapsible ${!showFilterButton ? 'border-no' : ''}`">
+				<h3 class="widget-title" @click="toggleState(0)" :class="{'collapsed': !openState[0]}">
+					All Categories<span class="toggle-btn"/>
 				</h3>
 
 				<vue-slide-toggle :open="openState[0]">
@@ -59,7 +37,7 @@
 								:to="{query: {category: item.slug, type: $route.query.type}}"
 								:class="{active: item.slug === $route.query.category}"
 							>
-								{{ item.name }} ({{ item. count }})
+								{{ item.name }}
 								<i
 									class="fas fa-chevron-down"
 									v-if="item.children"
@@ -171,11 +149,8 @@
 
 				<vue-slide-toggle :open="openState[4]">
 					<ul class="widget-body filter-items">
-						<li
-							v-for="(item,index) in shopBrands"
-							:key="'brand-filter' + index"
-							:class="{active: isActivedBrand(item)}"
-						>
+						<li v-for="(item,index) in shopBrands" :key="'brand-filter' + index"
+							:class="{active: isActivedBrand(item)}">
 							<nuxt-link :to="brandFilterRoute(item)">{{ item.name }}</nuxt-link>
 						</li>
 					</ul>
@@ -188,20 +163,17 @@
 <script>
 import { VueSlideToggle } from 'vue-slide-toggle';
 import { VueTreeList, Tree } from 'vue-tree-list';
-import Sticky from 'vue-sticky-directive';
+
 
 import { scrollHandler } from '~/utils';
 
-import Api, { baseUrl, currentDemo } from '~/api';
+import Api, { baseUrl, currentDemo } from '~/api/api';
 import { shopColors, shopSizes, shopBrands } from '~/utils/data/shop';
 
 export default {
 	components: {
 		VueSlideToggle,
 		VueTreeList
-	},
-	directives: {
-		Sticky
 	},
 	props: {
 		sidebarClass: {
@@ -215,9 +187,10 @@ export default {
 	},
 	data: function () {
 		return {
+      category: null,
 			categories: [],
 			featured: [],
-			openState: new Array( 100 ).fill( true ),
+			openState: new Array( 100 ).fill( false ),
 			prices: [ 0, 1000 ],
 			priceSettings: {
 				connect: true,
@@ -237,7 +210,6 @@ export default {
 			shopBrands: shopBrands,
 			priceReset: true,
 			loaded: false,
-			isSticky: true
 		};
 	},
 	watch: {
@@ -262,22 +234,40 @@ export default {
 			: 0;
 		this.prices[ 1 ] = this.$route.query.max_price ? parseInt( this.$route.query.max_price ) : 1000;
 		this.resizeHandler();
+    this.openState[0] = true;
 		window.addEventListener( 'resize', this.resizeHandler );
 	},
 	destroyed: function () {
 		window.removeEventListener( 'resize', this.resizeHandler );
 	},
-	mounted: function () {
-		Api.get( `${ baseUrl }/demo-${ currentDemo }/shop/sidebar` )
-			.then( response => {
-				this.categories = response.data.categories;
-				this.featured = response.data.featured;
-				this.loaded = true;
-			} )
-			.catch( error => ( { error: JSON.stringify( error ) } ) );
-	},
 	methods: {
-		toggleSidebar: function ( e ) {
+    getCategories() {
+      if (!this.$route.query.category)
+      {
+        this.category = 'level=0';
+        Api.get( `${ baseUrl }/category?${this.category}` )
+            .then( response => {
+              console.log(response.data);
+              response.data.result.forEach(category => this.categories.push(category));
+              this.categories = response.data.result[0].children;
+              console.log(this.categories);
+              this.loaded = true;
+            } )
+            .catch( error => ( { error: JSON.stringify( error ) } ) );
+      }
+      else {
+        this.category = 'slug=' + this.$route.query.category;
+        Api.get( `${ baseUrl }/category?${this.category}` )
+            .then( response => {
+              console.log(response.data);
+              this.categories = response.data.result[0].children;
+              console.log(this.categories);
+              this.loaded = true;
+            } )
+            .catch( error => ( { error: JSON.stringify( error ) } ) );
+      }
+    },
+    toggleSidebar: function ( e ) {
 			if ( window.innerWidth > 991 ) {
 				e.currentTarget.closest( '.shop-sidebar' ).classList.toggle( 'closed' );
 
@@ -293,14 +283,6 @@ export default {
 			let temp = [ ...this.openState ];
 			temp[ index ] = !temp[ index ];
 			this.openState = temp;
-			window.width > 991 &&
-				this.$nextTick( () => {
-					setTimeout( () => {
-						this.$refs.stickySidebar[
-							'@@vue-sticky-directive'
-						].update();
-					}, 140 );
-				} );
 		},
 		sizeFilterRoute: function ( item ) {
 			let selectedSizes = this.$route.query.sizes
@@ -381,7 +363,6 @@ export default {
 			);
 		},
 		resizeHandler: function () {
-			this.isSticky = window.innerWidth > 991 ? true : false;
 			window.innerWidth > 991 && this.hideSidebar();
 		},
 		hideSidebar: function () {
@@ -395,6 +376,9 @@ export default {
 					.classList.remove( 'sidebar-active' );
 			}
 		}
-	}
+	},
+  async fetch() {
+    this.getCategories()
+  }
 };
 </script>

@@ -1,9 +1,6 @@
 <template>
 	<div class="product-details">
-		<div
-			class="product-navigation"
-			v-if="showNav"
-		>
+		<div class="product-navigation" v-if="showNav">
 			<ul class="breadcrumb breadcrumb-lg">
 				<li>
 					<nuxt-link
@@ -11,161 +8,73 @@
 						to="/"
 					><i class="d-icon-home"></i></nuxt-link>
 				</li>
-				<li><a
-						href="javascript:;"
-						class="active"
-					>Products</a></li>
+				<li>
+          <a href="javascript:;" class="active">Products</a></li>
 				<li>Detail</li>
+
 			</ul>
-
-			<product-nav
-				:next="next"
-				:prev="prev"
-			></product-nav>
 		</div>
 
-		<h2 class="product-name">{{ product.name }}</h2>
+		<h2 class="product-name">{{ product2.name }}</h2>
 
-		<div class='product-meta'>
-			{{product.sku ? 'SKU:' : ''}} <span class='product-sku'>{{ product.sku }}</span>
-			CATEGORIES: <span class='product-brand'>
-				<span
-					v-for="(item, index) in product.product_categories"
-					:key="`category-${item.slug}`"
-				>
-					<nuxt-link :to="{path:'/shop', query:{category: item.slug}}">
-						{{ item.name }}
-					</nuxt-link>
-					<template v-if="index < product.product_categories.length - 1">,</template>
-				</span>
-			</span>
-		</div>
-
-		<div class="product-price">
-			<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-				<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
-			</template>
-
-			<template v-else>
-				<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-					<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-					<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-				</template>
-
-				<template v-else>
-					<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-				</template>
-			</template>
-		</div>
-
-		<template v-if="product.discount > 0">
-			<count-down
-				class="product-countdown-container font-weight-semi-bold"
-				until='2021-12-31'
-				:type="2"
-			></count-down>
-		</template>
+    <div class="product-price">
+      <template v-if="product2.type === 'simple' ">
+        <ins class="new-price">{{ product2.price.salePrice | priceFormat }}MAD</ins>
+        <del class="old-price" v-if="product2.price.comparePrice != 0 & product2.price.comparePrice != product2.price.salePrice">{{ product2.price.comparePrice | priceFormat }}MAD</del>
+      </template>
+      <template v-else-if="this.minPrice === this.maxPrice">
+        <ins class="new-price">{{ this.minPrice | priceFormat }}MAD</ins>
+      </template>
+      <template v-else>
+        <ins class="new-price">{{ this.minPrice | priceFormat }}MAD &ndash; {{ this.maxPrice | priceFormat }}MAD</ins>
+      </template>
+    </div>
 
 		<div class="ratings-container">
 			<div class="ratings-full">
 				<span
 					class="ratings"
-					:style="{width: product.ratings * 20 + '%'}"
+					:style="{width: product2.review.rating * 20 + '%'}"
 				></span>
-				<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
+				<span class="tooltiptext tooltip-top">{{ product2.review.rating | priceFormat }}</span>
 			</div>
 			<a
 				href="javascript:;"
 				class="rating-reviews"
-			>( {{ product.reviews }} reviews )</a>
+			>( {{ product2.review.reviews.length }} reviews )</a>
 		</div>
 
-		<p class="product-short-desc">{{ product.short_description }}</p>
+		<p class="product-short-desc">{{ product2.description }}</p>
 
-		<div
-			class="product-form product-variations product-color"
-			v-if="vColors.length > 0"
-		>
-			<label>Color:</label>
+		<div class="product-form product-variations product-color" v-for="(option,i) in product2.options">
+			<label>{{ option.name }} :</label>
 
 			<div class="select-box">
 				<select
-					name="color"
 					class="form-control"
 					aria-label="color-select-box"
-					v-model="curColor"
+					v-model="options['option'+i]"
 				>
-					<option :value="null">Choose an Option</option>
+					<option value="" selected >Choose an Option</option>
 
 					<option
-						:value="item.name"
-						:key="`color-${item.name}`"
-						v-for="item in displayColors"
-					>{{ item.name }}</option>
+						:value="item._id"
+						:key='item._id'
+						v-for="item in option.values"
+					>{{ item.value1 }}</option>
 				</select>
 			</div>
 		</div>
 
-		<div
-			class="product-form product-variations product-size"
-			v-if="vSizes.length > 0"
-		>
-			<label>Size:</label>
 
-			<div class="product-form-group">
-				<div class="select-box">
-					<select
-						name="size"
-						class="form-control"
-						aria-label="size-select-box"
-						v-model="curSize"
-					>
-						<option :value="null">Choose an Option</option>
-
-						<option
-							:value="item.name"
-							:key="`size-${item.name}`"
-							v-for="item in displaySizes"
-						>{{ item.name }}</option>
-					</select>
-				</div>
-
-				<vue-slide-toggle
-					:open="curColor !== null || curSize !== null"
-					class="overflow-hidden reset-value-button w-100 mb-0"
-				>
-					<a
-						href="#"
-						@click.prevent="cleanAll"
-						class="product-variation-clean"
-					>Clean All</a>
-				</vue-slide-toggle>
-			</div>
-		</div>
-
-		<vue-slide-toggle :open="curIndex > -1">
-			<div
-				class="product-variation-price"
-				v-if="curIndex > -1"
-			>
-				<div
-					class="single-product-price"
-					v-if="product.variants[curIndex].price"
-				>
+		<vue-slide-toggle :open="currentVariant !== null">
+			<div class="product-variation-price" v-if="currentVariant !== null">
+				<div class="single-product-price">
 					<div
 						class="product-price"
-						v-if="product.variants[curIndex].sale_price"
 						key="sale_price"
 					>
-						<ins class="new-price">${{ product.variants[curIndex].sale_price | priceFormat }}</ins>
-						<del class="old-price">${{ product.variants[curIndex].price | priceFormat }}</del>
-					</div>
-
-					<div
-						class="product-price"
-						v-else
-					>
-						<ins class="new-price">${{ product.variants[curIndex].price | priceFormat }}</ins>
+						<ins class="new-price">${{ currentVariant.price.salePrice | priceFormat }}</ins>
 					</div>
 				</div>
 			</div>
@@ -173,39 +82,26 @@
 
 		<hr class="product-divider mt-0">
 
-		<div
-			class="product-form product-qty"
-			v-if="!stickyCart"
-			key="normalCart"
-		>
+		<div class="product-form product-qty" v-if="!stickyCart" key="normalCart">
 			<div class="product-form-group">
-				<input-quantity
-					class="mr-2"
-					:max="product.stock"
-					@change-qty="changeQty"
-				></input-quantity>
+				<input-quantity class="mr-2" max="10" @change-qty="changeQty" />
 
-				<button
-					class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
-					:class="{disabled: !isCartActive}"
-					@click="addCart"
-				><i class="d-icon-bag"></i>Add to Cart</button>
+				<button class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
+					:class="{disabled: currentVariant === null && this.product2.type === 'variable' }" @click="addCart">
+          <i class="d-icon-bag"></i>
+          Add to Cart
+        </button>
 			</div>
 		</div>
 
-		<sticky-wrapper
-			v-else
-			stickyClass="product-sticky-content"
-			:offsetTop="650"
-			:top="73"
-		>
-			<div class="sticky-content fix-top product-sticky-content">
+		<sticky-wrapper v-if="stickyCart" stickyClass="product-sticky-content" :breakpoint="767" :offsetTop="600">
+			<div class="sticky-content fix-bottom product-sticky-content">
 				<div class="container">
 					<div class="sticky-product-details">
 						<figure class="product-image">
 							<a href="javascript:;">
 								<img
-									v-lazy="`${baseUrl}${product.pictures[0].url}`"
+									v-lazy="product2.images[0].src"
 									width="90"
 									height="90"
 									alt="Product image"
@@ -215,65 +111,36 @@
 
 						<div>
 							<h4 class="product-title">
-								<a href="javascript:;">{{ product.name }}</a>
+								<a href="javascript:;">{{ product2.name.slice(0,25) }}...</a>
 							</h4>
 
 							<div class="product-info">
-								<div
-									class="product-price"
-									v-if="curIndex > -1"
-								>
-									<template v-if="product.price">
-										<template v-if="product.sale_price">
-											<ins class="new-price">${{ product.sale_price | priceFormat }}</ins>
-											<del class="old-price">${{ product.price | priceFormat }}</del>
-										</template>
-
-										<template v-else>
-											<ins class="new-price">${{ product.price | priceFormat }}</ins>
-										</template>
-									</template>
-
-									<template v-else>
-										<template v-if="product.variants[curIndex].sale_price">
-											<ins class="new-price">${{ product.variants[curIndex].sale_price | priceFormat }}</ins>
-											<del class="old-price">${{ product.variants[curIndex].price | priceFormat }}</del>
-										</template>
-
-										<template v-else>
-											<ins class="new-price">${{ product.variants[curIndex].price | priceFormat }}</ins>
-										</template>
-									</template>
-								</div>
-
-								<template v-else>
-									<div class="product-price">
-										<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-											<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
-										</template>
-
-										<template v-else>
-											<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-												<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-												<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
-											</template>
-
-											<template v-else>
-												<ins class="new-price">${{ product.display_price[0] | priceFormat }} &ndash; ${{ product.display_price[1] | priceFormat }}</ins>
-											</template>
-										</template>
-									</div>
-								</template>
+								<div class="product-price">
+                  <template v-if="product2.type === 'simple' ">
+                    <ins class="new-price">${{ product2.price.salePrice | priceFormat }}</ins>
+                    <del class="old-price">${{ product2.price.comparePrice | priceFormat }}</del>
+                  </template>
+                  <template v-else-if="currentVariant !== null">
+                    <ins class="new-price">${{ currentVariant.price.salePrice | priceFormat }}</ins>
+                  </template>
+                  <template v-else-if="this.minPrice === this.maxPrice">
+                    <ins class="new-price">${{ this.minPrice | priceFormat }}</ins>
+                  </template>
+                  <template v-else>
+                    <ins class="new-price">${{ this.minPrice | priceFormat }} &ndash; ${{ this.maxPrice | priceFormat }}</ins>
+                  </template>
+                </div>
 
 								<div class="ratings-container">
 									<div class="ratings-full">
 										<span
 											class="ratings"
-											:style="{width: product.ratings * 20 + '%'}"
+											:style="{width: product2.review.rating * 20 + '%'}"
 										></span>
-										<span class="tooltiptext tooltip-top">{{ product.ratings | priceFormat }}</span>
+										<span class="tooltiptext tooltip-top">{{ product2.review.rating | priceFormat }}</span>
 									</div>
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -282,13 +149,13 @@
 						<div class="product-form-group">
 							<input-quantity
 								class="mr-2"
-								:max="product.stock"
+								max="10"
 								@change-qty="changeQty"
 							></input-quantity>
 
 							<button
 								class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"
-								:class="{disabled: !isCartActive}"
+								:class="{disabled: currentVariant === null && this.product2.type === 'variable'}"
 								@click="addCart"
 							><i class="d-icon-bag"></i>Add to Cart</button>
 						</div>
@@ -347,35 +214,28 @@ import { mapActions, mapGetters } from 'vuex';
 import { VueSlideToggle } from 'vue-slide-toggle';
 
 import InputQuantity from '~/components/elements/InputQuantity';
-import ProductNav from '~/components/partials/product/ProductNav';
-import CountDown from '~/components/elements/CountDown';
 import StickyWrapper from '~/components/elements/StickyWrapper';
-
-import { baseUrl } from '~/api';
 
 export default {
 	components: {
 		VueSlideToggle,
 		InputQuantity,
-		ProductNav,
-		CountDown,
 		StickyWrapper
 	},
 	data: function () {
 		return {
+      options: {},
 			vSizes: [],
 			vColors: [],
 			curSize: null,
 			curColor: null,
 			tIndex: -1,
 			quantity: 1,
-			baseUrl: baseUrl
+      maxPrice: 0,
+      minPrice: 10e10,
 		};
 	},
 	props: {
-		product: Object,
-		prev: Object,
-		next: Object,
 		showNav: {
 			type: Boolean,
 			default: true
@@ -383,162 +243,96 @@ export default {
 		stickyCart: {
 			type: Boolean,
 			default: false
-		}
+		},
+    product2: Object,
 	},
 	computed: {
 		...mapGetters( 'wishlist', [ 'wishList' ] ),
-		displayColors: function () {
-			return this.vColors.filter(
-				item => !this.isDisabled( item.name, this.curSize )
-			);
-		},
-		displaySizes: function () {
-			return this.vSizes.filter(
-				item => !this.isDisabled( this.curColor, item.name )
-			);
-		},
-		curIndex: function () {
-			if ( this.curColor && this.vSizes.length === 0 ) {
-				let index = this.product.variants.findIndex( item => item.color.name === this.curColor );
-				this.tIndex = index;
-				return index;
-			}
+    currentVariant: function() {
+      if(this.product2.type === 'simple') return null;
+      if(Object.keys(this.options).length !== this.product2.options.length) return null;
+      let variant = this.product2.variants;
+      this.product2.options.forEach((option,i) => {
+        variant = variant.filter(variant => {
+          return variant['option'+(i+1)].value === this.options['option'+i]
+        })
+      })
+      return variant[0];
+    },
 
-			if ( this.curSize && this.vColors.length === 0 ) {
-				let index = this.product.variants.findIndex( item => item.size.name === this.curSize );
-				this.tIndex = index;
-				return index;
-			}
-
-			if ( this.curColor && this.curSize ) {
-				let index = this.product.variants.findIndex(
-					item =>
-						item.color.name === this.curColor &&
-						item.size.name === this.curSize
-				);
-				this.tIndex = index;
-				return index;
-			} else {
-				return -1;
-			}
-		},
-		isCartActive: function () {
-			if ( parseInt( this.product.stock ) < parseInt( this.quantity ) ) return false;
-			if ( this.product.variants.length === 0 ) return true;
-			if ( this.curSize && this.curColor ) return true;
-			if ( this.curColor && this.vSizes.length === 0 ) return true;
-			if ( this.curSize && this.vColors.length === 0 ) return true;
-
-			return false;
-		},
-		isWishlisted: function () {
-			if ( this.wishList.find( item => item.name === this.product.name ) )
-				return true;
-			return false;
-		}
+    isWishlisted: function () {
+      return !!this.wishList.find(item => item.id === this.product2._id);
+    }
 	},
 	mounted: function () {
-		if ( this.product.variants.length > 0 ) {
-			if ( this.product.variants[ 0 ].size )
-				this.product.variants.forEach( item => {
-					if (
-						!this.vSizes.find(
-							vsize => vsize.name === item.size.name
-						)
-					)
-						this.vSizes.push( {
-							name: item.size.name,
-							text: item.size.size,
-							image: item.size.thumbnail
-						} );
-				} );
-
-			if ( this.product.variants[ 0 ].color )
-				this.product.variants.forEach( item => {
-					if (
-						!this.vColors.find(
-							vColor => vColor.name === item.color.name
-						)
-					)
-						this.vColors.push( {
-							name: item.color.name,
-							text: item.color.color,
-							image: item.color.thumbnail
-						} );
-				} );
-		}
+    if(this.product2.type !== "simple") {
+      this.product2.variants.forEach(option => {
+        if (option.price.salePrice > this.maxPrice) this.maxPrice = option.price.salePrice;
+        if (option.price.salePrice < this.minPrice) this.minPrice = option.price.salePrice;
+      });
+    }
 	},
 	methods: {
 		...mapActions( 'cart', [ 'addToCart' ] ),
-		...mapActions( 'wishlist', [ 'addWishlist' ] ),
-		isDisabled: function ( color, size ) {
-			if ( !color || !size ) return false;
+    ...mapActions( 'wishlist', [ 'toggleWishlist' ] ),
 
-			if ( this.vSizes.length === 0 )
-				return !this.product.variants.find(
-					item => item.color.name === color
-				);
-
-			if ( this.vColors.length === 0 )
-				return !this.product.variants.find(
-					item => item.size.name === size
-				);
-
-			return !this.product.variants.find(
-				item => item.color.name === color && item.size.name === size
-			);
-		},
-		cleanAll: function () {
-			this.curSize = null;
-			this.curColor = null;
-		},
 		changeQty: function ( qty ) {
 			this.quantity = qty;
 		},
+
 		addCart: function () {
-			if ( this.isCartActive ) {
-				let productName = this.product.name;
-				if ( this.curColor ) productName += '-' + this.curColor;
-				if ( this.curSize ) productName += '-' + this.curSize;
+			if ( this.product2.type === 'simple' ) {
+				const name = this.product2.name;
+        const type = this.product2.type;
+				const price = this.product2.price.salePrice;
+        const qty = this.quantity;
+				const img = this.product2.images[0].src;
+        const _id = this.product2._id;
 
-				let productPrice;
-				if (
-					this.curIndex > -1 &&
-					this.product.variants[ this.curIndex ].price
-				) {
-					productPrice = this.product.variants[ this.curIndex ]
-						.sale_price
-						? this.product.variants[ this.curIndex ].sale_price
-						: this.product.variants[ this.curIndex ].price;
-				} else {
-					productPrice = this.product.sale_price
-						? this.product.sale_price
-						: this.product.price;
-				}
-
-				let saledProduct = {
-					...this.product,
-					price: this.product.display_price[ 0 ]
-				};
 				this.addToCart( {
 					product: {
-						...this.product,
-						name: productName,
-						price: productPrice,
-						qty: this.quantity
+            _id,
+            img,
+						name,
+						price,
+						qty,
+            type,
 					}
 				} );
 			}
-		},
-		wishlistHandler: function ( e ) {
-			let currentTarget = e.currentTarget;
-			currentTarget.classList.add( 'load-more-overlay', 'loading' );
+      if (this.currentVariant !== null){
+        const name = this.product2.name;
+        const type = this.product2.type;
+        const price = this.currentVariant.price.salePrice;
+        const qty = this.quantity;
+        const img = this.product2.images[0].src;
+        const _id = this.product2._id;
+        const variant = {_id: this.currentVariant._id};
 
-			setTimeout( () => {
-				this.addWishlist( this.product );
-				currentTarget.classList.remove( 'load-more-overlay', 'loading' );
-			}, 1000 );
-		}
-	}
+        this.addToCart( {
+          product: {
+            _id,
+            img,
+            name,
+            price,
+            qty,
+            type,
+            variant
+          }
+        } );
+      }
+		},
+
+    wishlistHandler: function ( e ) {
+      let currentTarget = e.currentTarget;
+      currentTarget.classList.add( 'load-more-overlay', 'loading' );
+
+      setTimeout( () => {
+        currentTarget.classList.remove( 'load-more-overlay', 'loading' );
+        this.toggleWishlist({id: this.product2._id} );
+      }, 1000 );
+    },
+	},
+
 };
 </script>

@@ -5,26 +5,26 @@
       data-animation-options="{'name': 'fadeIn'}"
       v-animate
     >
-      <nuxt-link :to="{ path: '/shop', query: { category: urlify(category) } }">
+      <nuxt-link :to="{ path: '/shop', query: { category: category.slug } }">
         <figure class="category-media">
-          <img v-lazy="img" alt="category" width="190" height="169" />
+          <img v-lazy="category.img" alt="category" width="190" height="169" />
         </figure>
       </nuxt-link>
       <div class="category-content px-2">
         <h4 class="category-name">
           <nuxt-link
-            :to="{ path: '/shop', query: { category: urlify(category) } }"
-            >{{ category }}</nuxt-link
+            :to="{ path: '/shop', query: { category: category.slug } }"
+            >{{ category.name }}</nuxt-link
           >
         </h4>
-        <ul v-if="!!subCategories" class="category-list">
-          <li v-for="category in subCategories">
+        <ul v-if="!!subcategories" class="category-list">
+          <li v-for="(sub, index) in subcategories" v-if="index < 5">
             <nuxt-link
               :to="{
                 path: '/shop',
-                query: { category: urlify(category) },
+                query: { category: sub.slug },
               }"
-              >{{ category }}</nuxt-link
+              >{{ sub.name }}</nuxt-link
             >
           </li>
         </ul>
@@ -34,16 +34,22 @@
 </template>
 
 <script>
-let slugify = require('slugify');
+import axios from "axios";
 
 export default {
   name: 'CategoryItem',
-  props: ['img', 'category', 'subCategories'],
-  methods: {
-    urlify(text) {
-      return slugify(text).toLowerCase();
-    },
+  props: ['slug'],
+  data() {
+    return {
+      subcategories: Array,
+      category: Object,
+    }
   },
+  async fetch() {
+    const result = await axios.get(`http://localhost:3000/category/${this.slug}`);
+    this.category = result.data.result;
+    this.subcategories = result.data.result.children;
+  }
 };
 </script>
 

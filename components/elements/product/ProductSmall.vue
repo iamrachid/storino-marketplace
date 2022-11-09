@@ -5,7 +5,7 @@
 				<img
 					v-for="(item,index) in product.large_pictures.slice(0,2)"
 					:key="`one-large-${index}`"
-					v-lazy="`${baseUrl}${item.url}`"
+					v-lazy="`${item.image.src}`"
 					alt="large-picture"
 					:width="item.width"
 					:height="item.height"
@@ -21,13 +21,13 @@
 
 			<div class="product-price">
 				<template v-if="product.display_price[ 0 ] === product.display_price[ 1 ]">
-					<span class="price">${{ product.display_price[0] | priceFormat  }}</span>
+					<span class="price">{{ product.display_price[0] | priceFormat  }}MAD</span>
 				</template>
 
 				<template v-else>
 					<template v-if="product.variants.length === 0 || (product.variants.length > 0 && !product.variants[0].price)">
-						<ins class="new-price">${{ product.display_price[0] | priceFormat }}</ins>
-						<del class="old-price">${{ product.display_price[1] | priceFormat }}</del>
+						<ins class="new-price">{{ product.display_price[0] | priceFormat }}MAD</ins>
+						<del class="old-price" v-if="product.price.comparePrice != 0 & product.price.comparePrice != product.price.salePrice" >{{ product.display_price[1] | priceFormat }}MAD</del>
 					</template>
 
 					<template v-else>
@@ -54,8 +54,6 @@
 </template>
 
 <script>
-import { baseUrl } from '~/api';
-
 export default {
 	props: {
 		product: Object

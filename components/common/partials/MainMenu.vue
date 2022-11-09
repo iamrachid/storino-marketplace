@@ -58,13 +58,7 @@
 </template>
 
 <script>
-import { mainMenu } from '~/utils/data/menu';
 
 export default {
-  data: function() {
-    return {
-      mainMenu: mainMenu,
-    };
-  },
 };
 </script>

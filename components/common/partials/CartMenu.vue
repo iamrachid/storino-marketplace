@@ -10,7 +10,7 @@
 		>
 			<div class="cart-label d-lg-show ls-normal">
 				<span class="cart-name ls-m">Shopping Cart:</span>
-				<span class="cart-price">${{ totalPrice | priceFormat }}</span>
+				<span class="cart-price">{{ totalPrice | priceFormat }} MAD</span>
 			</div>
 			<i class="d-icon-bag"><span class="cart-count">{{totalCount}}</span></i>
 		</a>
@@ -28,16 +28,17 @@
 					<div
 						class="product product-cart"
 						v-for="item in cartList"
-						:key="`cart-item-${item.name}`"
+						:key="`cart-item-${item._id}`"
 					>
 						<figure class="product-media">
-							<nuxt-link :to="'/product/default/' + item.slug">
+							<nuxt-link :to="'/product/' + item._id">
 								<img
-									v-lazy="`${baseUrl}${item.pictures[0].url}`"
+									v-lazy="item.img"
 									alt="product"
-									:width="item.pictures[0].width"
-									:height="item.pictures[0].height"
+									:width="400"
+									:height="400"
 								/>
+
 							</nuxt-link>
 							<button
 								class="btn btn-link btn-close"
@@ -48,12 +49,12 @@
 						</figure>
 						<div class="product-detail">
 							<nuxt-link
-								:to="'/product/default/' + item.slug"
+								:to="'/product/' + item._id"
 								class="product-name"
 							>{{ item.name }}</nuxt-link>
 							<div class="price-box">
 								<span class="product-quantity">{{ item.qty }}</span>
-								<span class="product-price">${{ item.price | priceFormat }}</span>
+								<span class="product-price">{{ item.price | priceFormat }}MAD</span>
 							</div>
 						</div>
 					</div>
@@ -61,7 +62,7 @@
 
 				<div class="cart-total">
 					<label>Subtotal:</label>
-					<span class="price">${{ totalPrice | priceFormat }}</span>
+					<span class="price">{{ totalPrice | priceFormat }}MAD</span>
 				</div>
 
 				<div class="cart-action">
@@ -86,14 +87,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
-import { baseUrl } from '~/api/index';
-
 export default {
-	data: function () {
-		return {
-			baseUrl: baseUrl
-		};
-	},
 	computed: {
 		...mapGetters( 'cart', [ 'cartList', 'totalCount', 'totalPrice' ] )
 	},

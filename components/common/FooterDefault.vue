@@ -9,7 +9,7 @@
 							class="logo-footer"
 						>
 							<img
-								src="~/static/images/home/logo-footer.png"
+								src="~/static/images/home/logo.png"
 								alt="logo-footer"
 								width="154"
 								height="43"
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 
-			<div class="footer-middle">
+			<!--<div class="footer-middle">
 				<div class="row">
 					<div class="col-lg-3 col-md-6">
 						<div class="widget widget-info">
@@ -192,7 +192,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="footer-bottom">
 				<div class="footer-left">
@@ -206,7 +206,7 @@
 					</figure>
 				</div>
 				<div class="footer-center">
-					<p class="copyright">Riode eCommerce &copy; 2021. All Rights Reserved</p>
+					<p class="copyright">Storeino Marketplace &copy; 2022. All Rights Reserved</p>
 				</div>
 				<div class="footer-right">
 					<div class="social-links">
@@ -232,3 +232,8 @@
 		</div>
 	</footer>
 </template>
+<script>
+export default {
+  name: "FooterDefault",
+}
+</script>

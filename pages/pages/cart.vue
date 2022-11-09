@@ -32,19 +32,19 @@
 									>
 										<td class="product-thumbnail">
 											<figure>
-												<nuxt-link :to="'/product/default/' + item.slug">
+												<nuxt-link :to="'/product/' + item._id">
 													<img
-														:src="`${baseUrl}${item.pictures[0].url}`"
-														:width="100"
-														:height="100"
-														alt="product"
+														:src="item.img"
+														:width="400"
+														:height="400"
+														alt="product-image"
 													/>
 												</nuxt-link>
 											</figure>
 										</td>
 										<td class="product-name">
 											<div class="product-name-section">
-												<nuxt-link :to="'/product/default/' + item.slug">{{item.name}}</nuxt-link>
+												<nuxt-link :to="'/product/' + item._id">{{item.name.slice(30)}}</nuxt-link>
 											</div>
 										</td>
 										<td class="product-subtotal">
@@ -53,7 +53,7 @@
 
 										<td class="product-quantity">
 											<input-quantity
-												:max="item.stock"
+												max="10"
 												:qty="item.qty"
 												@change-qty="qty=> changeQty(qty, item.name)"
 											></input-quantity>
@@ -88,21 +88,6 @@
 								</button>
 							</div>
 
-							<div class="cart-coupon-box mb-8">
-								<h4 class="title coupon-title text-uppercase ls-m">Coupon Discount</h4>
-								<input
-									type="text"
-									name="coupon_code"
-									aria-label="input coupon"
-									class="input-text form-control text-grey ls-m mb-4"
-									id="coupon_code"
-									placeholder="Enter coupon code here..."
-								/>
-								<button
-									type="submit"
-									class="btn btn-md btn-dark btn-rounded btn-outline"
-								>Apply Coupon</button>
-							</div>
 						</div>
 
 						<aside
@@ -116,117 +101,6 @@
 								<div class="summary mb-4">
 									<h3 class="summary-title text-left">Cart Totals</h3>
 
-									<table class="shipping">
-										<tbody>
-											<tr class="summary-subtotal">
-												<td>
-													<h4 class="summary-subtitle">Subtotal</h4>
-												</td>
-												<td>
-													<p class="summary-subtotal-price">${{ totalPrice | priceFormat }}</p>
-												</td>
-											</tr>
-											<tr class="sumnary-shipping shipping-row-last">
-												<td colSpan="2">
-													<h4 class="summary-subtitle">Calculate Shipping</h4>
-													<ul>
-														<li>
-															<div class="custom-radio">
-																<input
-																	type="radio"
-																	id="flat_rate"
-																	name="shipping"
-																	class="custom-control-input"
-																	checked
-																/>
-																<label
-																	class="custom-control-label"
-																	for="flat_rate"
-																>Flat rate</label>
-															</div>
-														</li>
-														<li>
-															<div class="custom-radio">
-																<input
-																	type="radio"
-																	id="free-shipping"
-																	name="shipping"
-																	class="custom-control-input"
-																/>
-																<label
-																	class="custom-control-label"
-																	for="free-shipping"
-																>Free
-																	shipping</label>
-															</div>
-														</li>
-
-														<li>
-															<div class="custom-radio">
-																<input
-																	type="radio"
-																	id="local_pickup"
-																	name="shipping"
-																	class="custom-control-input"
-																/>
-																<label
-																	class="custom-control-label"
-																	for="local_pickup"
-																>Local pickup</label>
-															</div>
-														</li>
-													</ul>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-									<div class="shipping-address">
-										<label>Shipping to <strong>CA.</strong></label>
-										<div class="select-box">
-											<select
-												name="country"
-												class="form-control"
-												aria-label="select country"
-												default-value="us"
-											>
-												<option value="us">United States (US)</option>
-												<option value="uk"> United Kingdom</option>
-												<option value="fr">France</option>
-												<option value="aus">Austria</option>
-											</select>
-										</div>
-										<div class="select-box">
-											<select
-												name="country"
-												class="form-control"
-												aria-label="select country"
-												default-value="us"
-											>
-												<option value="us">California</option>
-												<option value="uk">Alaska</option>
-												<option value="fr">Delaware</option>
-												<option value="aus">Hawaii</option>
-											</select>
-										</div>
-										<input
-											type="text"
-											class="form-control"
-											name="code"
-											aria-label="input city"
-											placeholder="Town / City"
-										/>
-										<input
-											type="text"
-											class="form-control"
-											name="code"
-											aria-label="input zip"
-											placeholder="ZIP"
-										/>
-										<a
-											href="javascript:;"
-											class="btn btn-md btn-dark btn-rounded btn-outline"
-										>Update totals</a>
-									</div>
 									<table class="total">
 										<tbody>
 											<tr class="summary-subtotal">
@@ -274,7 +148,6 @@ import Sticky from 'vue-sticky-directive';
 
 import InputQuantity from '~/components/elements/InputQuantity';
 
-import { baseUrl } from '~/api';
 
 export default {
 	components: {
@@ -286,7 +159,6 @@ export default {
 	data: function () {
 		return {
 			isSticky: false,
-			baseUrl: baseUrl,
 			cartItems: [],
 			isChanged: false
 		};
@@ -334,3 +206,10 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+.main {
+  min-height: 58vh;
+}
+
+</style>

@@ -4,7 +4,6 @@
 			<header-default></header-default>
 			<nuxt></nuxt>
 			<footer-default></footer-default>
-			<scroll-top-button></scroll-top-button>
 
 			<cart-popup class="cart-popup"></cart-popup>
 		</div>
@@ -19,14 +18,12 @@ import FooterDefault from '~/components/common/FooterDefault';
 import FooterSticky from '~/components/common/FooterSticky';
 import MobileMenu from '~/components/common/MobileMenu';
 import CartPopup from '~/components/elements/product/CartPopup';
-import ScrollTopButton from '~/components/common/ScrollTopButton';
 
 export default {
 	components: {
 		HeaderDefault,
 		FooterDefault,
 		FooterSticky,
-		ScrollTopButton,
 		CartPopup,
 		MobileMenu
 	},
